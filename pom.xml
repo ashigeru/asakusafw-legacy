@@ -22,7 +22,38 @@
   <properties>
     <mysql.jdbc.version>5.1.25</mysql.jdbc.version>
   </properties>
-  
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://repo.maven.apache.org/maven2</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>com.asakusafw.releases</id>
+      <name>Asakusa Framework Repository</name>
+      <url>http://asakusafw.s3.amazonaws.com/maven/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>com.asakusafw.snapshots</id>
+      <name>Asakusa Framework Snapshot Repository</name>
+      <url>http://asakusafw.s3.amazonaws.com/maven/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
