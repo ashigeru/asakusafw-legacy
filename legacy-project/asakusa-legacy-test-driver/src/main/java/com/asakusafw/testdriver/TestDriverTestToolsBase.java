@@ -27,7 +27,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,9 +36,9 @@ import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
 
 /**
  * asakusa-test-toolsが提供するAPIを使って実装されたテストドライバの基底クラス。
- *
+ * @deprecated legacy API
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public class TestDriverTestToolsBase extends TestDriverBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(TestDriverTestToolsBase.class);
@@ -104,9 +103,7 @@ public class TestDriverTestToolsBase extends TestDriverBase {
             File buildPropertiesFile = new File(BUILD_PROPERTIES_FILE);
             if (buildPropertiesFile.exists()) {
                 LOG.info("ビルド設定情報をロードしています: {}", buildPropertiesFile);
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(buildPropertiesFile);
+                try (FileInputStream fis = new FileInputStream(buildPropertiesFile)) {
                     buildProperties = new Properties();
                     buildProperties.load(fis);
                     System.setProperty(
@@ -117,8 +114,6 @@ public class TestDriverTestToolsBase extends TestDriverBase {
                             buildProperties.getProperty("asakusa.modelgen.output"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-                } finally {
-                    IOUtils.closeQuietly(fis);
                 }
             } else {
                 LOG.info("ビルド設定情報が存在しないため、スキップします: {}", BUILD_PROPERTIES_FILE);

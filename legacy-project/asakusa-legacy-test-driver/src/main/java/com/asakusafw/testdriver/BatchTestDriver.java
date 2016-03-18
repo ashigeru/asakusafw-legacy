@@ -37,8 +37,9 @@ import com.asakusafw.vocabulary.batch.BatchDescription;
  * バッチ用のテストドライバクラス。
  * @since 0.1.0
  * @version 0.4.0
+ * @deprecated legacy API
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public class BatchTestDriver extends TestDriverTestToolsBase {
 
     /**
@@ -57,7 +58,7 @@ public class BatchTestDriver extends TestDriverTestToolsBase {
     public void runTest(Class<? extends BatchDescription> batchDescriptionClass) {
 
         try {
-            JobflowExecutor executor = new JobflowExecutor(driverContext);
+            LegacyJobflowExecutor executor = new LegacyJobflowExecutor(driverContext);
 
             // クラスタワークディレクトリ初期化
             executor.cleanWorkingDirectory();
@@ -90,10 +91,10 @@ public class BatchTestDriver extends TestDriverTestToolsBase {
                             DirectFlowCompiler.toLibraryPath(batchDescriptionClass)
                     }),
                     batchDescriptionClass.getClassLoader(),
-                    driverContext.getOptions());
+                    LegacyUtil.toCompilerOptions(driverContext));
 
             for (JobflowInfo jobflowInfo : batchInfo.getJobflows()) {
-                driverContext.prepareCurrentJobflow(jobflowInfo);
+                LegacyUtil.prepareIds(driverContext, jobflowInfo);
                 executor.runJobflow(jobflowInfo);
             }
 
