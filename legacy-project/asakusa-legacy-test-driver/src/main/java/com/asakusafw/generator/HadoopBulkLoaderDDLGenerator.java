@@ -64,12 +64,8 @@ public final class HadoopBulkLoaderDDLGenerator {
         }
 
         String ddlTemplate;
-        InputStream in = HadoopBulkLoaderDDLGenerator.class
-                .getResourceAsStream(TEMPLATE_DDL_FILENAME);
-        try {
+        try (InputStream in = HadoopBulkLoaderDDLGenerator.class.getResourceAsStream(TEMPLATE_DDL_FILENAME)) {
             ddlTemplate = IOUtils.toString(in);
-        } finally {
-            in.close();
         }
         StringBuilder sb = new StringBuilder();
 
@@ -95,7 +91,7 @@ public final class HadoopBulkLoaderDDLGenerator {
 
     private static List<String> buildEnvProperties(String suffix) {
         assert suffix != null;
-        List<String> properties = new ArrayList<String>(ENV_PREFIX.length);
+        List<String> properties = new ArrayList<>(ENV_PREFIX.length);
         for (String prefix : ENV_PREFIX) {
             properties.add(prefix + suffix);
         }

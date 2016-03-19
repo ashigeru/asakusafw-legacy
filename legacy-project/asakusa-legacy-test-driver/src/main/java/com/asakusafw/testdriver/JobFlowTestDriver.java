@@ -36,8 +36,9 @@ import com.asakusafw.vocabulary.flow.graph.FlowGraph;
 
 /**
  * ジョブフロー用のテストドライバクラス。
+ * @deprecated legacy API
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public class JobFlowTestDriver extends TestDriverTestToolsBase {
 
     /** バッチID。 */
@@ -100,7 +101,7 @@ public class JobFlowTestDriver extends TestDriverTestToolsBase {
     public void runTest(Class<? extends FlowDescription> jobFlowDescriptionClass) {
 
         try {
-            JobflowExecutor executor = new JobflowExecutor(driverContext);
+            LegacyJobflowExecutor executor = new LegacyJobflowExecutor(driverContext);
 
             // クラスタワークディレクトリ初期化
             executor.cleanWorkingDirectory();
@@ -134,10 +135,9 @@ public class JobFlowTestDriver extends TestDriverTestToolsBase {
                         DirectFlowCompiler.toLibraryPath(jobFlowDescriptionClass)
                 }),
                 jobFlowDescriptionClass.getClassLoader(),
-                driverContext.getOptions());
+                LegacyUtil.toCompilerOptions(driverContext));
 
-            driverContext.prepareCurrentJobflow(jobflowInfo);
-
+            LegacyUtil.prepareIds(driverContext, jobflowInfo);
             executor.runJobflow(jobflowInfo);
 
             // テスト結果検証ツールを実行し、Excel上の期待値とDB上の実際値を比較する。

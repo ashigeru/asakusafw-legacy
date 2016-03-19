@@ -54,16 +54,18 @@ import com.asakusafw.vocabulary.flow.graph.FlowGraph;
 
 /**
  * フロー部品用のテストドライバクラス。
+ * @deprecated legacy API
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public class FlowPartTestDriver extends TestDriverTestToolsBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowPartTestDriver.class);
 
     private final FlowDescriptionDriver flowDescriptionDriver = new FlowDescriptionDriver();
 
-    private final Map<String, List<String>> createInMap = new HashMap<String, List<String>>();
-    private final Map<String, List<String>> createOutMap = new HashMap<String, List<String>>();
+    private final Map<String, List<String>> createInMap = new HashMap<>();
+
+    private final Map<String, List<String>> createOutMap = new HashMap<>();
 
     private boolean createIndividually = false;
     private boolean loadIndividually = false;
@@ -105,13 +107,21 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
             }
 
             FlowGraph flowGraph = flowDescriptionDriver.createFlowGraph(flowDescription);
-            JobflowInfo jobflowInfo = DirectFlowCompiler.compile(flowGraph, batchId, flowId, "test.flowpart",
-                    FlowPartDriverUtils.createWorkingLocation(driverContext), compileWorkDir,
-                    Arrays.asList(new File[] { DirectFlowCompiler.toLibraryPath(flowDescription.getClass()) }),
-                    flowDescription.getClass().getClassLoader(), driverContext.getOptions());
+            JobflowInfo jobflowInfo = DirectFlowCompiler.compile(
+                    flowGraph,
+                    batchId,
+                    flowId,
+                    "test.flowpart",
+                    LegacyUtil.createWorkingLocation(driverContext),
+                    compileWorkDir,
+                    Arrays.asList(new File[] {
+                            DirectFlowCompiler.toLibraryPath(flowDescription.getClass()),
+                    }),
+                    flowDescription.getClass().getClassLoader(),
+                    LegacyUtil.toCompilerOptions(driverContext));
 
-            JobflowExecutor executor = new JobflowExecutor(driverContext);
-            driverContext.prepareCurrentJobflow(jobflowInfo);
+            LegacyJobflowExecutor executor = new LegacyJobflowExecutor(driverContext);
+            LegacyUtil.prepareIds(driverContext, jobflowInfo);
 
             // クラスタワークディレクトリ初期化
             executor.cleanWorkingDirectory();
@@ -163,7 +173,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
 
         String tableName = testUtils.getTablenameByClass(modelType);
         addCreateIn(tableName, tableName);
-        String path = FlowPartDriverUtils.createInputLocation(driverContext, tableName).toPath('/');
+        String path = LegacyUtil.createInputLocation(driverContext, tableName).toPath('/');
         LOG.info("DirectImporterDescription生成:Path=" + path);
         ImporterDescription desc = new DirectImporterDescription(modelType, path);
         return flowDescriptionDriver.createIn(tableName, desc);
@@ -204,7 +214,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
         loadIndividually = true;
         addCreateIn(tableName, excelFileName);
 
-        String path = FlowPartDriverUtils.createInputLocation(driverContext, excelFileName).toPath('/');
+        String path = LegacyUtil.createInputLocation(driverContext, excelFileName).toPath('/');
 
         LOG.info("DirectImporterDescription生成:Path=" + excelFileName);
 
@@ -244,7 +254,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
 
         String tableName = testUtils.getTablenameByClass(modelType);
         addCreateOut(tableName, tableName);
-        String path = FlowPartDriverUtils.createOutputLocation(driverContext, tableName).toPath('/');
+        String path = LegacyUtil.createOutputLocation(driverContext, tableName).toPath('/');
         LOG.info("DirectExporterDescription生成:Path=" + path);
         ExporterDescription desc = new DirectExporterDescription(modelType, path);
         return flowDescriptionDriver.createOut(tableName, desc);
@@ -286,7 +296,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
         loadIndividually = true;
         addCreateOut(tableName, excelFileName);
 
-        String path = FlowPartDriverUtils.createOutputLocation(driverContext, excelFileName).toPath('/');
+        String path = LegacyUtil.createOutputLocation(driverContext, excelFileName).toPath('/');
 
         LOG.info("DirectExporterDescription生成:Path=" + excelFileName);
 
@@ -305,7 +315,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
     private void addCreateIn(String tableName, String fileName) {
         List<String> fileListPerTable = createInMap.get(tableName);
         if (fileListPerTable == null) {
-            fileListPerTable = new ArrayList<String>();
+            fileListPerTable = new ArrayList<>();
             createInMap.put(tableName, fileListPerTable);
         }
         fileListPerTable.add(fileName);
@@ -314,7 +324,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
     private void addCreateOut(String tableName, String fileName) {
         List<String> fileListPerTable = createOutMap.get(tableName);
         if (fileListPerTable == null) {
-            fileListPerTable = new ArrayList<String>();
+            fileListPerTable = new ArrayList<>();
             createOutMap.put(tableName, fileListPerTable);
         }
         fileListPerTable.add(fileName);
@@ -331,7 +341,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
             String tablename = entry.getKey();
             List<String> fileList = entry.getValue();
             for (String excelFileName : fileList) {
-                List<File> inFileList = new ArrayList<File>();
+                List<File> inFileList = new ArrayList<>();
                 if (testDataDir != null) {
                     inFileList.add(new File(testDataDir, excelFileName + ".xls"));
                 } else {
@@ -381,7 +391,7 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
             String tablename = entry.getKey();
             List<String> fileList = entry.getValue();
             for (String excelFileName : fileList) {
-                List<File> outFileList = new ArrayList<File>();
+                List<File> outFileList = new ArrayList<>();
                 if (testDataDir != null) {
                     outFileList.add(new File(testDataDir, excelFileName + ".xls"));
                 } else {
@@ -427,13 +437,13 @@ public class FlowPartTestDriver extends TestDriverTestToolsBase {
     }
 
     private String computeInputPath(FileSystem fs, String tableName) {
-        Location location = FlowPartDriverUtils.createInputLocation(driverContext, tableName);
+        Location location = LegacyUtil.createInputLocation(driverContext, tableName);
         String path = new Path(fs.getWorkingDirectory(), location.toPath('/')).toString();
         return resolvePath(path);
     }
 
     private String computeOutputPath(FileSystem fs, String tableName) {
-        Location location = FlowPartDriverUtils.createOutputLocation(driverContext, tableName);
+        Location location = LegacyUtil.createOutputLocation(driverContext, tableName);
         String path = new Path(fs.getWorkingDirectory(), location.toPath('/')).toString();
         return resolvePath(path);
     }
