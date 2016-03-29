@@ -15,12 +15,12 @@
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-thundergate-vocabulary</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-thundergate-plugin</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
   </dependencies>
 </project>

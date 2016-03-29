@@ -15,17 +15,17 @@
     <dependency>
       <groupId>com.asakusafw.sdk</groupId>
       <artifactId>asakusa-sdk-app-thundergate</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>com.asakusafw.sdk</groupId>
       <artifactId>asakusa-sdk-test-thundergate</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>com.asakusafw.sdk</groupId>
       <artifactId>asakusa-sdk-dmdl-thundergate</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
   </dependencies>
 </project>
