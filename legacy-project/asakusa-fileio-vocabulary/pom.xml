@@ -14,7 +14,7 @@
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-dsl-vocabulary</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>

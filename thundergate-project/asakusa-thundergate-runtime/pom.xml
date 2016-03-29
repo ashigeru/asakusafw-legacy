@@ -15,7 +15,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-runtime</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>

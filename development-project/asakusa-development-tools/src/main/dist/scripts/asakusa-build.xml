@@ -264,7 +264,7 @@
 			<jvmarg value="-Dcom.asakusafw.batchapp.build.java.version=${java.version}" />
 			<jvmarg value="-Dcom.asakusafw.batchapp.build.timestamp=${now.time}" />
 			<jvmarg value="-Dcom.asakusafw.compiler.options=${asakusa.compiler.options}" />
-			<jvmarg value="-Dcom.asakusafw.batchapp.project.version=${project.version}" />
+			<jvmarg value="-Dcom.asakusafw.batchapp.asakusafw.version=${asakusafw.version}" />
 			<jvmarg value="-Dcom.asakusafw.framework.version=${asakusafw.version}" />
 			<jvmarg value="-ea" />
 			<arg value="-output" />
@@ -284,7 +284,7 @@
 			<arg pathref="compiler-ext-plugins" />
 		</java>
 
-		<jar destfile="target/${project.artifactId}-batchapps-${project.version}.jar">
+		<jar destfile="target/${project.artifactId}-batchapps-${asakusafw.version}.jar">
 			<fileset dir="${asakusa.batchc.dir}" />
 		</jar>
 	</target>

@@ -33,22 +33,22 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-runtime</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-thundergate-vocabulary</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-dmdl-core</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-dmdl-java</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jsr199-testing</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

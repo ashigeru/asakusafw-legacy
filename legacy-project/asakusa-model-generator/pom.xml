@@ -34,12 +34,12 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-runtime</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-dsl-vocabulary</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -49,12 +49,12 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>simple-graph</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>java-dom</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jsr199-testing</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

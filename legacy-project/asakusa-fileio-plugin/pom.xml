@@ -14,12 +14,12 @@
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-fileio-vocabulary</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ashigel-compiler</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-runtime-configuration</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
       <classifier>tests</classifier>
       <optional>true</optional>
       <scope>test</scope>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ashigel-compiler</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
       <classifier>tests</classifier>
       <optional>true</optional>
       <scope>test</scope>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-simple-mapreduce</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -38,7 +38,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ashigel-compiler</artifactId>
-      <version>${project.version}</version>
+      <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
