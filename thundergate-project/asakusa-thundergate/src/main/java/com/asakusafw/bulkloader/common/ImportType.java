@@ -51,7 +51,7 @@ public enum ImportType {
      * コンストラクタ。
      * @param type Importer処理区分
      */
-    private ImportType(String type) {
+    ImportType(String type) {
         this.importType = type;
     }
     /**
@@ -71,7 +71,7 @@ public enum ImportType {
     private static class ImportTypeToImportType {
         static final Map<String, ImportType> REVERSE_DICTIONARY;
         static {
-            Map<String, ImportType> map = new HashMap<String, ImportType>();
+            Map<String, ImportType> map = new HashMap<>();
             for (ImportType elem : ImportType.values()) {
                 map.put(elem.getImportType(), elem);
             }

@@ -49,7 +49,7 @@ final class FileDeployer {
      * @param configuration configuration to be used
      * @throws IllegalArgumentException if some parameters were {@code null}
      */
-    public FileDeployer(Configuration configuration) {
+    FileDeployer(Configuration configuration) {
         if (configuration == null) {
             throw new IllegalArgumentException("configuration must not be null"); //$NON-NLS-1$
         }

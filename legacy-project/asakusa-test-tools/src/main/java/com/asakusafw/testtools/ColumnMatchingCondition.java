@@ -56,7 +56,7 @@ public enum ColumnMatchingCondition {
      */
     private String japaneseName;
 
-    private ColumnMatchingCondition(String japaneseName) {
+    ColumnMatchingCondition(String japaneseName) {
         this.japaneseName = japaneseName;
     }
 
@@ -71,8 +71,7 @@ public enum ColumnMatchingCondition {
     /**
      * 日本語名と条件のマップ。
      */
-    private static Map<String, ColumnMatchingCondition> japaneseNameMap
-        = new HashMap<String, ColumnMatchingCondition>();
+    private static Map<String, ColumnMatchingCondition> japaneseNameMap = new HashMap<>();
     static {
         for (ColumnMatchingCondition conditon : ColumnMatchingCondition.values()) {
             String key = conditon.getJapaneseName();

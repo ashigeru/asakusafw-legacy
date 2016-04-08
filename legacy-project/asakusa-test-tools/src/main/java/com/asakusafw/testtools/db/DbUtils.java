@@ -57,7 +57,7 @@ public final class DbUtils {
             sb.append(String.format("  %-32s %s",
                     info.getColumnName(),
                     info.getDataType().getDataTypeString()));
-            switch(info.getDataType()) {
+            switch (info.getDataType()) {
             case CHAR:
             case VARCHAR:
                 sb.append(String.format("(%d)",

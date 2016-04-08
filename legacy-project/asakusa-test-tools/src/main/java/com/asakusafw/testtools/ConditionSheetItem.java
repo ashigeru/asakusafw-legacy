@@ -95,7 +95,7 @@ public enum ConditionSheetItem {
      */
     private int col;
 
-    private ConditionSheetItem(String name, int row, int col, ItemType itemType) {
+    ConditionSheetItem(String name, int row, int col, ItemType itemType) {
         this.name = name;
         this.row = row;
         this.col = col;

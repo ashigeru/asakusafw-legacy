@@ -116,7 +116,7 @@ public enum MySqlDataType {
      */
     private PropertyTypeKind propertyTypeKind;
 
-    private MySqlDataType(String str, PropertyTypeKind type) {
+    MySqlDataType(String str, PropertyTypeKind type) {
         assert str != null;
         assert type != null;
         this.dataTypeString = str;

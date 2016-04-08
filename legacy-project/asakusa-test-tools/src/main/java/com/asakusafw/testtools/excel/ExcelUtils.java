@@ -309,7 +309,7 @@ public class ExcelUtils {
             long characterMaximumLength = 0;
             int numericPrecision = 0;
             int numericScale = 0;
-            switch(dataType) {
+            switch (dataType) {
             case CHAR:
             case VARCHAR:
                 if (dWidth == null) {
@@ -675,7 +675,7 @@ public class ExcelUtils {
      */
     private StringOption getStringOption(HSSFCell cell) {
         String str;
-        switch(cell.getCellType()) {
+        switch (cell.getCellType()) {
         case Cell.CELL_TYPE_BLANK:
             str = null;
             break;
@@ -718,7 +718,7 @@ public class ExcelUtils {
      */
     private DecimalOption getDecimalOption(HSSFCell cell) {
         BigDecimal bigDecimal;
-        switch(cell.getCellType()) {
+        switch (cell.getCellType()) {
         case Cell.CELL_TYPE_BLANK:
             bigDecimal = null;
             break;
@@ -776,7 +776,7 @@ public class ExcelUtils {
      */
     private Date getDate(HSSFCell cell) {
         Date date;
-        switch(cell.getCellType()) {
+        switch (cell.getCellType()) {
         case Cell.CELL_TYPE_BLANK:
             date = null;
             break;
@@ -819,7 +819,7 @@ public class ExcelUtils {
      */
     private Long getLong(HSSFCell cell) {
         Long l;
-        switch(cell.getCellType()) {
+        switch (cell.getCellType()) {
         case Cell.CELL_TYPE_BLANK:
             l = null;
             break;
@@ -888,7 +888,7 @@ public class ExcelUtils {
         int rownum = cell.getRowIndex();
         String sheetName = cell.getSheet().getSheetName();
         String actual;
-        switch(cell.getCellType()) {
+        switch (cell.getCellType()) {
         case Cell.CELL_TYPE_BLANK:
             actual = "ブランク";
             break;

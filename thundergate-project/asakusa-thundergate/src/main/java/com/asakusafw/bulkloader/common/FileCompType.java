@@ -44,9 +44,9 @@ public enum FileCompType {
 
     Set<String> keys;
 
-    private FileCompType(String symbol, String... alternatives) {
+    FileCompType(String symbol, String... alternatives) {
         this.symbol = symbol;
-        this.keys = new HashSet<String>();
+        this.keys = new HashSet<>();
         this.keys.add(symbol);
         Collections.addAll(this.keys, alternatives);
     }
@@ -70,7 +70,7 @@ public enum FileCompType {
     private static class CompTypeToFileCompType {
         static final Map<String, FileCompType> REVERSE_DICTIONARY;
         static {
-            Map<String, FileCompType> map = new TreeMap<String, FileCompType>(String.CASE_INSENSITIVE_ORDER);
+            Map<String, FileCompType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             for (FileCompType elem : FileCompType.values()) {
                 for (String key : elem.keys) {
                     map.put(key, elem);

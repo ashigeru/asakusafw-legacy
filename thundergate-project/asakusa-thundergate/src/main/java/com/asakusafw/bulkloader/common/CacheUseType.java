@@ -51,7 +51,7 @@ public enum CacheUseType {
      * コンストラクタ。
      * @param type キャッシュ利用有無
      */
-    private CacheUseType(String type) {
+    CacheUseType(String type) {
         this.cacheUseType = type;
     }
     /**
@@ -66,7 +66,7 @@ public enum CacheUseType {
     private static class CacheUseTypeToCacheUseType {
         static final Map<String, CacheUseType> REVERSE_DICTIONARY;
         static {
-            Map<String, CacheUseType> map = new HashMap<String, CacheUseType>();
+            Map<String, CacheUseType> map = new HashMap<>();
             for (CacheUseType elem : CacheUseType.values()) {
                 map.put(elem.getCacheUseType(), elem);
             }

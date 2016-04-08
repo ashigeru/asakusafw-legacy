@@ -54,7 +54,7 @@ class FileOutputFormatDriver<V> implements ModelOutput<V> {
      * @throws IOException if failed to initialize
      * @throws IllegalArgumentException if some parameters were {@code null}
      */
-    public <K> FileOutputFormatDriver(
+    <K> FileOutputFormatDriver(
             TaskAttemptContext context,
             FileOutputFormat<? super K, ? super V> format,
             K key) throws IOException {

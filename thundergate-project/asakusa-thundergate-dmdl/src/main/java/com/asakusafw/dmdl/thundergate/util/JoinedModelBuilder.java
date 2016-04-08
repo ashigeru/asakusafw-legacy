@@ -288,7 +288,7 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
 
         String name;
 
-        public Ref(Side side, String name) {
+        Ref(Side side, String name) {
             assert side != null;
             assert name != null;
             this.side = side;

@@ -56,7 +56,7 @@ class FileInputFormatDriver<V> implements DataModelSource {
      * @throws IOException if failed to initialize
      * @throws IllegalArgumentException if some parameters were {@code null}
      */
-    public FileInputFormatDriver(
+    FileInputFormatDriver(
             DataModelDefinition<V> definition,
             TaskAttemptContext context,
             FileInputFormat<?, V> format) throws IOException {

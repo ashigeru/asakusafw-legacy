@@ -33,11 +33,11 @@ import com.asakusafw.modelgen.model.Source;
  */
 public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
 
-    private List<String> columns;
+    private final List<String> columns;
 
-    private Side left;
+    private final Side left;
 
-    private Side right;
+    private final Side right;
 
     /**
      * インスタンスを生成する。
@@ -323,7 +323,7 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
 
         String name;
 
-        public Ref(Side side, String name) {
+        Ref(Side side, String name) {
             assert side != null;
             assert name != null;
             this.side = side;

@@ -231,7 +231,7 @@ public class FileProtocol {
         ;
         private final boolean hasCacheInfo;
 
-        private Kind(boolean hasCacheInfo) {
+        Kind(boolean hasCacheInfo) {
             this.hasCacheInfo = hasCacheInfo;
         }
 

@@ -56,7 +56,7 @@ public enum ImportTableLockType {
      * コンストラクタ。
      * @param type ロック取得タイプ
      */
-    private ImportTableLockType(String type) {
+    ImportTableLockType(String type) {
         this.lockType = type;
     }
     /**
@@ -71,7 +71,7 @@ public enum ImportTableLockType {
     private static class LockTypeToImportTableLockType {
         static final Map<String, ImportTableLockType> REVERSE_DICTIONARY;
         static {
-            Map<String, ImportTableLockType> map = new HashMap<String, ImportTableLockType>();
+            Map<String, ImportTableLockType> map = new HashMap<>();
             for (ImportTableLockType elem : ImportTableLockType.values()) {
                 map.put(elem.getLockType(), elem);
             }

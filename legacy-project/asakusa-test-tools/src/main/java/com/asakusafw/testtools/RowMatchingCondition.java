@@ -43,7 +43,7 @@ public enum RowMatchingCondition {
      */
     private String japaneseName;
 
-    private RowMatchingCondition(String japaneseName) {
+    RowMatchingCondition(String japaneseName) {
         this.japaneseName = japaneseName;
     }
 

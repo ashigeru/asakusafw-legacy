@@ -55,7 +55,7 @@ public enum ExportTempTableStatus {
      * コンストラクタ。
      * @param status エクスポートテンポラリテーブルステータス
      */
-    private ExportTempTableStatus(String status) {
+    ExportTempTableStatus(String status) {
         this.status = status;
     }
     /**
@@ -70,7 +70,7 @@ public enum ExportTempTableStatus {
     private static class StatusToExportTempTableStatus {
         static final Map<String, ExportTempTableStatus> REVERSE_DICTIONARY;
         static {
-            Map<String, ExportTempTableStatus> map = new HashMap<String, ExportTempTableStatus>();
+            Map<String, ExportTempTableStatus> map = new HashMap<>();
             for (ExportTempTableStatus elem : ExportTempTableStatus.values()) {
                 map.put(elem.getStatus(), elem);
             }

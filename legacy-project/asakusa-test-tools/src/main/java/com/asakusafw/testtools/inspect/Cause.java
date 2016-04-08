@@ -87,7 +87,7 @@ public class Cause {
          * インスタンスを生成する。
          * @param message 失敗の原因を表す文字列
          */
-        private Type(String message) {
+        Type(String message) {
             this.message = message;
         }
 
@@ -103,22 +103,22 @@ public class Cause {
     /**
      * 失敗の原因。
      */
-    private Type type;
+    private final Type type;
 
     /**
      * 失敗の原因を示す文字列。
      */
-    private String message;
+    private final String message;
 
     /**
      * 検査に失敗した期待値のレコード。
      */
-    private Writable expect;
+    private final Writable expect;
 
     /**
      * 検査に失敗した実値のレコード。
      */
-    private Writable actual;
+    private final Writable actual;
 
     /**
      * 検査に失敗したカラムの情報。
