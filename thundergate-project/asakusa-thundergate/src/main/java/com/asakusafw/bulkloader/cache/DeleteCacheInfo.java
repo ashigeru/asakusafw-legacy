@@ -208,7 +208,7 @@ public class DeleteCacheInfo {
 
         final String symbol;
 
-        private SubCommand(int arity) {
+        SubCommand(int arity) {
             this.arity = arity;
             this.symbol = name().toLowerCase();
         }

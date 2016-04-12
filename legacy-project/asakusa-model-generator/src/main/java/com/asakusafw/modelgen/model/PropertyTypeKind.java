@@ -71,7 +71,7 @@ public enum PropertyTypeKind {
      */
     public final boolean variant;
 
-    private PropertyTypeKind(boolean variant) {
+    PropertyTypeKind(boolean variant) {
         this.variant = variant;
     }
 }

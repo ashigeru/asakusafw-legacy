@@ -200,10 +200,7 @@ public class CacheSupportDriver extends ModelAttributeDriver {
 
         boolean sawError;
 
-        public Holder(
-                DmdlSemantics environment,
-                ModelDeclaration model,
-                AstAttribute attribute) {
+        Holder(DmdlSemantics environment, ModelDeclaration model, AstAttribute attribute) {
             assert environment != null;
             assert model != null;
             assert attribute != null;

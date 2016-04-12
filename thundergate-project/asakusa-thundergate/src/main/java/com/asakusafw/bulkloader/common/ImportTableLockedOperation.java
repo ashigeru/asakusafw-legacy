@@ -56,7 +56,7 @@ public enum ImportTableLockedOperation {
      * コンストラクタ。
      * @param ope ロックを取得できなかった時の動作
      */
-    private ImportTableLockedOperation(String ope) {
+    ImportTableLockedOperation(String ope) {
         this.lockedOperation = ope;
     }
 
@@ -72,7 +72,7 @@ public enum ImportTableLockedOperation {
     private static class LockedOperationToImportTableLockedOperation {
         static final Map<String, ImportTableLockedOperation> REVERSE_DICTIONARY;
         static {
-            Map<String, ImportTableLockedOperation> map = new HashMap<String, ImportTableLockedOperation>();
+            Map<String, ImportTableLockedOperation> map = new HashMap<>();
             for (ImportTableLockedOperation elem : ImportTableLockedOperation
                     .values()) {
                 map.put(elem.getLockedOperation(), elem);

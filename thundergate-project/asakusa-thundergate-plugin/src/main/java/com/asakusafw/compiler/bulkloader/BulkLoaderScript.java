@@ -884,7 +884,7 @@ public class BulkLoaderScript {
          */
         public final int id;
 
-        private LockType(int identifier) {
+        LockType(int identifier) {
             this.id = identifier;
         }
 
@@ -931,7 +931,7 @@ public class BulkLoaderScript {
          */
         public final int id;
 
-        private LockedOperation(int identifier) {
+        LockedOperation(int identifier) {
             this.id = identifier;
         }
 

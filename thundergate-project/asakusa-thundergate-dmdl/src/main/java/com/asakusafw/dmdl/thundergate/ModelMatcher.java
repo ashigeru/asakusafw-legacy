@@ -56,7 +56,7 @@ public interface ModelMatcher {
     /**
      * 論理積を返すマッチャ。
      */
-    public class And implements ModelMatcher {
+    class And implements ModelMatcher {
 
         private final ModelMatcher[] matchers;
 
@@ -86,7 +86,7 @@ public interface ModelMatcher {
     /**
      * 論理否定を行うフィルタ。
      */
-    public class Not implements ModelMatcher {
+    class Not implements ModelMatcher {
 
         private final ModelMatcher term;
 
@@ -111,7 +111,7 @@ public interface ModelMatcher {
     /**
      * 正規表現によるフィルタ。
      */
-    public class Regex implements ModelMatcher {
+    class Regex implements ModelMatcher {
 
         private final Pattern pattern;
 
@@ -136,7 +136,7 @@ public interface ModelMatcher {
     /**
      * Constant collection.
      */
-    public class ConstantTable implements ModelMatcher {
+    class ConstantTable implements ModelMatcher {
 
         private final Set<String> constants;
 

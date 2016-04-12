@@ -451,7 +451,7 @@ public class ExperimentalWorkflowProcessor extends AbstractWorkflowProcessor {
 
         private final PrintWriter writer;
 
-        public Context(OutputStream output) {
+        Context(OutputStream output) {
             assert output != null;
             writer = new PrintWriter(new OutputStreamWriter(output, ENCODING));
         }

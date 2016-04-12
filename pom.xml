@@ -82,6 +82,7 @@
     <httpclient.version>4.2.5</httpclient.version>
     <commons.codec.version>1.10</commons.codec.version>
     <mysql.jdbc.version>5.1.25</mysql.jdbc.version>
+    <checkstyle.version>6.17</checkstyle.version>
 
     <!-- build timestamp -->
     <timestamp>${maven.build.timestamp}</timestamp>
@@ -457,6 +458,11 @@ encoding/<project>=UTF-8
           <version>2.12.1</version>
           <dependencies>
             <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+            <dependency>
               <groupId>com.asakusafw</groupId>
               <artifactId>build-tools</artifactId>
               <version>${asakusafw.version}</version>
@@ -464,8 +470,6 @@ encoding/<project>=UTF-8
           </dependencies>
           <configuration>
             <configLocation>com/asakusafw/checkstyle.xml</configLocation>
-            <suppressionsLocation>com/asakusafw/checkstyle-suppressions.xml</suppressionsLocation>
-            <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
           </configuration>
         </plugin>
         <plugin>

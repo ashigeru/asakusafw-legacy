@@ -43,9 +43,9 @@ public enum TsvDeleteType {
 
     Set<String> keys;
 
-    private TsvDeleteType(String symbol, String... alternatives) {
+    TsvDeleteType(String symbol, String... alternatives) {
         this.symbol = symbol;
-        this.keys = new HashSet<String>();
+        this.keys = new HashSet<>();
         this.keys.add(symbol);
         Collections.addAll(this.keys, alternatives);
     }
@@ -70,7 +70,7 @@ public enum TsvDeleteType {
     private static class DeleteTypeToTsvDeleteType {
         static final Map<String, TsvDeleteType> REVERSE_DICTIONARY;
         static {
-            Map<String, TsvDeleteType> map = new TreeMap<String, TsvDeleteType>(String.CASE_INSENSITIVE_ORDER);
+            Map<String, TsvDeleteType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             for (TsvDeleteType elem : TsvDeleteType.values()) {
                 for (String key : elem.keys) {
                     map.put(key, elem);

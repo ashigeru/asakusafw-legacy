@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 /**
- * Framework系の自動生成ツールのラッパークラス群。
- * <p>
- * ビルドスクリプトから呼び出されることを想定する。
- * </p>
+ * External I/O using {@code FileInputFormat/FileOutputFormat}.
  */
-package com.asakusafw.generator;
+package com.asakusafw.vocabulary.external;
