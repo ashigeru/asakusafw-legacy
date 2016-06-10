@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.asakusafw.dmdl.thundergate.GeneratorTesterRoot;
+import com.asakusafw.runtime.value.DateTime;
 import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
 
 /**
@@ -51,7 +52,9 @@ public class CacheSupportEmitterTest extends GeneratorTesterRoot {
         ThunderGateCacheSupport support = (ThunderGateCacheSupport) model.unwrap();
 
         model.set("sid", 100L);
+        model.set("last_updt_datetime", timestamp(200L));
         assertThat(support.__tgc__SystemId(), is(100L));
+        assertThat(support.__tgc__Timestamp(), is(200L));
         assertThat(support.__tgc__TimestampColumn(), is("LAST_UPDT_DATETIME"));
         assertThat(support.__tgc__Deleted(), is(false));
     }
@@ -187,5 +190,9 @@ public class CacheSupportEmitterTest extends GeneratorTesterRoot {
     @Test
     public void invalid_cache_type_integer() {
         shouldSemanticError("invalid_cache_type_integer");
+    }
+
+    private static DateTime timestamp(long time) {
+        return new DateTime(time);
     }
 }
