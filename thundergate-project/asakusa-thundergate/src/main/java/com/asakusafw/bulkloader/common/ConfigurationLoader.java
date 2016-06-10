@@ -52,7 +52,7 @@ public final class ConfigurationLoader {
 
     private static final Set<String> KEY_PATHS;
     static {
-        Set<String> keys = new HashSet<String>();
+        Set<String> keys = new HashSet<>();
         keys.add(Constants.PROP_KEY_LOG_CONF_PATH);
         keys.add(Constants.PROP_KEY_SSH_PATH);
         keys.add(Constants.PROP_KEY_IMP_FILE_DIR);
@@ -533,7 +533,7 @@ public final class ConfigurationLoader {
         if (prefix == null) {
             throw new IllegalArgumentException("prefix must not be null"); //$NON-NLS-1$
         }
-        Map<String, String> results = new HashMap<String, String>();
+        Map<String, String> results = new HashMap<>();
         for (Map.Entry<Object, Object> entry : prop.entrySet()) {
             if (entry.getKey() instanceof String && entry.getValue() instanceof String) {
                 String key = (String) entry.getKey();
@@ -551,7 +551,7 @@ public final class ConfigurationLoader {
      */
     public static List<String> getPropStartWithString(String startString) {
         Set<Object> propSet = prop.keySet();
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         for (Object o : propSet) {
             String key = (String) o;
@@ -567,7 +567,7 @@ public final class ConfigurationLoader {
      * @return プロパティのvalueが空でないkeyのリスト
      */
     public static List<String> getExistValueList(List<String> list) {
-        List<String> resultList = new ArrayList<String>();
+        List<String> resultList = new ArrayList<>();
         if (list == null || list.size() == 0) {
             return resultList;
         }

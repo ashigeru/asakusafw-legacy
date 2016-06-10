@@ -109,7 +109,7 @@ public class ImportFileSendTest {
     public void sendImportFileTtest01() throws Exception {
         // ImportBeanを生成
         File importFile = new File("src/test/data/importer/IMP_IMPORT_TARGET1.tsv");
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportProtocol(FileList.content("dummy1"));
         tableBean.setImportFile(importFile);
@@ -153,7 +153,7 @@ public class ImportFileSendTest {
         // ImportBeanを生成
         File importFile1 = new File("src/test/data/importer/IMP_IMPORT_TARGET1.tsv");
         File importFile2 = new File("src/test/data/importer/IMP_IMPORT_TARGET2.tsv");
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportProtocol(FileList.content("dummy1"));
         tableBean1.setImportFile(importFile1);
@@ -199,7 +199,7 @@ public class ImportFileSendTest {
     public void sendImportFileTtest03() throws Exception {
         // ImportBeanを生成
         File importFile = new File("src/test/data/importer/IMP_IMPORT_TARGET2.tsv");
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportProtocol(FileList.content("dummy1"));
         tableBean.setImportFile(importFile);
@@ -238,7 +238,7 @@ public class ImportFileSendTest {
     public void sendImportFileTtest04() throws Exception {
         // ImportBeanを生成
         File importFile = new File("src/test/data/importer/IMP_IMPORT_TARGET99.tsv");
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportProtocol(FileList.content("dummy1"));
         tableBean.setImportFile(importFile);
@@ -269,7 +269,7 @@ public class ImportFileSendTest {
     public void sendImportFileTtest05() throws Exception {
         // ImportBeanを生成
         File importFile = new File("src/test/data/importer/IMP_IMPORT_TARGET1.tsv");
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportProtocol(FileList.content("dummy1"));
         tableBean.setImportFile(importFile);

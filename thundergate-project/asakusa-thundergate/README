@@ -39,7 +39,7 @@ DBCleanerを構成するクラス。
 src/test配下のJunit実行には、以下の設定が必要である。
 1.データベースを作成
   以下のSQLを実行してDB/ユーザーを作成する。
-  ・実行するSQL：asakusa-thundergate\src\test\sql\create_utest_database.sql
+  ・実行するSQL：asakusa-thundergate/src/test/dist/bulkloader/sql/create_utest_database.sql
   ・上記SQLを実行すると、以下のデータベース/ユーザーが作成される。
     - データベース名：__asakusa_utest_thundergate
     - 接続ユーザー名：__asakusa_ut_tg

@@ -199,7 +199,7 @@ public class GetCacheInfoLocal {
         return executor.submit(new Callable<Map<String, CacheInfo>>() {
             @Override
             public Map<String, CacheInfo> call() throws IOException {
-                Map<String, CacheInfo> results = new HashMap<String, CacheInfo>();
+                Map<String, CacheInfo> results = new HashMap<>();
                 FileList.Reader reader = provider.openReader();
                 try {
                     while (reader.next()) {
@@ -257,14 +257,14 @@ public class GetCacheInfoLocal {
         String hostName = ConfigurationLoader.getProperty(Constants.PROP_KEY_NAMENODE_HOST);
         String userName = ConfigurationLoader.getProperty(Constants.PROP_KEY_NAMENODE_USER);
         String scriptPath = ConfigurationLoader.getRemoteScriptPath(Constants.PATH_REMOTE_CACHE_INFO);
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add(scriptPath);
         command.add(targetName);
         command.add(batchId);
         command.add(jobflowId);
         command.add(executionId);
 
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.putAll(ConfigurationLoader.getPropSubMap(Constants.PROP_PREFIX_HC_ENV));
         env.putAll(RuntimeContext.get().unapply());
 

@@ -80,7 +80,7 @@ public class ExportFileReceive {
             int fileSeq = 0;
 
             // プロファイル用のテーブル
-            Map<String, TableTransferProfile> profiles = new TreeMap<String, TableTransferProfile>();
+            Map<String, TableTransferProfile> profiles = new TreeMap<>();
 
             while (reader.next()) {
                 FileProtocol protocol = reader.getCurrentProtocol();
@@ -280,7 +280,7 @@ public class ExportFileReceive {
         String userName = ConfigurationLoader.getProperty(Constants.PROP_KEY_NAMENODE_USER);
         String scriptPath = ConfigurationLoader.getRemoteScriptPath(Constants.PATH_REMOTE_COLLECTOR);
         String variableTable = Constants.createVariableTable().toSerialString();
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add(scriptPath);
         command.add(targetName);
         command.add(batchId);
@@ -288,7 +288,7 @@ public class ExportFileReceive {
         command.add(executionId);
         command.add(variableTable);
 
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.putAll(ConfigurationLoader.getPropSubMap(Constants.PROP_PREFIX_HC_ENV));
         env.putAll(RuntimeContext.get().unapply());
 

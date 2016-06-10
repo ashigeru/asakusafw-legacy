@@ -387,7 +387,7 @@ public class TargetDataLock {
             LOG.info("TG-IMPORTER-02008", selectSql.toString());
             stmt = conn.prepareStatement(selectSql.toString());
             rs = DBConnection.executeQuery(stmt, selectSql.toString(), new String[0]);
-            Map<String, String> tableLockStatus = new HashMap<String, String>();
+            Map<String, String> tableLockStatus = new HashMap<>();
             while (rs.next()) {
                 String key = rs.getString("TABLE_NAME");
                 String value = rs.getString("JOBFLOW_SID");

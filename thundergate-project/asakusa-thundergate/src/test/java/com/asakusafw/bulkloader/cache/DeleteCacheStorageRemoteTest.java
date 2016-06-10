@@ -209,7 +209,7 @@ public class DeleteCacheStorageRemoteTest {
     }
 
     private List<FileProtocol> collect(byte[] byteArray) throws IOException {
-        List<FileProtocol> results = new ArrayList<FileProtocol>();
+        List<FileProtocol> results = new ArrayList<>();
         ByteArrayInputStream input = new ByteArrayInputStream(byteArray);
         FileList.Reader reader = FileList.createReader(input);
         while (reader.next()) {

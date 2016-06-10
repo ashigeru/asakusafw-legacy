@@ -114,9 +114,9 @@ public class ExportFileSendTest {
     @Test
     public void sendExportFileTest01() throws Exception {
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("src/test/data/collector1");
         list1.add("${execution_id}/data/collector2");
         table1.setDfsFilePaths(list1);
@@ -124,7 +124,7 @@ public class ExportFileSendTest {
         targetTable.put("EXP_TARGET1", table1);
 
         ExportTargetTableBean table2 = new ExportTargetTableBean();
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
         list2.add("src/test/data/collector3");
         table2.setDfsFilePaths(list2);
         table2.setExportTargetType(NullWritable.class);
@@ -163,9 +163,9 @@ public class ExportFileSendTest {
     @Test
     public void sendExportFileTest05() throws Exception {
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("/src/test/data/collector1");
         list1.add("/${user}/${execution_id}/data/collector2");
         table1.setDfsFilePaths(list1);
@@ -173,7 +173,7 @@ public class ExportFileSendTest {
         targetTable.put("EXP_TARGET1", table1);
 
         ExportTargetTableBean table2 = new ExportTargetTableBean();
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
         list2.add("/src/test/data/collector3");
         table2.setDfsFilePaths(list2);
         table2.setExportTargetType(NullWritable.class);
@@ -485,7 +485,7 @@ public class ExportFileSendTest {
 }
 
 class DummyExportFileSend extends ExportFileSend {
-    List<String> dirs = new ArrayList<String>();
+    List<String> dirs = new ArrayList<>();
     @Override
     protected <T extends Writable> long send(
             Class<T> targetTableModel,

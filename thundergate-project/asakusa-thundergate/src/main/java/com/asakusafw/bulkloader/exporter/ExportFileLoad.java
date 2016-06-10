@@ -459,7 +459,7 @@ public class ExportFileLoad {
         assert tableBean != null;
         List<String> columns = tableBean.getExportTsvColumn();
         columns = DBAccessUtil.delSystemColumn(columns);
-        columns = new ArrayList<String>(columns);
+        columns = new ArrayList<>(columns);
 
         if (tableBean.isDuplicateCheck() == false) {
             int columnSize = columns.size();
@@ -469,7 +469,7 @@ public class ExportFileLoad {
             }
         } else {
             // カラム->テーブル表を作成
-            Map<String, String> columnMap = new HashMap<String, String>();
+            Map<String, String> columnMap = new HashMap<>();
             for (String columnName : tableBean.getErrorTableColumns()) {
                 columnMap.put(columnName, tableBean.getErrorTableName());
             }

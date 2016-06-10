@@ -223,7 +223,7 @@ public final class DBCleaner {
         String rlSql = "DELETE FROM ";
 
         // レコードロックテーブルを検索
-        List<String> rlList = new ArrayList<String>();
+        List<String> rlList = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
@@ -334,8 +334,8 @@ public final class DBCleaner {
         String delSql = "DELETE FROM EXPORT_TEMP_TABLE";
 
         // エクスポートテンポラリ管理テーブルを検索
-        List<String> tempTableList = new ArrayList<String>();
-        List<String> dupTableList = new ArrayList<String>();
+        List<String> tempTableList = new ArrayList<>();
+        List<String> dupTableList = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {

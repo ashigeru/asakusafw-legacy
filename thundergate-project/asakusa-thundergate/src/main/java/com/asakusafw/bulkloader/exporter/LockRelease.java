@@ -206,7 +206,7 @@ public class LockRelease {
     private Set<String> mergingIOTable(
             List<String> exportTargetTableList,
             List<String> importTargetTableList) {
-        Set<String> set = new LinkedHashSet<String>();
+        Set<String> set = new LinkedHashSet<>();
         for (String exportTable : exportTargetTableList) {
             set.add(exportTable);
         }

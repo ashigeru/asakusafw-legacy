@@ -32,7 +32,7 @@ import com.asakusafw.bulkloader.common.StreamRedirectThread;
  */
 public abstract class StreamFileListProvider implements FileListProvider {
 
-    private final List<Thread> running = new ArrayList<Thread>();
+    private final List<Thread> running = new ArrayList<>();
 
     @Override
     public FileList.Reader openReader() throws IOException {

@@ -54,6 +54,7 @@ import com.asakusafw.runtime.util.hadoop.ConfigurationProvider;
 import com.asakusafw.thundergate.runtime.cache.CacheInfo;
 import com.asakusafw.thundergate.runtime.cache.CacheStorage;
 import com.asakusafw.thundergate.runtime.cache.mapreduce.CacheBuildClient;
+import com.asakusafw.thundergate.runtime.cache.mapreduce.Invalidation;
 
 /**
  * Test for building caches ({@link CacheBuildClient}).
@@ -71,7 +72,6 @@ public class CacheBuildTest {
      */
     @Rule
     public final FrameworkDeployer framework = new FrameworkDeployer() {
-
         @Override
         protected void deploy() throws IOException {
             deployLibrary(CacheInfo.class, "core/lib/asakusa-thundergate.jar");
@@ -104,18 +104,14 @@ public class CacheBuildTest {
                 "com.example.Model",
                 123L);
         framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
-        CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri());
-        try {
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
             storage.putPatchCacheInfo(info);
-            ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"));
-            try {
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
                 TestDataModel model = new TestDataModel();
                 model.systemId.set(100);
                 model.value.set("Hello, world!");
                 model.deleted.set(false);
                 output.write(model);
-            } finally {
-                output.close();
             }
 
             execute(CacheBuildClient.SUBCOMMAND_CREATE);
@@ -125,8 +121,6 @@ public class CacheBuildTest {
             assertThat(results.size(), is(1));
             assertThat(results.get(0).systemId.get(), is(100L));
             assertThat(results.get(0).value.toString(), is("Hello, world!"));
-        } finally {
-            storage.close();
         }
     }
 
@@ -145,19 +139,15 @@ public class CacheBuildTest {
                 "com.example.Model",
                 123L);
         framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
-        CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri());
-        try {
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
             storage.putPatchCacheInfo(info);
-            ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"));
-            try {
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
                 TestDataModel model = new TestDataModel();
                 for (int i = 0; i < 100; i++) {
                     model.systemId.set(i);
                     model.deleted.set(i % 10 != 0);
                     output.write(model);
                 }
-            } finally {
-                output.close();
             }
 
             execute(CacheBuildClient.SUBCOMMAND_CREATE);
@@ -168,8 +158,92 @@ public class CacheBuildTest {
             for (int i = 0; i < 10; i++) {
                 assertThat(results.get(i).systemId.get(), is(i * 10L));
             }
-        } finally {
-            storage.close();
+        }
+    }
+
+    /**
+     * Creates a new cache with invalidated entries.
+     * @throws Exception if failed
+     */
+    @Test
+    public void create_invalidated() throws Exception {
+        CacheInfo info = new CacheInfo(
+                "a",
+                "id",
+                calendar("2014-12-31 00:00:00"),
+                "EXAMPLE",
+                Collections.singleton("COL"),
+                "com.example.Model",
+                123L);
+        framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
+            storage.putPatchCacheInfo(info);
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
+                TestDataModel model = new TestDataModel();
+                model.systemId.set(1);
+                model.value.set("INVALIDATED_1");
+                model.deleted.set(false);
+                model.on(2000, 1, 1);
+                output.write(model);
+
+                model.next("OK").on(2015, 1, 1);
+                output.write(model);
+
+                model.next("INVALIDATED_2").on(2014, 12, 30);
+                output.write(model);
+            }
+
+            execute(CacheBuildClient.SUBCOMMAND_CREATE,
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TIMESTAMP, "2014-12-31 00:00:00"),
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TARGET, ".+"));
+            assertThat(storage.getHeadCacheInfo(), is(info));
+
+            List<TestDataModel> results = collect(storage, storage.getHeadContents("*"));
+            assertThat(results.size(), is(1));
+            assertThat(results.get(0).systemId.get(), is(2L));
+            assertThat(results.get(0).value.toString(), is("OK"));
+        }
+    }
+
+    /**
+     * Creates a new cache with invalidated entries but is not a target table.
+     * @throws Exception if failed
+     */
+    @Test
+    public void create_invalidated_exclude() throws Exception {
+        CacheInfo info = new CacheInfo(
+                "a",
+                "id",
+                calendar("2014-12-31 00:00:00"),
+                "EXAMPLE",
+                Collections.singleton("COL"),
+                "com.example.Model",
+                123L);
+        framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
+            storage.putPatchCacheInfo(info);
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
+                TestDataModel model = new TestDataModel();
+                model.systemId.set(1);
+                model.value.set("OK");
+                model.deleted.set(false);
+                model.on(2000, 1, 1);
+                output.write(model);
+
+                model.next("OK").on(2015, 1, 1);
+                output.write(model);
+
+                model.next("OK").on(2014, 12, 30);
+                output.write(model);
+            }
+
+            execute(CacheBuildClient.SUBCOMMAND_CREATE,
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TIMESTAMP, "2014-12-31 00:00:00"),
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TARGET, "OTHER"));
+            assertThat(storage.getHeadCacheInfo(), is(info));
+
+            List<TestDataModel> results = collect(storage, storage.getHeadContents("*"));
+            assertThat(results.size(), is(3));
         }
     }
 
@@ -188,38 +262,31 @@ public class CacheBuildTest {
                 "com.example.Model",
                 123L);
         framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
-        CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri());
-        try {
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
             storage.putPatchCacheInfo(info);
-            ModelOutput<TestDataModel> head = create(storage, storage.getHeadContents("0"));
-            try {
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getHeadContents("0"))) {
                 TestDataModel model = new TestDataModel();
                 model.systemId.set(1);
                 model.value.set("HEAD");
                 model.deleted.set(false);
-                head.write(model);
+                output.write(model);
 
                 model.systemId.set(2);
                 model.value.set("HEAD");
                 model.deleted.set(false);
-                head.write(model);
-            } finally {
-                head.close();
+                output.write(model);
             }
-            ModelOutput<TestDataModel> patch = create(storage, storage.getPatchContents("0"));
-            try {
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
                 TestDataModel model = new TestDataModel();
                 model.systemId.set(1);
                 model.value.set("NEXT");
                 model.deleted.set(false);
-                patch.write(model);
+                output.write(model);
 
                 model.systemId.set(3);
                 model.value.set("NEXT");
                 model.deleted.set(false);
-                patch.write(model);
-            } finally {
-                patch.close();
+                output.write(model);
             }
 
             execute(CacheBuildClient.SUBCOMMAND_UPDATE);
@@ -233,8 +300,162 @@ public class CacheBuildTest {
             assertThat(results.get(1).value.toString(), is("HEAD"));
             assertThat(results.get(2).systemId.get(), is(3L));
             assertThat(results.get(2).value.toString(), is("NEXT"));
-        } finally {
-            storage.close();
+        }
+    }
+
+    /**
+     * Update a cache.
+     * @throws Exception if failed
+     */
+    @Test
+    public void update_invalidated() throws Exception {
+        CacheInfo info = new CacheInfo(
+                "a",
+                "id",
+                calendar("2015-01-01 00:00:00"),
+                "EXAMPLE",
+                Collections.singleton("COL"),
+                "com.example.Model",
+                123L);
+        framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
+            storage.putPatchCacheInfo(info);
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getHeadContents("0"))) {
+                TestDataModel model = new TestDataModel();
+                model.systemId.set(1);
+                model.value.set("HEAD");
+                model.deleted.set(false);
+                model.on(2014, 1, 1);
+                output.write(model);
+
+                model.systemId.set(2);
+                model.value.set("HEAD");
+                model.deleted.set(false);
+                model.on(2014, 1, 1);
+                output.write(model);
+
+                // base which timestamp is out-of-date will be invalidated
+                model.systemId.set(4);
+                model.value.set("HEAD");
+                model.deleted.set(false);
+                model.on(2000, 1, 1);
+                output.write(model);
+            }
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
+                TestDataModel model = new TestDataModel();
+                model.systemId.set(1);
+                model.value.set("NEXT");
+                model.deleted.set(false);
+                model.on(2015, 1, 1);
+                output.write(model);
+
+                model.systemId.set(3);
+                model.value.set("NEXT");
+                model.deleted.set(false);
+                model.on(2015, 1, 1);
+                output.write(model);
+
+                // patch is always valid even if timestamp is out-of-date
+                model.systemId.set(5);
+                model.value.set("NEXT");
+                model.deleted.set(false);
+                model.on(2000, 1, 1);
+                output.write(model);
+            }
+
+            execute(CacheBuildClient.SUBCOMMAND_UPDATE,
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TIMESTAMP, "2010-01-01 00:00:00"),
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TARGET, ".+"));
+            assertThat(storage.getHeadCacheInfo(), is(info));
+
+            List<TestDataModel> results = collect(storage, storage.getHeadContents("*"));
+            assertThat(results.size(), is(4));
+            assertThat(results.get(0).systemId.get(), is(1L));
+            assertThat(results.get(0).value.toString(), is("NEXT"));
+            assertThat(results.get(1).systemId.get(), is(2L));
+            assertThat(results.get(1).value.toString(), is("HEAD"));
+            assertThat(results.get(2).systemId.get(), is(3L));
+            assertThat(results.get(2).value.toString(), is("NEXT"));
+            assertThat(results.get(3).systemId.get(), is(5L));
+            assertThat(results.get(3).value.toString(), is("NEXT"));
+        }
+    }
+
+    /**
+     * Update a cache.
+     * @throws Exception if failed
+     */
+    @Test
+    public void update_invalidated_exclude() throws Exception {
+        CacheInfo info = new CacheInfo(
+                "a",
+                "id",
+                calendar("2015-01-01 00:00:00"),
+                "EXAMPLE",
+                Collections.singleton("COL"),
+                "com.example.Model",
+                123L);
+        framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
+            storage.putPatchCacheInfo(info);
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getHeadContents("0"))) {
+                TestDataModel model = new TestDataModel();
+                model.systemId.set(1);
+                model.value.set("HEAD");
+                model.deleted.set(false);
+                model.on(2014, 1, 1);
+                output.write(model);
+
+                model.systemId.set(2);
+                model.value.set("HEAD");
+                model.deleted.set(false);
+                model.on(2014, 1, 1);
+                output.write(model);
+
+                model.systemId.set(4);
+                model.value.set("HEAD");
+                model.deleted.set(false);
+                model.on(2000, 1, 1);
+                output.write(model);
+            }
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
+                TestDataModel model = new TestDataModel();
+                model.systemId.set(1);
+                model.value.set("NEXT");
+                model.deleted.set(false);
+                model.on(2015, 1, 1);
+                output.write(model);
+
+                model.systemId.set(3);
+                model.value.set("NEXT");
+                model.deleted.set(false);
+                model.on(2015, 1, 1);
+                output.write(model);
+
+                model.systemId.set(5);
+                model.value.set("NEXT");
+                model.deleted.set(false);
+                model.on(2000, 1, 1);
+                output.write(model);
+            }
+
+            execute(CacheBuildClient.SUBCOMMAND_UPDATE,
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TIMESTAMP, "2010-01-01 00:00:00"),
+                    "-D", pair(Invalidation.KEY_INVALIDATION_TARGET, "OTHER"));
+            assertThat(storage.getHeadCacheInfo(), is(info));
+
+            List<TestDataModel> results = collect(storage, storage.getHeadContents("*"));
+            assertThat(results.size(), is(5));
+            assertThat(results.get(0).systemId.get(), is(1L));
+            assertThat(results.get(0).value.toString(), is("NEXT"));
+            assertThat(results.get(1).systemId.get(), is(2L));
+            assertThat(results.get(1).value.toString(), is("HEAD"));
+            assertThat(results.get(2).systemId.get(), is(3L));
+            assertThat(results.get(2).value.toString(), is("NEXT"));
+            assertThat(results.get(3).systemId.get(), is(4L));
+            assertThat(results.get(3).value.toString(), is("HEAD"));
+            assertThat("patch is always valid even if timestamp is out-of-date",
+                    results.get(4).systemId.get(), is(5L));
         }
     }
 
@@ -253,32 +474,25 @@ public class CacheBuildTest {
                 "com.example.Model",
                 123L);
         framework.deployLibrary(TestDataModel.class, "batchapps/tbatch/lib/jobflow-tflow.jar");
-        CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri());
-        try {
+        try (CacheStorage storage = new CacheStorage(getConfiguration(), getTargetUri())) {
             storage.putPatchCacheInfo(info);
-            ModelOutput<TestDataModel> head = create(storage, storage.getHeadContents("0"));
-            try {
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getHeadContents("0"))) {
                 TestDataModel model = new TestDataModel();
                 for (int i = 0; i < 10; i++) {
                     model.systemId.set(i);
                     model.value.set("HEAD");
                     model.deleted.set(false);
-                    head.write(model);
+                    output.write(model);
                 }
-            } finally {
-                head.close();
             }
-            ModelOutput<TestDataModel> patch = create(storage, storage.getPatchContents("0"));
-            try {
+            try (ModelOutput<TestDataModel> output = create(storage, storage.getPatchContents("0"))) {
                 TestDataModel model = new TestDataModel();
                 for (int i = 0; i < 10; i += 2) {
                     model.systemId.set(i);
                     model.value.set("NEXT");
                     model.deleted.set(i % 4 == 0);
-                    patch.write(model);
+                    output.write(model);
                 }
-            } finally {
-                patch.close();
             }
 
             execute(CacheBuildClient.SUBCOMMAND_UPDATE);
@@ -300,35 +514,33 @@ public class CacheBuildTest {
             assertThat(results.get(5).value.toString(), is("HEAD"));
             assertThat(results.get(6).systemId.get(), is(9L));
             assertThat(results.get(6).value.toString(), is("HEAD"));
-        } finally {
-            storage.close();
         }
     }
 
-    private void execute(String subcommand) throws IOException, InterruptedException {
-        FileListProvider provider = execute(
-                Constants.PATH_REMOTE_ROOT + Constants.PATH_LOCAL_CACHE_BUILD,
+    private void execute(String subcommand, String... extra) throws IOException, InterruptedException {
+        List<String> args = new ArrayList<>();
+        Collections.addAll(args,
                 subcommand,
                 "tbatch",
                 "tflow",
                 "testing",
                 getTargetUri().toString(),
-                TestDataModel.class.getName());
-        try {
+                TestDataModel.class.getName(),
+                "tbl_testing");
+        Collections.addAll(args, extra);
+        try (FileListProvider provider = exec(Constants.PATH_REMOTE_ROOT + Constants.PATH_LOCAL_CACHE_BUILD, args)) {
             provider.discardReader();
             provider.discardWriter();
             provider.waitForComplete();
-        } finally {
-            provider.close();
         }
     }
 
-    private FileListProvider execute(String scriptPath, String... arguments) throws IOException {
-        List<String> command = new ArrayList<String>();
+    private FileListProvider exec(String scriptPath, List<String> arguments) throws IOException {
+        List<String> command = new ArrayList<>();
         command.add(new File(framework.getHome(), scriptPath).getAbsolutePath());
-        Collections.addAll(command, arguments);
+        command.addAll(arguments);
 
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.put("ASAKUSA_HOME", framework.getHome().getAbsolutePath());
 
         return new ProcessFileListProvider(command, env);
@@ -349,7 +561,7 @@ public class CacheBuildTest {
     }
 
     private List<TestDataModel> collect(CacheStorage storage, Path contents) throws IOException {
-        List<TestDataModel> results = new ArrayList<TestDataModel>();
+        List<TestDataModel> results = new ArrayList<>();
         FileSystem fs = storage.getFileSystem();
         for (FileStatus status : fs.globStatus(contents)) {
             results.addAll(collectContent(fs, status));
@@ -359,16 +571,13 @@ public class CacheBuildTest {
     }
 
     private Collection<TestDataModel> collectContent(FileSystem fs, FileStatus status) throws IOException {
-        Collection<TestDataModel> results = new ArrayList<TestDataModel>();
-        ModelInput<TestDataModel> input = TemporaryStorage.openInput(
-                fs.getConf(), TestDataModel.class, status.getPath());
-        try {
+        Collection<TestDataModel> results = new ArrayList<>();
+        try (ModelInput<TestDataModel> input = TemporaryStorage.openInput(
+                fs.getConf(), TestDataModel.class, status.getPath())) {
             TestDataModel model = new TestDataModel();
             while (input.readTo(model)) {
                 results.add(model.copy());
             }
-        } finally {
-            input.close();
         }
         return results;
     }
@@ -387,5 +596,9 @@ public class CacheBuildTest {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
+    }
+
+    private static String pair(String key, String value) {
+        return key + "=" + value;
     }
 }

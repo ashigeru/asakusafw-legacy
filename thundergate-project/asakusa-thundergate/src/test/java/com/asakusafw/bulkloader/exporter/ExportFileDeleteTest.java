@@ -96,7 +96,7 @@ public class ExportFileDeleteTest {
         importFile3.createNewFile();
 
         // ExporterBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean bean1 = new ExportTargetTableBean();
         bean1.addExportFile(importFile1);
         bean1.addExportFile(importFile2);
@@ -137,7 +137,7 @@ public class ExportFileDeleteTest {
         File importFile3 = new File(dumpDir, "EXP_IMPORT_TARGET3.tsv");
 
         // ExporterBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean bean1 = new ExportTargetTableBean();
         bean1.addExportFile(importFile1);
         bean1.addExportFile(importFile2);
@@ -175,7 +175,7 @@ public class ExportFileDeleteTest {
         File importFile3 = null;
 
         // ExporterBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean bean1 = new ExportTargetTableBean();
         bean1.addExportFile(importFile1);
         bean1.addExportFile(importFile2);

@@ -19,6 +19,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ import com.asakusafw.bulkloader.common.ConfigurationLoader;
 import com.asakusafw.bulkloader.common.Constants;
 import com.asakusafw.bulkloader.common.FileNameUtil;
 import com.asakusafw.bulkloader.common.MultiThreadedCopier;
-import com.asakusafw.bulkloader.common.StreamRedirectThread;
 import com.asakusafw.bulkloader.exception.BulkLoaderSystemException;
 import com.asakusafw.bulkloader.log.Log;
 import com.asakusafw.bulkloader.transfer.FileList;
@@ -109,11 +109,10 @@ public class DfsFileImport {
         }
         try {
             // FileListの終端まで繰り返す
-            List<Future<?>> running = new ArrayList<Future<?>>();
+            List<Future<?>> running = new ArrayList<>();
             while (reader.next()) {
                 FileProtocol protocol = reader.getCurrentProtocol();
-                InputStream content = reader.openContent();
-                try {
+                try (InputStream content = reader.openContent()) {
                     switch (protocol.getKind()) {
                     case CONTENT:
                         importContent(protocol, content, bean, user);
@@ -134,8 +133,6 @@ public class DfsFileImport {
                     default:
                         throw new AssertionError(protocol.getKind());
                     }
-                } finally {
-                    content.close();
                 }
             }
 
@@ -225,29 +222,24 @@ public class DfsFileImport {
         }
 
         URI dfsFilePath = resolveLocation(bean, user, protocol.getLocation());
-        try {
-            CacheStorage storage = new CacheStorage(new Configuration(), dfsFilePath);
-            try {
-                LOG.info("TG-EXTRACTOR-11001", info.getId(), info.getTableName(), storage.getPatchProperties());
-                storage.putPatchCacheInfo(info);
-                LOG.info("TG-EXTRACTOR-11002", info.getId(), info.getTableName(), storage.getPatchProperties());
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dfsFilePath)) {
+            LOG.info("TG-EXTRACTOR-11001", info.getId(), info.getTableName(), storage.getPatchProperties());
+            storage.putPatchCacheInfo(info);
+            LOG.info("TG-EXTRACTOR-11002", info.getId(), info.getTableName(), storage.getPatchProperties());
 
-                Class<?> targetTableModel = targetTableBean.getImportTargetType();
-                Path targetUri = storage.getPatchContents("0");
-                LOG.info("TG-EXTRACTOR-11003", info.getId(), info.getTableName(), targetUri);
-                long recordCount = write(targetTableModel, targetUri.toUri(), content);
-                LOG.info("TG-EXTRACTOR-11004", info.getId(), info.getTableName(), targetUri, recordCount);
-                LOG.info("TG-PROFILE-01002",
-                        bean.getTargetName(),
-                        bean.getBatchId(),
-                        bean.getJobflowId(),
-                        bean.getExecutionId(),
-                        info.getTableName(),
-                        recordCount);
-                return recordCount;
-            } finally {
-                storage.close();
-            }
+            Class<?> targetTableModel = targetTableBean.getImportTargetType();
+            Path targetUri = storage.getPatchContents("0");
+            LOG.info("TG-EXTRACTOR-11003", info.getId(), info.getTableName(), targetUri);
+            long recordCount = write(targetTableModel, targetUri.toUri(), content);
+            LOG.info("TG-EXTRACTOR-11004", info.getId(), info.getTableName(), targetUri, recordCount);
+            LOG.info("TG-PROFILE-01002",
+                    bean.getTargetName(),
+                    bean.getBatchId(),
+                    bean.getJobflowId(),
+                    bean.getExecutionId(),
+                    info.getTableName(),
+                    recordCount);
+            return recordCount;
         } catch (IOException e) {
             throw new BulkLoaderSystemException(e, getClass(), "TG-EXTRACTOR-11005",
                     info.getId(), info.getTableName(), dfsFilePath);
@@ -309,7 +301,7 @@ public class DfsFileImport {
         assert location != null;
         assert info != null;
 
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add(cacheBuildCommand);
         command.add(subcommand);
         command.add(bean.getBatchId());
@@ -317,6 +309,7 @@ public class DfsFileImport {
         command.add(bean.getExecutionId());
         command.add(location.toString());
         command.add(info.getModelClassName());
+        command.add(info.getTableName());
 
         LOG.info("TG-EXTRACTOR-12001",
                 subcommand,
@@ -334,16 +327,11 @@ public class DfsFileImport {
             @Override
             public Void call() throws Exception {
                 LOG.info("TG-EXTRACTOR-12003", subcommand, info.getId(), info.getTableName());
-                Process process = builder.start();
+                Process process = builder
+                        .redirectOutput(Redirect.INHERIT)
+                        .redirectError(Redirect.INHERIT)
+                        .start();
                 try {
-                    Thread stdout = new StreamRedirectThread(process.getInputStream(), System.out);
-                    stdout.setDaemon(true);
-                    stdout.start();
-                    Thread stderr = new StreamRedirectThread(process.getErrorStream(), System.err);
-                    stderr.setDaemon(true);
-                    stderr.start();
-                    stdout.join();
-                    stderr.join();
                     int exitCode = process.waitFor();
                     if (exitCode != 0) {
                         throw new IOException(MessageFormat.format(
@@ -391,7 +379,7 @@ public class DfsFileImport {
                 bean.getExecutionId());
 
         boolean sawError = false;
-        LinkedList<Future<?>> rest = new LinkedList<Future<?>>(running);
+        LinkedList<Future<?>> rest = new LinkedList<>(running);
         while (rest.isEmpty() == false) {
             Future<?> future = rest.removeFirst();
             try {
@@ -461,54 +449,27 @@ public class DfsFileImport {
             Class<T> targetTableModel,
             URI dfsFilePath,
             InputStream inputStream) throws BulkLoaderSystemException {
-        ModelInput<T> input = null;
-        ModelOutput<T> output = null;
-        try {
+        TsvIoFactory<T> factory = new TsvIoFactory<>(targetTableModel);
+        try (ModelInput<T> input = factory.createModelInput(inputStream)) {
             // TSVファイルをBeanに変換するオブジェクトを生成する
-            TsvIoFactory<T> factory = new TsvIoFactory<T>(targetTableModel);
-            input = factory.createModelInput(inputStream);
 
             // ジョブ入力テンポラリ領域に出力するオブジェクトを生成する
             Configuration conf = new Configuration();
 
             // コピー用のバッファを作成する
-            Collection<T> working = new ArrayList<T>(COPY_BUFFER_RECORDS);
+            Collection<T> working = new ArrayList<>(COPY_BUFFER_RECORDS);
             for (int i = 0; i < COPY_BUFFER_RECORDS; i++) {
                 working.add(factory.createModelObject());
             }
-
-            // 圧縮に関する情報を取得
-            String strCompType = ConfigurationLoader.getProperty(Constants.PROP_KEY_IMP_SEQ_FILE_COMP_TYPE);
-            CompressionType compType = getCompType(strCompType);
-
-            // Writerを経由して別スレッドで書き出す
-            if (compType == CompressionType.NONE) {
-                output = TemporaryStorage.openOutput(conf, targetTableModel, new Path(dfsFilePath), null);
-            } else {
-                output = TemporaryStorage.openOutput(conf, targetTableModel, new Path(dfsFilePath));
+            try (ModelOutput<T> output = TemporaryStorage.openOutput(conf, targetTableModel, new Path(dfsFilePath))) {
+                return MultiThreadedCopier.copy(input, output, working);
             }
-            return MultiThreadedCopier.copy(input, output, working);
         } catch (IOException e) {
             throw new BulkLoaderSystemException(e, getClass(), "TG-EXTRACTOR-02001",
                     "DFSにファイルを書き出す処理に失敗。URI：" + dfsFilePath);
         } catch (InterruptedException e) {
             throw new BulkLoaderSystemException(e, getClass(), "TG-EXTRACTOR-02001",
                     "DFSにファイルを書き出す処理に失敗。URI：" + dfsFilePath);
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
     /**

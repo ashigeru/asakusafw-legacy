@@ -236,7 +236,7 @@ public class DBAccessUtilTest {
     @Test
     public void delSystemColumn01() throws Exception {
         // テスト対象クラス実行
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("SID");
         list.add("VERSION_NO");
         list.add("RGST_DATE");
@@ -265,7 +265,7 @@ public class DBAccessUtilTest {
     @Test
     public void delSystemColumn02() throws Exception {
         // テスト対象クラス実行
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("RGST_DATE");
         list.add("UPDT_DATE");
         list.add("TEMP_SID");
@@ -292,7 +292,7 @@ public class DBAccessUtilTest {
     @Test
     public void delErrorSystemColumn01() throws Exception {
         // テスト対象クラス実行
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("SID");
         list.add("VERSION_NO");
         list.add("RGST_DATE");
@@ -326,7 +326,7 @@ public class DBAccessUtilTest {
     @Test
     public void joinColumnArray01() throws Exception {
         // テスト対象クラス実行
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("SID");
         list.add("VERSION_NO");
         list.add("RGST_DATE");

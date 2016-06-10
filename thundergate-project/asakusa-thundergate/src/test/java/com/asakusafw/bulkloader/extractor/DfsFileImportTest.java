@@ -119,7 +119,7 @@ public class DfsFileImportTest {
     @Test
     public void importFileTest01() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("${execution_id}/import/XXX");
         tableBean1.setImportTargetType(this.getClass());
@@ -199,7 +199,7 @@ public class DfsFileImportTest {
     @Test
     public void importFileTest02() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("Dummy");
         tableBean1.setImportTargetType(this.getClass());
@@ -269,7 +269,7 @@ public class DfsFileImportTest {
     @Test
     public void create_cache() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
 
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("/${user}/${execution_id}/import/c1");
@@ -303,8 +303,8 @@ public class DfsFileImportTest {
         writer.close();
 
         final File output = folder.newFolder("output");
-        final List<String> files = new ArrayList<String>();
-        final List<String> builders = new ArrayList<String>();
+        final List<String> files = new ArrayList<>();
+        final List<String> builders = new ArrayList<>();
 
         // テスト対象クラス実行
         DummyHdfsFileImport fileImport = new DummyHdfsFileImport(0) {
@@ -367,7 +367,7 @@ public class DfsFileImportTest {
     @Test
     public void update_cache() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
 
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("/${user}/${execution_id}/import/c1");
@@ -401,8 +401,8 @@ public class DfsFileImportTest {
         writer.close();
 
         final File output = folder.newFolder("output");
-        final List<String> files = new ArrayList<String>();
-        final List<String> builders = new ArrayList<String>();
+        final List<String> files = new ArrayList<>();
+        final List<String> builders = new ArrayList<>();
 
         // テスト対象クラス実行
         DummyHdfsFileImport fileImport = new DummyHdfsFileImport(0) {
@@ -464,7 +464,7 @@ public class DfsFileImportTest {
     @Test
     public void extract_broken() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("/${user}/${execution_id}/import/XXX");
         tableBean1.setImportTargetType(ImportTarget1.class);
@@ -510,7 +510,7 @@ public class DfsFileImportTest {
     @Test
     public void importFileTest03() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("Dummy");
         tableBean1.setImportTargetType(this.getClass());
@@ -579,7 +579,7 @@ public class DfsFileImportTest {
     @Test
     public void importFileTest04() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("Dummy");
         tableBean1.setImportTargetType(this.getClass());
@@ -624,7 +624,7 @@ public class DfsFileImportTest {
     @Test
     public void importFileTest05() throws Exception {
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setDfsFilePath("/asakusa/import/XXX");
         tableBean1.setImportTargetType(this.getClass());

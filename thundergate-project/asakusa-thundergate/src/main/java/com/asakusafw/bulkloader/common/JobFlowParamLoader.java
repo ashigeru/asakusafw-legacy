@@ -194,7 +194,7 @@ public class JobFlowParamLoader {
         if (fetchImporterParams(targetName, jobflowId, propFile) == false) {
             return false;
         }
-        Map<String, ImportTargetTableBean> cacheTables = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> cacheTables = new HashMap<>();
         for (Map.Entry<String, ImportTargetTableBean> entry : importTargetTables.entrySet()) {
             String tableName = entry.getKey();
             ImportTargetTableBean tableInfo = entry.getValue();
@@ -246,7 +246,7 @@ public class JobFlowParamLoader {
             String targetName,
             String jobflowId,
             String propFilePath) {
-        importTargetTables = new TreeMap<String, ImportTargetTableBean>();
+        importTargetTables = new TreeMap<>();
         String strTargetTable = importProp.getProperty(IMP_TARGET_TABLE);
         if (strTargetTable == null || strTargetTable.isEmpty()) {
             // Import対象テーブルがない場合は中身を生成せずに終了する
@@ -405,7 +405,7 @@ public class JobFlowParamLoader {
             String targetName,
             String jobflowId,
             String propFilePath) {
-        exportTargetTables = new TreeMap<String, ExportTargetTableBean>();
+        exportTargetTables = new TreeMap<>();
         String strTargetTable = exportProp.getProperty(EXP_TARGET_TABLE);
         if (strTargetTable == null || strTargetTable.equals("")) {
             // Export対象テーブルがない場合は中身を生成せずに終了する
@@ -482,7 +482,7 @@ public class JobFlowParamLoader {
                 } else if (EXP_HDFS_EXPORT_FILE.equals(keyMeans)) {
                     // HDFS上の出力パス
                     List<String> path = spritComma(value);
-                    List<String> pathList = new ArrayList<String>(path);
+                    List<String> pathList = new ArrayList<>(path);
                     bean.setDfsFilePaths(pathList);
                 } else {
                     // 設定が不明の場合は読み飛ばす
@@ -846,7 +846,7 @@ public class JobFlowParamLoader {
 
             // Export対象テーブルのカラムがExport中間TSVファイルに含まれる事を確認
             List<String> systemColumns = Constants.getSystemColumns();
-            List<String> allColumn = new ArrayList<String>(bean.getExportTsvColumn());
+            List<String> allColumn = new ArrayList<>(bean.getExportTsvColumn());
             allColumn.addAll(systemColumns);
             if (!includeColumnCheck(bean.getExportTableColumns(), allColumn)) {
                 LOG.error("TG-COMMON-00005",

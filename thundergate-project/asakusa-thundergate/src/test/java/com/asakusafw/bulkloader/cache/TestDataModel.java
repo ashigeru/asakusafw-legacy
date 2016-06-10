@@ -24,11 +24,14 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.VLongWritable;
 import org.apache.hadoop.io.Writable;
 
+import com.asakusafw.runtime.value.DateTime;
+import com.asakusafw.runtime.value.DateTimeOption;
 import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
 
 /**
  * Cache testing data model.
  */
+@SuppressWarnings("deprecation")
 public class TestDataModel implements Writable, ThunderGateCacheSupport, Comparable<TestDataModel> {
 
     /**
@@ -42,9 +45,37 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
     public final Text value = new Text();
 
     /**
+     * modified.
+     */
+    public final DateTimeOption timestamp = new DateTimeOption(new DateTime());
+
+    /**
      * deleted.
      */
     public final BooleanWritable deleted = new BooleanWritable();
+
+    /**
+     * Set SID and value.
+     * @param text the value
+     * @return this
+     */
+    public TestDataModel next(String text) {
+        this.systemId.set(this.systemId.get() + 1);
+        this.value.set(text);
+        return this;
+    }
+
+    /**
+     * Set timestamp.
+     * @param year year (1-...)
+     * @param month month (1-12)
+     * @param day day (1-31)
+     * @return this
+     */
+    public TestDataModel on(int year, int month, int day) {
+        timestamp.modify(new DateTime(year, month, day, 0, 0, 0));
+        return this;
+    }
 
     /**
      * Creates a copy of this.
@@ -54,6 +85,7 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
         TestDataModel copy = new TestDataModel();
         copy.systemId.set(systemId.get());
         copy.value.set(value);
+        copy.timestamp.copyFrom(timestamp);
         copy.deleted.set(deleted.get());
         return copy;
     }
@@ -75,7 +107,7 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
 
     @Override
     public long __tgc__Timestamp() {
-        return 0;
+        return timestamp.get().getElapsedSeconds();
     }
 
     @Override
@@ -87,6 +119,7 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
     public void write(DataOutput out) throws IOException {
         systemId.write(out);
         value.write(out);
+        timestamp.write(out);
         deleted.write(out);
     }
 
@@ -94,6 +127,7 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
     public void readFields(DataInput in) throws IOException {
         systemId.readFields(in);
         value.readFields(in);
+        timestamp.readFields(in);
         deleted.readFields(in);
     }
 
@@ -109,6 +143,8 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
         builder.append(systemId);
         builder.append(", value=");
         builder.append(value);
+        builder.append(", timestamp=");
+        builder.append(timestamp);
         builder.append(", deleted=");
         builder.append(deleted);
         builder.append("]");

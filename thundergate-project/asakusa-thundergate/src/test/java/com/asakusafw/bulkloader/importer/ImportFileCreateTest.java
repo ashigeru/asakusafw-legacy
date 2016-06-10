@@ -114,7 +114,7 @@ public class ImportFileCreateTest {
 //        String pattern = "patternC01";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);
@@ -172,7 +172,7 @@ public class ImportFileCreateTest {
         util.storeToDatabase(false);
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);
@@ -241,7 +241,7 @@ public class ImportFileCreateTest {
 //        String pattern = "patternC02";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -312,7 +312,7 @@ public class ImportFileCreateTest {
 //        String pattern = "patternC03";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"INTDATA1", "TEXTDATA1"}));
         tableBean1.setSearchCondition(null);
@@ -371,7 +371,7 @@ public class ImportFileCreateTest {
             fos.write(123);
 
             // ImportBeanを生成
-            Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+            Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
             ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
             tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"INTDATA1", "TEXTDATA1"}));
             tableBean1.setSearchCondition(null);
@@ -420,7 +420,7 @@ public class ImportFileCreateTest {
 //        String pattern = "patternC01";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);
@@ -470,7 +470,7 @@ public class ImportFileCreateTest {
 //        String pattern = "patternC01";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition("1 < 0");
@@ -520,7 +520,7 @@ public class ImportFileCreateTest {
 //        String pattern = "patternC01";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);

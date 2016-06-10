@@ -34,7 +34,7 @@ public class ImportTargetTableBean {
     /**
      * Import対象カラム。
      */
-    private List<String> importTargetColumns = new ArrayList<String>();
+    private List<String> importTargetColumns = new ArrayList<>();
     /**
      * 検索条件。
      */

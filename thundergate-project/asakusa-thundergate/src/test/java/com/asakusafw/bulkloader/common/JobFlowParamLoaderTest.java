@@ -170,7 +170,7 @@ public class JobFlowParamLoaderTest {
         VariableTable table = new VariableTable();
         table.defineVariable("user_name", "asakusa");
         table.defineVariable("user_pass", "hadoop");
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.put(Constants.THUNDER_GATE_HOME, System.getenv(Constants.THUNDER_GATE_HOME));
         env.put(Constants.ENV_ARGS, table.toSerialString());
         ConfigurationLoader.setEnv(env);
@@ -266,7 +266,7 @@ public class JobFlowParamLoaderTest {
         // 環境変数を設定
         VariableTable table = new VariableTable();
         table.defineVariable("user_pass", "hadoop");
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.put(Constants.THUNDER_GATE_HOME, System.getenv(Constants.THUNDER_GATE_HOME));
         env.put(Constants.ENV_ARGS, table.toSerialString());
         ConfigurationLoader.setEnv(env);
@@ -648,7 +648,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -718,7 +718,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setSearchCondition("INTDATA1=11");
         tableBean1.setUseCache(false);
@@ -773,7 +773,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -810,7 +810,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -847,7 +847,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -877,7 +877,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -907,7 +907,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -944,7 +944,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -981,7 +981,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -1018,7 +1018,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -1055,7 +1055,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -1125,7 +1125,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -1159,7 +1159,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -1193,7 +1193,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(false);
@@ -1214,7 +1214,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1239,7 +1239,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table2.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
         list2.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table2.setDfsFilePaths(list2);
         targetTable.put("EXP_TARGET2", table2);
@@ -1267,7 +1267,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1288,7 +1288,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1313,7 +1313,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table2.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
         list2.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table2.setDfsFilePaths(list2);
         targetTable.put("EXP_TARGET2", table2);
@@ -1338,7 +1338,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1359,7 +1359,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1404,7 +1404,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1425,7 +1425,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1463,7 +1463,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1484,7 +1484,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1522,7 +1522,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1543,7 +1543,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1581,7 +1581,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1602,7 +1602,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1633,7 +1633,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1654,7 +1654,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1678,7 +1678,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1699,7 +1699,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1723,7 +1723,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1744,7 +1744,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1775,12 +1775,12 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setExportTsvColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         table1.setExportTableColumns(Arrays.asList(new String[]{"TEXTDATA1"}));
         table1.setExportTargetType(this.getClass());
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1788,7 +1788,7 @@ public class JobFlowParamLoaderTest {
         table2.setExportTsvColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         table2.setExportTableColumns(Arrays.asList(new String[]{"TEXTDATA1"}));
         table2.setExportTargetType(null);
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
         list2.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table2.setDfsFilePaths(list2);
         targetTable.put("EXP_TARGET2", table2);
@@ -1812,7 +1812,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setExportTsvColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         table1.setExportTableColumns(Arrays.asList(new String[]{"TEXTDATA1"}));
@@ -1822,7 +1822,7 @@ public class JobFlowParamLoaderTest {
         table2.setExportTsvColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         table2.setExportTableColumns(Arrays.asList(new String[]{"TEXTDATA1"}));
         table2.setExportTargetType(this.getClass());
-        List<String> list2 = new ArrayList<String>();
+        List<String> list2 = new ArrayList<>();
         list2.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table2.setDfsFilePaths(list2);
         targetTable.put("EXP_TARGET2", table2);
@@ -1832,7 +1832,7 @@ public class JobFlowParamLoaderTest {
         assertFalse(result);
 
         // 設定変更
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add(null);
         table1.setDfsFilePaths(list1);
 
@@ -1855,7 +1855,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(true);
@@ -1876,7 +1876,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1900,7 +1900,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(false);
@@ -1921,7 +1921,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);
@@ -1945,7 +1945,7 @@ public class JobFlowParamLoaderTest {
         JobFlowParamLoader loader = new JobFlowParamLoader();
 
         // 設定
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         // 重複チェックを行うか否か
         table1.setDuplicateCheck(false);
@@ -1970,7 +1970,7 @@ public class JobFlowParamLoaderTest {
         // Export対象テーブルに対応するJavaBeanのクラス名
         table1.setExportTargetType(this.getClass());
         // Export対象テーブルのデータをHDFS上に書き出す際のファイルパス
-        List<String> list1 = new ArrayList<String>();
+        List<String> list1 = new ArrayList<>();
         list1.add("hdfs://localhost/user/asakusa/import/11/XXX_1");
         table1.setDfsFilePaths(list1);
         targetTable.put("EXP_TARGET1", table1);

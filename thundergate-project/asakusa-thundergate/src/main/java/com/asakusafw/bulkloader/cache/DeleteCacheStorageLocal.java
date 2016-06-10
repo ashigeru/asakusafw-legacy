@@ -201,7 +201,7 @@ public class DeleteCacheStorageLocal {
         return executor.submit(new Callable<Map<String, FileProtocol.Kind>>() {
             @Override
             public Map<String, FileProtocol.Kind> call() throws IOException {
-                Map<String, FileProtocol.Kind> results = new HashMap<String, FileProtocol.Kind>();
+                Map<String, FileProtocol.Kind> results = new HashMap<>();
                 FileList.Reader reader = provider.openReader();
                 try {
                     while (reader.next()) {
@@ -245,11 +245,11 @@ public class DeleteCacheStorageLocal {
         String hostName = ConfigurationLoader.getProperty(Constants.PROP_KEY_NAMENODE_HOST);
         String userName = ConfigurationLoader.getProperty(Constants.PROP_KEY_NAMENODE_USER);
         String scriptPath = ConfigurationLoader.getRemoteScriptPath(Constants.PATH_REMOTE_CACHE_DELETE);
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add(scriptPath);
         command.add(targetName);
 
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.putAll(ConfigurationLoader.getPropSubMap(Constants.PROP_PREFIX_HC_ENV));
         env.putAll(RuntimeContext.get().unapply());
 
