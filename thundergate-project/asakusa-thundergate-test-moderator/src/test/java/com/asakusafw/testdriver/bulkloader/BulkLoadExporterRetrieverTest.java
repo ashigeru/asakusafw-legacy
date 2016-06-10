@@ -43,9 +43,9 @@ import com.asakusafw.vocabulary.bulkloader.DupCheckDbExporterDescription;
  */
 public class BulkLoadExporterRetrieverTest {
 
-    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<Simple>(Simple.class);
+    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<>(Simple.class);
 
-    static final DataModelDefinition<DupCheck> DUP_CHECK = new SimpleDataModelDefinition<DupCheck>(DupCheck.class);
+    static final DataModelDefinition<DupCheck> DUP_CHECK = new SimpleDataModelDefinition<>(DupCheck.class);
 
     static final BulkLoadExporterDescription NORMAL = new DupCheckDbExporterDescription() {
 
@@ -190,11 +190,8 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        ModelOutput<Simple> output = exporter.createOutput(SIMPLE, NORMAL);
-        try {
+        try (ModelOutput<Simple> output = exporter.createOutput(SIMPLE, NORMAL)) {
             output.write(object);
-        } finally {
-            output.close();
         }
         assertThat(h2.count("SIMPLE"), is(1));
         assertThat(h2.count("DUP_CHECK"), is(0));
@@ -215,11 +212,8 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        ModelOutput<DupCheck> output = exporter.createOutput(DUP_CHECK, NORMAL);
-        try {
+        try (ModelOutput<DupCheck> output = exporter.createOutput(DUP_CHECK, NORMAL)) {
             output.write(object);
-        } finally {
-            output.close();
         }
         assertThat(h2.count("SIMPLE"), is(0));
         assertThat(h2.count("DUP_CHECK"), is(1));
@@ -236,9 +230,10 @@ public class BulkLoadExporterRetrieverTest {
     public void output_invalid() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        ModelOutput<?> output = exporter.createOutput(
-                new SimpleDataModelDefinition<Invalid>(Invalid.class), NORMAL);
-        output.close();
+        try (ModelOutput<?> output = exporter.createOutput(
+                new SimpleDataModelDefinition<>(Invalid.class), NORMAL)) {
+            // do nothing
+        }
     }
 
     /**
@@ -249,8 +244,9 @@ public class BulkLoadExporterRetrieverTest {
     public void output_missing() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        ModelOutput<?> output = exporter.createOutput(SIMPLE, MISSING);
-        output.close();
+        try (ModelOutput<?> output = exporter.createOutput(SIMPLE, MISSING)) {
+            // do nothing
+        }
     }
 
     /**
@@ -266,12 +262,9 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        DataModelSource source = exporter.createSource(SIMPLE, NORMAL);
-        try {
+        try (DataModelSource source = exporter.createSource(SIMPLE, NORMAL)) {
             List<Simple> results = drain(SIMPLE, source);
             assertThat(results, is(Arrays.asList(object)));
-        } finally {
-            source.close();
         }
     }
 
@@ -288,12 +281,9 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        DataModelSource source = exporter.createSource(DUP_CHECK, NORMAL);
-        try {
+        try (DataModelSource source = exporter.createSource(DUP_CHECK, NORMAL)) {
             List<DupCheck> results = drain(DUP_CHECK, source);
             assertThat(results, is(Arrays.asList(object)));
-        } finally {
-            source.close();
         }
     }
 
@@ -305,9 +295,10 @@ public class BulkLoadExporterRetrieverTest {
     public void source_invalid() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        DataModelSource source = exporter.createSource(
-                new SimpleDataModelDefinition<Invalid>(Invalid.class), NORMAL);
-        source.close();
+        try (DataModelSource source = exporter.createSource(
+                new SimpleDataModelDefinition<>(Invalid.class), NORMAL)) {
+            // do nothing
+        }
     }
 
     /**
@@ -318,52 +309,48 @@ public class BulkLoadExporterRetrieverTest {
     public void source_missing() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        DataModelSource source = exporter.createSource(SIMPLE, MISSING);
-        source.close();
+        try (DataModelSource source = exporter.createSource(SIMPLE, MISSING)) {
+            // do nothing
+        }
     }
 
     private <T> void insert(T simple, DataModelDefinition<T> def, String table) {
-        try {
-            TableInfo<T> info = new TableInfo<T>(def, table, Arrays.asList(
-                    "NUMBER",
-                    "TEXT",
-                    "C_BOOL",
-                    "C_BYTE",
-                    "C_SHORT",
-                    "C_LONG",
-                    "C_FLOAT",
-                    "C_DOUBLE",
-                    "C_DECIMAL",
-                    "C_DATE",
-                    "C_TIME",
-                    "C_DATETIME"));
-            TableOutput<T> output = new TableOutput<T>(info, h2.open());
-            try {
-                output.write(simple);
-            } finally {
-                output.close();
-            }
+        TableInfo<T> info = new TableInfo<>(def, table, Arrays.asList(
+                "NUMBER",
+                "TEXT",
+                "C_BOOL",
+                "C_BYTE",
+                "C_SHORT",
+                "C_LONG",
+                "C_FLOAT",
+                "C_DOUBLE",
+                "C_DECIMAL",
+                "C_DATE",
+                "C_TIME",
+                "C_DATETIME"));
+        try (TableOutput<T> output = new TableOutput<>(info, h2.open());) {
+            output.write(simple);
         } catch (Exception e) {
             throw new AssertionError(e);
         }
     }
 
     private <T> List<T> retrieve(DataModelDefinition<T> def, String table) {
+        TableInfo<T> info = new TableInfo<>(def, table, Arrays.asList(
+                "NUMBER",
+                "TEXT",
+                "C_BOOL",
+                "C_BYTE",
+                "C_SHORT",
+                "C_LONG",
+                "C_FLOAT",
+                "C_DOUBLE",
+                "C_DECIMAL",
+                "C_DATE",
+                "C_TIME",
+                "C_DATETIME"));
         try {
-            TableInfo<T> info = new TableInfo<T>(def, table, Arrays.asList(
-                    "NUMBER",
-                    "TEXT",
-                    "C_BOOL",
-                    "C_BYTE",
-                    "C_SHORT",
-                    "C_LONG",
-                    "C_FLOAT",
-                    "C_DOUBLE",
-                    "C_DECIMAL",
-                    "C_DATE",
-                    "C_TIME",
-                    "C_DATETIME"));
-            TableSource<T> source = new TableSource<T>(info, h2.open());
+            TableSource<T> source = new TableSource<>(info, h2.open());
             return drain(def, source);
         } catch (Exception e) {
             throw new AssertionError(e);
@@ -372,7 +359,7 @@ public class BulkLoadExporterRetrieverTest {
 
     private <T> List<T> drain(DataModelDefinition<T> def, DataModelSource source) throws IOException {
         try {
-            List<DataModelReflection> retrieved = new ArrayList<DataModelReflection>();
+            List<DataModelReflection> retrieved = new ArrayList<>();
             while (true) {
                 DataModelReflection next = source.next();
                 if (next == null) {
@@ -389,7 +376,7 @@ public class BulkLoadExporterRetrieverTest {
                     return i1.compareTo(i2);
                 }
             });
-            List<T> results = new ArrayList<T>();
+            List<T> results = new ArrayList<>();
             for (DataModelReflection r : retrieved) {
                 results.add(def.toObject(r));
             }

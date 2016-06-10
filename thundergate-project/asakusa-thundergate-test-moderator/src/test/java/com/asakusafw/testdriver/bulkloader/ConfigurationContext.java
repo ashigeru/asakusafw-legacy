@@ -96,11 +96,8 @@ public class ConfigurationContext extends ExternalResource {
             } else {
                 file = folder.newFile(MessageFormat.format(Configuration.FILE_PATTERN, targetName));
             }
-            FileOutputStream out = new FileOutputStream(file);
-            try {
+            try (FileOutputStream out = new FileOutputStream(file)) {
                 properties.store(out, "testing");
-            } finally {
-                out.close();
             }
         } catch (IOException e) {
             throw new AssertionError(e);

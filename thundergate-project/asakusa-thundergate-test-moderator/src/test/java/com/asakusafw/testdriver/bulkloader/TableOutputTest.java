@@ -39,9 +39,9 @@ import com.asakusafw.testdriver.model.SimpleDataModelDefinition;
  */
 public class TableOutputTest {
 
-    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<Simple>(Simple.class);
+    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<>(Simple.class);
 
-    static final DataModelDefinition<CacheSupport> CACHE = new SimpleDataModelDefinition<CacheSupport>(CacheSupport.class);
+    static final DataModelDefinition<CacheSupport> CACHE = new SimpleDataModelDefinition<>(CacheSupport.class);
 
     /**
      * H2 database.
@@ -60,9 +60,9 @@ public class TableOutputTest {
      */
     @Test
     public void empty() throws Exception {
-        TableOutput<Simple> output = new TableOutput<Simple>(info("NUMBER", "TEXT"), h2.open());
-        output.close();
-
+        try (TableOutput<Simple> output = new TableOutput<>(info("NUMBER", "TEXT"), h2.open())) {
+            // do nothing
+        }
         assertThat(h2.count("SIMPLE"), is(0));
     }
 
@@ -72,14 +72,11 @@ public class TableOutputTest {
      */
     @Test
     public void single() throws Exception {
-        TableOutput<Simple> output = new TableOutput<Simple>(info("NUMBER", "TEXT"), h2.open());
-        try {
+        try (TableOutput<Simple> output = new TableOutput<>(info("NUMBER", "TEXT"), h2.open())) {
             Simple simple = new Simple();
             simple.number = 100;
             simple.text = "Hello, world!";
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -94,8 +91,7 @@ public class TableOutputTest {
      */
     @Test
     public void multiple() throws Exception {
-        TableOutput<Simple> output = new TableOutput<Simple>(info("NUMBER", "TEXT"), h2.open());
-        try {
+        try (TableOutput<Simple> output = new TableOutput<>(info("NUMBER", "TEXT"), h2.open())) {
             Simple simple = new Simple();
             simple.number = 100;
             simple.text = "aaa";
@@ -108,8 +104,6 @@ public class TableOutputTest {
             simple.number = 300;
             simple.text = "ccc";
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(3));
@@ -151,7 +145,7 @@ public class TableOutputTest {
         simple.datetimeValue.clear();
         simple.datetimeValue.set(2000, 0, 2, 3, 4, 5);
 
-        TableOutput<Simple> output = new TableOutput<Simple>(info(
+        try (TableOutput<Simple> output = new TableOutput<>(info(
                 "NUMBER",
                 "TEXT",
                 "C_BOOL",
@@ -164,11 +158,8 @@ public class TableOutputTest {
                 "C_DATE",
                 "C_TIME",
                 "C_DATETIME"
-                ), h2.open());
-        try {
+                ), h2.open())) {
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -198,7 +189,7 @@ public class TableOutputTest {
         Simple simple = new Simple();
         simple.number = 100;
 
-        TableOutput<Simple> output = new TableOutput<Simple>(info(
+        try (TableOutput<Simple> output = new TableOutput<>(info(
                 "NUMBER",
                 "TEXT",
                 "C_BOOL",
@@ -211,11 +202,8 @@ public class TableOutputTest {
                 "C_DATE",
                 "C_TIME",
                 "C_DATETIME"
-                ), h2.open());
-        try {
+                ), h2.open())) {
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -234,16 +222,13 @@ public class TableOutputTest {
      */
     @Test
     public void timestamp() throws Exception {
-        TableOutput<CacheSupport> output = new TableOutput<CacheSupport>(
-                new TableInfo<CacheSupport>(CACHE, "SIMPLE", Arrays.asList("NUMBER", "TEXT")),
-                h2.open());
-        try {
+        try (TableOutput<CacheSupport> output = new TableOutput<>(
+                new TableInfo<>(CACHE, "SIMPLE", Arrays.asList("NUMBER", "TEXT")),
+                h2.open())) {
             CacheSupport simple = new CacheSupport();
             simple.number = 100;
             simple.text = "Hello, world!";
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -258,18 +243,15 @@ public class TableOutputTest {
      */
     @Test
     public void timestamp_overwrite() throws Exception {
-        TableOutput<CacheSupport> output = new TableOutput<CacheSupport>(
-                new TableInfo<CacheSupport>(CACHE, "SIMPLE", Arrays.asList("NUMBER", "TEXT", "C_DATETIME")),
-                h2.open());
-        try {
+        try (TableOutput<CacheSupport> output = new TableOutput<>(
+                new TableInfo<>(CACHE, "SIMPLE", Arrays.asList("NUMBER", "TEXT", "C_DATETIME")),
+                h2.open())) {
             CacheSupport simple = new CacheSupport();
             simple.number = 100;
             simple.text = "Hello, world!";
             simple.datetimeValue = Calendar.getInstance();
             simple.datetimeValue.setTimeInMillis(1);
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -286,18 +268,15 @@ public class TableOutputTest {
      */
     @Test
     public void timestamp_suppress_overwrite() throws Exception {
-        TableOutput<CacheSupport> output = new TableOutput<CacheSupport>(
-                new TableInfo<CacheSupport>(CACHE, "SIMPLE", Arrays.asList("NUMBER", "TEXT", "C_DATETIME"), false),
-                h2.open());
-        try {
+        try (TableOutput<CacheSupport> output = new TableOutput<>(
+                new TableInfo<>(CACHE, "SIMPLE", Arrays.asList("NUMBER", "TEXT", "C_DATETIME"), false),
+                h2.open())) {
             CacheSupport simple = new CacheSupport();
             simple.number = 100;
             simple.text = "Hello, world!";
             simple.datetimeValue = Calendar.getInstance();
             simple.datetimeValue.setTimeInMillis(1);
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -314,9 +293,10 @@ public class TableOutputTest {
      */
     @Test
     public void reclose() throws Exception {
-        TableOutput<Simple> output = new TableOutput<Simple>(info("NUMBER", "TEXT"), h2.open());
-        output.close();
-        output.close();
+        try (TableOutput<Simple> output = new TableOutput<>(info("NUMBER", "TEXT"), h2.open())) {
+            output.close();
+            output.close();
+        }
     }
 
     /**
@@ -326,19 +306,11 @@ public class TableOutputTest {
     @Test(expected = IOException.class)
     public void dropCtor() throws Exception {
         h2.execute("DROP TABLE SIMPLE");
-        Connection conn = h2.open();
-        try {
-            TableOutput<Simple> output = new TableOutput<Simple>(info("NUMBER", "TEXT"), conn);
-            try {
-                Simple simple = new Simple();
-                simple.number = 100;
-                output.write(simple);
-            } finally {
-                output.close();
-            }
-
-        } finally {
-            conn.close();
+        try (Connection conn = h2.open();
+                TableOutput<Simple> output = new TableOutput<>(info("NUMBER", "TEXT"), conn)) {
+            Simple simple = new Simple();
+            simple.number = 100;
+            output.write(simple);
         }
     }
 
@@ -348,28 +320,21 @@ public class TableOutputTest {
      */
     @Test(expected = IOException.class)
     public void dropWrite() throws Exception {
-        Connection conn = h2.open();
-        try {
-            TableOutput<Simple> output = new TableOutput<Simple>(info("NUMBER", "TEXT"), conn);
-            try {
-                h2.execute("DROP TABLE SIMPLE");
-                Simple simple = new Simple();
-                simple.number = 100;
-                output.write(simple);
-            } finally {
-                output.close();
-            }
-        } finally {
-            conn.close();
+        try (Connection conn = h2.open();
+                TableOutput<Simple> output = new TableOutput<>(info("NUMBER", "TEXT"), conn)) {
+            h2.execute("DROP TABLE SIMPLE");
+            Simple simple = new Simple();
+            simple.number = 100;
+            output.write(simple);
         }
     }
 
     private TableInfo<Simple> info(String... columns) {
-        return new TableInfo<Simple>(SIMPLE, "SIMPLE", Arrays.asList(columns));
+        return new TableInfo<>(SIMPLE, "SIMPLE", Arrays.asList(columns));
     }
 
     private List<List<Object>> table(Object[]... rows) {
-        List<List<Object>> results = new ArrayList<List<Object>>();
+        List<List<Object>> results = new ArrayList<>();
         for (Object[] row : rows) {
             results.add(Arrays.asList(row));
         }

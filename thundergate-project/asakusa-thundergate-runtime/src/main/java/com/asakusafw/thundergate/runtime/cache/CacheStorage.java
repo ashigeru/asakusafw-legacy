@@ -143,11 +143,8 @@ public class CacheStorage implements Closeable {
             return null;
         }
         Properties properties = new Properties();
-        FSDataInputStream in = fs.open(path);
-        try {
+        try (FSDataInputStream in = fs.open(path)) {
             properties.load(in);
-        } finally {
-            in.close();
         }
         try {
             return CacheInfo.loadFrom(properties);
@@ -189,13 +186,10 @@ public class CacheStorage implements Closeable {
         assert path != null;
         Properties properties = new Properties();
         info.storeTo(properties);
-        FSDataOutputStream out = fs.create(path);
-        try {
+        try (FSDataOutputStream out = fs.create(path)) {
             properties.store(out, MessageFormat.format(
                     "Cache for {0}",
                     info.getId()));
-        } finally {
-            out.close();
         }
     }
 

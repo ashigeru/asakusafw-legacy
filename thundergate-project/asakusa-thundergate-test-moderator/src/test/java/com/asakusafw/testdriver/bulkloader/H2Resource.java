@@ -18,7 +18,6 @@ package com.asakusafw.testdriver.bulkloader;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -155,7 +154,7 @@ public class H2Resource extends TestWatcher {
             ResultSet rs = s.executeQuery(sql);
             ResultSetMetaData meta = rs.getMetaData();
             int size = meta.getColumnCount();
-            List<List<Object>> results = new ArrayList<List<Object>>();
+            List<List<Object>> results = new ArrayList<>();
             while (rs.next()) {
                 Object[] columns = new Object[size];
                 for (int i = 0; i < size; i++) {
@@ -182,12 +181,9 @@ public class H2Resource extends TestWatcher {
     }
 
     private void execute0(String sql) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(sql);
-        try {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.execute();
             connection.commit();
-        } finally {
-            ps.close();
         }
     }
 
@@ -201,9 +197,8 @@ public class H2Resource extends TestWatcher {
     }
 
     private String load(String resource) {
-        InputStream source = context.getResourceAsStream(resource);
-        assertThat(resource, source, is(not(nullValue())));
-        try {
+        try (InputStream source = context.getResourceAsStream(resource)) {
+            assertThat(resource, source, is(not(nullValue())));
             StringBuilder buf = new StringBuilder();
             Reader reader = new InputStreamReader(source, "UTF-8");
             char[] cbuf = new char[1024];
@@ -217,12 +212,6 @@ public class H2Resource extends TestWatcher {
             return buf.toString();
         } catch (Exception e) {
             throw new AssertionError(e);
-        } finally {
-            try {
-                source.close();
-            } catch (IOException e) {
-                throw new AssertionError(e);
-            }
         }
     }
 

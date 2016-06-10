@@ -137,7 +137,7 @@ public class CacheInfo {
         this.timestamp = (Calendar) timestamp.clone();
         this.timestamp.set(Calendar.MILLISECOND, 0);
         this.tableName = tableName;
-        this.columnNames = new TreeSet<String>(columnNames);
+        this.columnNames = new TreeSet<>(columnNames);
         this.modelClassName = modelClassName;
         this.modelClassVersion = modelClassVersion;
     }
@@ -276,7 +276,7 @@ public class CacheInfo {
 
     private static Set<String> split(String packed) {
         assert packed != null;
-        Set<String> results = new TreeSet<String>();
+        Set<String> results = new TreeSet<>();
         String[] entries = packed.split(COLUMN_SEPARATOR);
         Collections.addAll(results, entries);
         return results;

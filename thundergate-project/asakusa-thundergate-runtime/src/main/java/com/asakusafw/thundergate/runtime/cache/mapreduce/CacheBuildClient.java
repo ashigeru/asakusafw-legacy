@@ -124,7 +124,7 @@ public class CacheBuildClient extends Configured implements Tool {
         Job job = JobCompatibility.newJob(getConf());
         job.setJobName("TGC-UPDATE-" + storage.getPatchDirectory());
 
-        List<StageInput> inputList = new ArrayList<StageInput>();
+        List<StageInput> inputList = new ArrayList<>();
         inputList.add(new StageInput(
                 storage.getHeadContents("*").toString(),
                 TemporaryInputFormat.class,
@@ -191,7 +191,7 @@ public class CacheBuildClient extends Configured implements Tool {
         Job job = JobCompatibility.newJob(getConf());
         job.setJobName("TGC-CREATE-" + storage.getPatchDirectory());
 
-        List<StageInput> inputList = new ArrayList<StageInput>();
+        List<StageInput> inputList = new ArrayList<>();
         inputList.add(new StageInput(
                 storage.getPatchContents("*").toString(),
                 TemporaryInputFormat.class,

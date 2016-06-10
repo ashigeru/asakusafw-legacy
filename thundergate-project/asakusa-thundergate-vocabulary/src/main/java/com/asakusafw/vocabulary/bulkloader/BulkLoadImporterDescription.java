@@ -122,7 +122,7 @@ public abstract class BulkLoadImporterDescription implements ImporterDescription
         hash = hash * prime + hash(getTargetName());
         hash = hash * prime + hash(getModelType().getName());
         hash = hash * prime + hash(getTableName());
-        hash = hash * prime + hash(new HashSet<String>(getColumnNames()));
+        hash = hash * prime + hash(new HashSet<>(getColumnNames()));
         hash = hash * prime + hash(getWhere());
         return String.format("%016x", hash);
     }

@@ -29,7 +29,7 @@ import com.asakusafw.utils.collections.Maps;
 public class ModelRepository {
 
     private final LinkedHashMap<ModelReference, ModelDescription> models =
-        new LinkedHashMap<ModelReference, ModelDescription>();
+        new LinkedHashMap<>();
 
     private final Map<String, ModelDescription> simpleNames = Maps.create();
 

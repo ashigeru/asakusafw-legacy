@@ -164,7 +164,7 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
 
     private List<ModelProperty> buildProperties() {
         // ペア用のコンテナを作成
-        Map<String, SourcePair> pairs = new TreeMap<String, SourcePair>();
+        Map<String, SourcePair> pairs = new TreeMap<>();
         for (String mapTo : columns) {
             pairs.put(mapTo, new SourcePair());
         }
@@ -260,10 +260,10 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
         Side(ModelDescription model) {
             assert model != null;
             this.model = model;
-            this.sources = new TreeMap<String, Source>();
+            this.sources = new TreeMap<>();
             this.alias = model.getReference().getSimpleName();
             this.condition = Lists.create();
-            this.mapping = new TreeMap<String, String>();
+            this.mapping = new TreeMap<>();
             for (Source s : model.getPropertiesAsSources()) {
                 sources.put(s.getName(), s);
                 mapping.put(s.getName(), null);

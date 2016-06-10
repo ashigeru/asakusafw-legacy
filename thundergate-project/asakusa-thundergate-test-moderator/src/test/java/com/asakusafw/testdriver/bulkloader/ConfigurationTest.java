@@ -77,12 +77,9 @@ public class ConfigurationTest {
     public void target() throws Exception {
         context.put("config", "config");
         Configuration conf = Configuration.load("config");
-        Connection conn = conf.open();
-        try {
+        try (Connection conn = conf.open()) {
             conn.createStatement().execute("INSERT INTO TESTING (NUMBER, TEXT) VALUES(1, 'a')");
             conn.commit();
-        } finally {
-            conn.close();
         }
         assertThat(h2.count("TESTING"), is(1));
     }
@@ -95,12 +92,9 @@ public class ConfigurationTest {
     public void common() throws Exception {
         context.put(null, "config");
         Configuration conf = Configuration.load("config");
-        Connection conn = conf.open();
-        try {
+        try (Connection conn = conf.open()) {
             conn.createStatement().execute("INSERT INTO TESTING (NUMBER, TEXT) VALUES(1, 'a')");
             conn.commit();
-        } finally {
-            conn.close();
         }
         assertThat(h2.count("TESTING"), is(1));
     }

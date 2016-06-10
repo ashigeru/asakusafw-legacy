@@ -107,7 +107,7 @@ public class ThunderGateModelEmitter {
             return null;
         }
 
-        Map<String, ModelProperty> properties = new TreeMap<String, ModelProperty>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, ModelProperty> properties = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (ModelProperty property : model.getProperties()) {
             properties.put(property.getSource().getName(), property);
         }
@@ -182,16 +182,13 @@ public class ThunderGateModelEmitter {
     private void emit(String name, AstScript script) throws IOException {
         assert name != null;
         assert script != null;
-        PrintWriter output = open(name);
-        try {
+        try (PrintWriter output = open(name)) {
             DmdlEmitter.emit(script, output);
             if (output.checkError()) {
                 throw new IOException(MessageFormat.format(
                         "Cannot output DMDL {0}",
                         name));
             }
-        } finally {
-            output.close();
         }
     }
 

@@ -41,19 +41,14 @@ public class RecordLockDdlEmitter {
 
     private static final String TEMPLATE_CONTENTS;
     static {
-        InputStream in = RecordLockDdlEmitter.class.getResourceAsStream(TEMPLATE_FILE);
-        try {
-            try {
-                TEMPLATE_CONTENTS = IOUtils.toString(in, ENCODING);
-            } finally {
-                in.close();
-            }
+        try (InputStream in = RecordLockDdlEmitter.class.getResourceAsStream(TEMPLATE_FILE)) {
+            TEMPLATE_CONTENTS = IOUtils.toString(in, ENCODING);
         } catch (IOException e) {
             throw new IOError(e);
         }
     }
 
-    private final Set<String> tableNames = new TreeSet<String>();
+    private final Set<String> tableNames = new TreeSet<>();
 
     /**
      * Adds a table to this generator.

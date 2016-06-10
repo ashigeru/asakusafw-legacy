@@ -67,7 +67,7 @@ public class BulkLoadExporterRetriever extends AbstractExporterRetriever<BulkLoa
         Connection conn = conf.open();
         boolean green = false;
         try {
-            ModelOutput<V> output = new TableOutput<V>(info, conn);
+            ModelOutput<V> output = new TableOutput<>(info, conn);
             green = true;
             return output;
         } finally {
@@ -91,7 +91,7 @@ public class BulkLoadExporterRetriever extends AbstractExporterRetriever<BulkLoa
         Connection conn = conf.open();
         boolean green = false;
         try {
-            DataModelSource source = new TableSource<V>(info, conn);
+            DataModelSource source = new TableSource<>(info, conn);
             green = true;
             return source;
         } finally {
@@ -111,7 +111,7 @@ public class BulkLoadExporterRetriever extends AbstractExporterRetriever<BulkLoa
         assert definition != null;
         assert description != null;
         if (isNormalTarget(definition, description)) {
-            return new TableInfo<V>(
+            return new TableInfo<>(
                     definition,
                     description.getTableName(),
                     description.getTargetColumnNames());
@@ -120,10 +120,10 @@ public class BulkLoadExporterRetriever extends AbstractExporterRetriever<BulkLoa
             List<String> columns = dup.getColumnNames();
             if (columns.contains(dup.getErrorCodeColumnName()) == false) {
                 // restore error code column name
-                columns = new ArrayList<String>(columns);
+                columns = new ArrayList<>(columns);
                 columns.add(dup.getErrorCodeColumnName());
             }
-            return new TableInfo<V>(
+            return new TableInfo<>(
                     definition,
                     dup.getTableName(),
                     columns);

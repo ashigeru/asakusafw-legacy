@@ -49,7 +49,7 @@ final class AttributeHelper {
     static List<String> getColumnNames(Class<?> modelType) {
         ColumnOrder original = modelType.getAnnotation(ColumnOrder.class);
         if (original != null) {
-            return new ArrayList<String>(Arrays.asList(original.value()));
+            return new ArrayList<>(Arrays.asList(original.value()));
         }
         TableModel meta = modelType.getAnnotation(TableModel.class);
         if (meta != null) {
@@ -67,7 +67,7 @@ final class AttributeHelper {
     static List<String> getPrimaryKeyNames(Class<?> modelType) {
         PrimaryKey original = modelType.getAnnotation(PrimaryKey.class);
         if (original != null) {
-            return new ArrayList<String>(Arrays.asList(original.value()));
+            return new ArrayList<>(Arrays.asList(original.value()));
         }
         TableModel meta = modelType.getAnnotation(TableModel.class);
         if (meta != null) {

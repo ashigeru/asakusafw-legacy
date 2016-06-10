@@ -54,17 +54,13 @@ public class CacheStorageTest {
     public void deleteHead() throws Exception {
         File dir = folder.newFolder("testing");
         dir.delete();
-        CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI());
-        try {
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI())) {
             Path content = storage.getHeadContents("a");
-            FSDataOutputStream output = storage.getFileSystem().create(content);
-            try {
+            try (FSDataOutputStream output = storage.getFileSystem().create(content)) {
                 IOUtils.copyBytes(
                         new ByteArrayInputStream("Hello, world".getBytes()),
                         output,
                         storage.getConfiguration());
-            } finally {
-                output.close();
             }
 
             assertThat(storage.getFileSystem().exists(storage.getHeadDirectory()), is(true));
@@ -72,8 +68,6 @@ public class CacheStorageTest {
 
             storage.deleteHead();
             assertThat(storage.getFileSystem().exists(storage.getHeadDirectory()), is(false));
-        } finally {
-            storage.close();
         }
     }
 
@@ -85,17 +79,13 @@ public class CacheStorageTest {
     public void deletePatch() throws Exception {
         File dir = folder.newFolder("testing");
         dir.delete();
-        CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI());
-        try {
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI())) {
             Path content = storage.getPatchContents("a");
-            FSDataOutputStream output = storage.getFileSystem().create(content);
-            try {
+            try (FSDataOutputStream output = storage.getFileSystem().create(content)) {
                 IOUtils.copyBytes(
                         new ByteArrayInputStream("Hello, world".getBytes()),
                         output,
                         storage.getConfiguration());
-            } finally {
-                output.close();
             }
 
             assertThat(storage.getFileSystem().exists(storage.getPatchDirectory()), is(true));
@@ -103,8 +93,6 @@ public class CacheStorageTest {
 
             storage.deletePatch();
             assertThat(storage.getFileSystem().exists(storage.getPatchDirectory()), is(false));
-        } finally {
-            storage.close();
         }
     }
 
@@ -116,27 +104,20 @@ public class CacheStorageTest {
     public void deleteAll() throws Exception {
         File dir = folder.newFolder("testing");
         dir.delete();
-        CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI());
-        try {
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI())) {
             Path headContent = storage.getHeadContents("a");
-            FSDataOutputStream headOutput = storage.getFileSystem().create(headContent);
-            try {
+            try (FSDataOutputStream output = storage.getFileSystem().create(headContent)) {
                 IOUtils.copyBytes(
                         new ByteArrayInputStream("Hello, world".getBytes()),
-                        headOutput,
+                        output,
                         storage.getConfiguration());
-            } finally {
-                headOutput.close();
             }
             Path patchContent = storage.getPatchContents("a");
-            FSDataOutputStream patchOutput = storage.getFileSystem().create(patchContent);
-            try {
+            try (FSDataOutputStream output = storage.getFileSystem().create(patchContent)) {
                 IOUtils.copyBytes(
                         new ByteArrayInputStream("Hello, world".getBytes()),
-                        patchOutput,
+                        output,
                         storage.getConfiguration());
-            } finally {
-                patchOutput.close();
             }
 
             assertThat(storage.getFileSystem().exists(storage.getHeadDirectory()), is(true));
@@ -145,8 +126,6 @@ public class CacheStorageTest {
             assertThat(storage.deleteAll(), is(true));
             assertThat(storage.getFileSystem().exists(storage.getHeadDirectory()), is(false));
             assertThat(storage.getFileSystem().exists(storage.getPatchDirectory()), is(false));
-        } finally {
-            storage.close();
         }
     }
 
@@ -158,11 +137,8 @@ public class CacheStorageTest {
     public void deleteAll_missing() throws Exception {
         File dir = folder.newFolder("testing");
         Assume.assumeTrue(dir.delete());
-        CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI());
-        try {
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI())) {
             assertThat(storage.deleteAll(), is(false));
-        } finally {
-            storage.close();
         }
     }
 
@@ -182,8 +158,7 @@ public class CacheStorageTest {
                 123L);
         File dir = folder.newFolder("testing");
         dir.delete();
-        CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI());
-        try {
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI())) {
             storage.putPatchCacheInfo(info);
 
             assertThat(storage.getFileSystem().exists(storage.getPatchDirectory()), is(true));
@@ -197,8 +172,6 @@ public class CacheStorageTest {
             assertThat(restored.getColumnNames(), is(info.getColumnNames()));
             assertThat(restored.getModelClassName(), is(info.getModelClassName()));
             assertThat(restored.getModelClassVersion(), is(info.getModelClassVersion()));
-        } finally {
-            storage.close();
         }
     }
 
@@ -218,8 +191,7 @@ public class CacheStorageTest {
                 123L);
         File dir = folder.newFolder("testing");
         dir.delete();
-        CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI());
-        try {
+        try (CacheStorage storage = new CacheStorage(new Configuration(), dir.toURI())) {
             storage.putHeadCacheInfo(info);
 
             assertThat(storage.getFileSystem().exists(storage.getPatchDirectory()), is(false));
@@ -233,8 +205,6 @@ public class CacheStorageTest {
             assertThat(restored.getColumnNames(), is(info.getColumnNames()));
             assertThat(restored.getModelClassName(), is(info.getModelClassName()));
             assertThat(restored.getModelClassVersion(), is(info.getModelClassVersion()));
-        } finally {
-            storage.close();
         }
     }
 

@@ -250,6 +250,6 @@ public class Simple {
 
     @Override
     public String toString() {
-        return new SimpleDataModelDefinition<Simple>(Simple.class).toReflection(this).toString();
+        return new SimpleDataModelDefinition<>(Simple.class).toReflection(this).toString();
     }
 }

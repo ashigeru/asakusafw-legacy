@@ -117,6 +117,9 @@ import com.asakusafw.vocabulary.bulkloader.PrimaryKey;
     @Override public long __tgc__SystemId() {
         return this.getSid();
     }
+    @Override public long __tgc__Timestamp() {
+        return this.getTimestamp().getElapsedSeconds();
+    }
     @Override public boolean __tgc__Deleted() {
         return false;
     }

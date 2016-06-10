@@ -18,6 +18,7 @@ package com.asakusafw.thundergate.runtime.cache;
 /**
  * An interface for data models which supports ThunderGate cache features.
  * @since 0.2.3
+ * @version 0.8.1
  */
 public interface ThunderGateCacheSupport {
 
@@ -28,7 +29,7 @@ public interface ThunderGateCacheSupport {
     long __tgc__DataModelVersion();
 
     /**
-     * Returns the last updated timestamp colum name for this data model <em>class</em>.
+     * Returns the last updated timestamp column name for this data model <em>class</em>.
      * @return the last updated timestamp column name.
      */
     String __tgc__TimestampColumn();
@@ -39,6 +40,14 @@ public interface ThunderGateCacheSupport {
      * @throws RuntimeException if this data model does not have the system ID
      */
     long __tgc__SystemId();
+
+    /**
+     * Returns the timestamp of this data model object.
+     * @return the timestamp of this data model object
+     * @throws RuntimeException if this data model does not have the timestamp
+     * @since 0.8.1
+     */
+    long __tgc__Timestamp();
 
     /**
      * Returns whether this data model represents a deleted entry.

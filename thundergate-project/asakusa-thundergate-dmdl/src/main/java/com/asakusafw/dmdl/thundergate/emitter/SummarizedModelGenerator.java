@@ -58,7 +58,7 @@ public final class SummarizedModelGenerator {
         if (model == null) {
             throw new IllegalArgumentException("model must not be null"); //$NON-NLS-1$
         }
-        return new AstModelDefinition<AstSummarize>(
+        return new AstModelDefinition<>(
                 null,
                 ModelDefinitionKind.SUMMARIZED,
                 AstBuilder.getDesciption(

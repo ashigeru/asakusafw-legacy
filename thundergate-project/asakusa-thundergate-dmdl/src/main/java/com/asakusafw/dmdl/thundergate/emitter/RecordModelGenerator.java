@@ -79,7 +79,7 @@ public final class RecordModelGenerator {
         attrs.add(AstBuilder.getPrimaryKey(model));
         Collections.addAll(attrs, extra);
 
-        return new AstModelDefinition<AstRecord>(
+        return new AstModelDefinition<>(
                 null,
                 ModelDefinitionKind.RECORD,
                 AstBuilder.getDesciption("テーブル{0}", model.getReference().getSimpleName()),

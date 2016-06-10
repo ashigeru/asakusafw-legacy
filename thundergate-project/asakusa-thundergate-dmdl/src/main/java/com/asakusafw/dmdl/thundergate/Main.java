@@ -324,13 +324,10 @@ public final class Main {
     private static Properties loadProperties(String path) throws IOException {
         assert path != null;
         LOG.debug("Loading Properties: {}", path);
-        InputStream in = new FileInputStream(path);
-        try {
+        try (InputStream in = new FileInputStream(path)) {
             Properties result = new Properties();
             result.load(in);
             return result;
-        } finally {
-            in.close();
         }
     }
 

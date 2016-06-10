@@ -250,6 +250,6 @@ public class DupCheck {
 
     @Override
     public String toString() {
-        return new SimpleDataModelDefinition<DupCheck>(DupCheck.class).toReflection(this).toString();
+        return new SimpleDataModelDefinition<>(DupCheck.class).toReflection(this).toString();
     }
 }

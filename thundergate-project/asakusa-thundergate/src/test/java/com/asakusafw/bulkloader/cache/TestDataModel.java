@@ -74,6 +74,11 @@ public class TestDataModel implements Writable, ThunderGateCacheSupport, Compara
     }
 
     @Override
+    public long __tgc__Timestamp() {
+        return 0;
+    }
+
+    @Override
     public boolean __tgc__Deleted() {
         return deleted.get();
     }

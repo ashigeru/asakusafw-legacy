@@ -82,6 +82,11 @@ public class CacheSupport implements ThunderGateCacheSupport {
     }
 
     @Override
+    public long __tgc__Timestamp() {
+        return datetimeValue.getTimeInMillis();
+    }
+
+    @Override
     public String __tgc__TimestampColumn() {
         return "C_DATETIME";
     }
@@ -150,6 +155,6 @@ public class CacheSupport implements ThunderGateCacheSupport {
 
     @Override
     public String toString() {
-        return new SimpleDataModelDefinition<CacheSupport>(CacheSupport.class).toReflection(this).toString();
+        return new SimpleDataModelDefinition<>(CacheSupport.class).toReflection(this).toString();
     }
 }

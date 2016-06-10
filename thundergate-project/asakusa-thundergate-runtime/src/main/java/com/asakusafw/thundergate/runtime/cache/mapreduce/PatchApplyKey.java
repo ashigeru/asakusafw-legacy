@@ -193,7 +193,6 @@ public class PatchApplyKey implements WritableComparable<PatchApplyKey> {
      * Group comparator for {@link PatchApplyKey}.
      * @since 0.2.3
      */
-    @SuppressWarnings("rawtypes")
     public static final class GroupComparator extends WritableComparator implements Externalizable {
 
         /**

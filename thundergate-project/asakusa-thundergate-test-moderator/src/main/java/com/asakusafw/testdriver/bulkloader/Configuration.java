@@ -258,13 +258,10 @@ public class Configuration {
 
     private static Properties loadProperties(URL resource) throws IOException {
         assert resource != null;
-        InputStream in = resource.openStream();
-        try {
+        try (InputStream in = resource.openStream()) {
             Properties p = new Properties();
             p.load(in);
             return p;
-        } finally {
-            in.close();
         }
     }
 

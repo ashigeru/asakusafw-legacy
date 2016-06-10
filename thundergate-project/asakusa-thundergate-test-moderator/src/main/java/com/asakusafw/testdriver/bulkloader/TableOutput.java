@@ -120,7 +120,7 @@ public class TableOutput<T> implements ModelOutput<T> {
             LOG.debug("Building insert statement: {}", table);
 
             String timestamp = table.getTimestampColumn();
-            List<String> columns = new ArrayList<String>(table.getColumnsToProperties().keySet());
+            List<String> columns = new ArrayList<>(table.getColumnsToProperties().keySet());
             if (timestamp != null) {
                 columns.remove(timestamp);
                 columns.add(timestamp);
