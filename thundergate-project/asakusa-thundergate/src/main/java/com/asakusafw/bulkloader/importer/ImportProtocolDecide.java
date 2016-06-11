@@ -220,10 +220,10 @@ public class ImportProtocolDecide {
                     tableName, remoteInfo.getTableName()));
             return null;
         }
-        if (remoteInfo.getColumnNames().equals(new HashSet<String>(tableInfo.getImportTargetColumns())) == false) {
+        if (remoteInfo.getColumnNames().equals(new HashSet<>(tableInfo.getImportTargetColumns())) == false) {
             LOG.warn("TG-IMPORTER-11010", tableName, cacheId, MessageFormat.format(
                     "Inconsistent column set: expected {0}, but was {1}",
-                    new TreeSet<String>(tableInfo.getImportTargetColumns()), remoteInfo.getColumnNames()));
+                    new TreeSet<>(tableInfo.getImportTargetColumns()), remoteInfo.getColumnNames()));
             return null;
         }
 

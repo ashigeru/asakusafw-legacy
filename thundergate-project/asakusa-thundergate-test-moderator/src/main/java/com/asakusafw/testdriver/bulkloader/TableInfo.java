@@ -168,7 +168,7 @@ public class TableInfo<T> {
         assert definition != null;
         assert columnNames != null;
         Map<String, PropertyName> allMapping = extractAllMappings();
-        Map<String, PropertyName> results = new LinkedHashMap<String, PropertyName>();
+        Map<String, PropertyName> results = new LinkedHashMap<>();
         for (String column : columnNames) {
             PropertyName propertyName = allMapping.get(column);
             if (propertyName == null) {
@@ -186,7 +186,7 @@ public class TableInfo<T> {
 
     private Map<String, PropertyName> extractAllMappings() {
         assert definition != null;
-        Map<String, PropertyName> results = new TreeMap<String, PropertyName>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, PropertyName> results = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (PropertyName name : definition.getProperties()) {
             PropertyType type = definition.getType(name);
             assert type != null;

@@ -235,11 +235,8 @@ public class MainTest {
 
     private File jdbc(Properties jdbcProperties) throws IOException {
         File jdbc = folder.newFile("jdbc.properties");
-        FileOutputStream out = new FileOutputStream(jdbc);
-        try {
+        try (FileOutputStream out = new FileOutputStream(jdbc)) {
             jdbcProperties.store(out, "testing");
-        } finally {
-            out.close();
         }
         return jdbc;
     }

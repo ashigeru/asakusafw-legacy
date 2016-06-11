@@ -60,7 +60,7 @@ public final class JoinedModelGenerator {
         if (model == null) {
             throw new IllegalArgumentException("model must not be null"); //$NON-NLS-1$
         }
-        return new AstModelDefinition<AstJoin>(
+        return new AstModelDefinition<>(
                 null,
                 ModelDefinitionKind.JOINED,
                 AstBuilder.getDesciption(
@@ -79,7 +79,7 @@ public final class JoinedModelGenerator {
     private AstExpression<AstJoin> generateExpression() {
         AstJoin from = generateTerm(model.getFromModel(), model.getFromCondition(), true);
         AstJoin join = generateTerm(model.getJoinModel(), model.getJoinCondition(), false);
-        return new AstUnionExpression<AstJoin>(null, Arrays.asList(from, join));
+        return new AstUnionExpression<>(null, Arrays.asList(from, join));
     }
 
     private AstJoin generateTerm(ModelReference sourceModel, List<Source> group, boolean from) {

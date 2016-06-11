@@ -79,7 +79,7 @@ public class ImportBean {
      * @return インポート対象テーブル名の一覧
      */
     public List<String> getImportTargetTableList() {
-         return new ArrayList<String>(targetTable.keySet());
+         return new ArrayList<>(targetTable.keySet());
 //        return targetTable.keySet().iterator();
     }
     /**

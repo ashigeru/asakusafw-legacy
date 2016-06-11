@@ -35,20 +35,11 @@ final class Util {
     static void truncate(Configuration config, String tableName) throws IOException {
         assert config != null;
         assert tableName != null;
-        try {
-            Connection conn = config.open();
-            try {
-                Statement statement = conn.createStatement();
-                try {
-                    statement.execute(MessageFormat.format(
-                            "TRUNCATE TABLE {0}",
-                            tableName));
-                } finally {
-                    statement.close();
-                }
-            } finally {
-                conn.close();
-            }
+        try (Connection conn = config.open();
+                Statement statement = conn.createStatement()) {
+            statement.execute(MessageFormat.format(
+                    "TRUNCATE TABLE {0}",
+                    tableName));
         } catch (SQLException e) {
             LOG.warn(MessageFormat.format(
                     "テーブル{0}のtruncateに失敗しました",
@@ -59,30 +50,23 @@ final class Util {
     static void clearCache(Configuration config, String cacheId) throws IOException {
         assert config != null;
         assert cacheId != null;
-        try {
-            boolean committed = false;
-            Connection conn = config.open();
-            try {
-                Statement statement = conn.createStatement();
-                try {
-                    statement.execute(MessageFormat.format(
-                            "DELETE FROM __TG_CACHE_INFO WHERE CACHE_ID = ''{0}''",
-                            cacheId));
-                    statement.execute(MessageFormat.format(
-                            "DELETE FROM __TG_CACHE_LOCK WHERE CACHE_ID = ''{0}''",
-                            cacheId));
-                    if (conn.getAutoCommit() == false) {
-                        conn.commit();
-                    }
-                    committed = true;
-                } finally {
-                    statement.close();
+        boolean committed = false;
+        try (Connection conn = config.open()) {
+            try (Statement statement = conn.createStatement()) {
+                statement.execute(MessageFormat.format(
+                        "DELETE FROM __TG_CACHE_INFO WHERE CACHE_ID = ''{0}''",
+                        cacheId));
+                statement.execute(MessageFormat.format(
+                        "DELETE FROM __TG_CACHE_LOCK WHERE CACHE_ID = ''{0}''",
+                        cacheId));
+                if (conn.getAutoCommit() == false) {
+                    conn.commit();
                 }
+                committed = true;
             } finally {
                 if (committed == false && conn.getAutoCommit() == false) {
                     conn.rollback();
                 }
-                conn.close();
             }
         } catch (SQLException e) {
             LOG.warn(MessageFormat.format(

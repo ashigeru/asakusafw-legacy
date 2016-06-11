@@ -36,7 +36,7 @@ import com.asakusafw.vocabulary.bulkloader.DbImporterDescription;
  */
 public class BulkLoadImporterPreparatorTest {
 
-    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<Simple>(Simple.class);
+    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<>(Simple.class);
 
     static final DbImporterDescription NORMAL = new DbImporterDescription() {
         @Override
@@ -214,14 +214,11 @@ public class BulkLoadImporterPreparatorTest {
     public void output() throws IOException {
         context.put("importer", "importer");
         BulkLoadImporterPreparator prep = new BulkLoadImporterPreparator();
-        ModelOutput<Simple> output = prep.createOutput(SIMPLE, NORMAL);
-        try {
+        try (ModelOutput<Simple> output = prep.createOutput(SIMPLE, NORMAL)) {
             Simple simple = new Simple();
             simple.number = 100;
             simple.text = "Hello, world!";
             output.write(simple);
-        } finally {
-            output.close();
         }
 
         assertThat(h2.count("SIMPLE"), is(1));
@@ -237,18 +234,14 @@ public class BulkLoadImporterPreparatorTest {
     public void output_missing() throws IOException {
         context.put("importer", "importer");
         BulkLoadImporterPreparator prep = new BulkLoadImporterPreparator();
-        ModelOutput<Simple> output = prep.createOutput(SIMPLE, MISSING);
-        output.close();
+        try (ModelOutput<Simple> output = prep.createOutput(SIMPLE, MISSING)) {
+            // nothing to do
+        }
     }
 
     private void insert(Simple simple) {
-        try {
-            TableOutput<Simple> output = new TableOutput<Simple>(all(), h2.open());
-            try {
-                output.write(simple);
-            } finally {
-                output.close();
-            }
+        try (TableOutput<Simple> output = new TableOutput<>(all(), h2.open())) {
+            output.write(simple);
         } catch (Exception e) {
             throw new AssertionError(e);
         }
@@ -272,6 +265,6 @@ public class BulkLoadImporterPreparatorTest {
     }
 
     private TableInfo<Simple> info(String... columns) {
-        return new TableInfo<Simple>(SIMPLE, "SIMPLE", Arrays.asList(columns));
+        return new TableInfo<>(SIMPLE, "SIMPLE", Arrays.asList(columns));
     }
 }

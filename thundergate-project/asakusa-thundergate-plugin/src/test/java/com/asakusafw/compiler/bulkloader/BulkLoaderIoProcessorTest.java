@@ -74,7 +74,7 @@ public class BulkLoaderIoProcessorTest {
         In<Ex1> in2 = flow.createIn("in2", new Import(Mode.PRIMARY, "default", LockType.ROW_OR_SKIP));
         Out<Ex1> out1 = flow.createOut("out1", new Export("default"));
         Out<Ex1> out2 = flow.createOut("out2", new Export("default"));
-        FlowDescription desc = new DualIdentityFlow<Ex1>(in1, in2, out1, out2);
+        FlowDescription desc = new DualIdentityFlow<>(in1, in2, out1, out2);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -126,7 +126,7 @@ public class BulkLoaderIoProcessorTest {
                 return Arrays.asList("A");
             }
         });
-        FlowDescription desc = new IdentityFlow<Ex1>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -182,7 +182,7 @@ public class BulkLoaderIoProcessorTest {
                 return Arrays.asList("B", "C");
             }
         });
-        FlowDescription desc = new IdentityFlow<MockUnionModel>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -230,7 +230,7 @@ public class BulkLoaderIoProcessorTest {
                 return Arrays.asList("B", "C");
             }
         });
-        FlowDescription desc = new IdentityFlow<MockUnionModel>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -274,7 +274,7 @@ public class BulkLoaderIoProcessorTest {
                 return Arrays.asList("UNKNOWN");
             }
         });
-        FlowDescription desc = new IdentityFlow<MockUnionModel>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -291,7 +291,7 @@ public class BulkLoaderIoProcessorTest {
         In<Ex1> in2 = flow.createIn("in2", new Import(Mode.SECONDARY, "secondary", LockType.UNUSED));
         Out<Ex1> out1 = flow.createOut("out1", new Export("default"));
         Out<Ex1> out2 = flow.createOut("out2", new Export("default"));
-        FlowDescription desc = new DualIdentityFlow<Ex1>(in1, in2, out1, out2);
+        FlowDescription desc = new DualIdentityFlow<>(in1, in2, out1, out2);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -314,7 +314,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Ex1> in1 = flow.createIn("in1", new DirectImporterDescription(Ex1.class, "a/a"));
         Out<Ex1> out1 = flow.createOut("out1", new Export("primary"));
-        FlowDescription desc = new IdentityFlow<Ex1>(in1, out1);
+        FlowDescription desc = new IdentityFlow<>(in1, out1);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -337,7 +337,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Ex1> in1 = flow.createIn("in1", new Import(Mode.PRIMARY, "primary", LockType.TABLE));
         Out<Ex1> out1 = flow.createOut("out1", new DirectExporterDescription(Ex1.class, "a/a-*"));
-        FlowDescription desc = new IdentityFlow<Ex1>(in1, out1);
+        FlowDescription desc = new IdentityFlow<>(in1, out1);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -360,7 +360,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Ex1> in1 = flow.createIn("in1", new Import(Mode.SECONDARY, "secondary", LockType.UNUSED));
         Out<Ex1> out1 = flow.createOut("out1", new DirectExporterDescription(Ex1.class, "a/a-*"));
-        FlowDescription desc = new IdentityFlow<Ex1>(in1, out1);
+        FlowDescription desc = new IdentityFlow<>(in1, out1);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -383,7 +383,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Ex1> in1 = flow.createIn("in1", new Import(Mode.SECONDARY, "secondary", LockType.ROW));
         Out<Ex1> out1 = flow.createOut("out1", new Export("primary"));
-        FlowDescription desc = new IdentityFlow<Ex1>(in1, out1);
+        FlowDescription desc = new IdentityFlow<>(in1, out1);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -400,7 +400,7 @@ public class BulkLoaderIoProcessorTest {
         In<Ex1> in2 = flow.createIn("in2", new Import(Mode.PRIMARY, "p2", LockType.ROW));
         Out<Ex1> out1 = flow.createOut("out1", new Export("p1"));
         Out<Ex1> out2 = flow.createOut("out2", new Export("p1"));
-        FlowDescription desc = new DualIdentityFlow<Ex1>(in1, in2, out1, out2);
+        FlowDescription desc = new DualIdentityFlow<>(in1, in2, out1, out2);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -417,7 +417,7 @@ public class BulkLoaderIoProcessorTest {
         In<Ex1> in2 = flow.createIn("in2", new Import(Mode.PRIMARY, "a", LockType.ROW));
         Out<Ex1> out1 = flow.createOut("out1", new Export("b"));
         Out<Ex1> out2 = flow.createOut("out2", new Export("b"));
-        FlowDescription desc = new DualIdentityFlow<Ex1>(in1, in2, out1, out2);
+        FlowDescription desc = new DualIdentityFlow<>(in1, in2, out1, out2);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -434,7 +434,7 @@ public class BulkLoaderIoProcessorTest {
         In<Ex1> in2 = flow.createIn("in2", new Import(Mode.PRIMARY, "a", LockType.ROW));
         Out<Ex1> out1 = flow.createOut("out1", new Export("a"));
         Out<Ex1> out2 = flow.createOut("out2", new Export("b"));
-        FlowDescription desc = new DualIdentityFlow<Ex1>(in1, in2, out1, out2);
+        FlowDescription desc = new DualIdentityFlow<>(in1, in2, out1, out2);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -451,7 +451,7 @@ public class BulkLoaderIoProcessorTest {
         In<Ex1> in2 = flow.createIn("in2", new Import(Mode.SECONDARY, "a", LockType.UNUSED));
         Out<Ex1> out1 = flow.createOut("out1", new Export("a"));
         Out<Ex1> out2 = flow.createOut("out2", new Export("a"));
-        FlowDescription desc = new DualIdentityFlow<Ex1>(in1, in2, out1, out2);
+        FlowDescription desc = new DualIdentityFlow<>(in1, in2, out1, out2);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -474,7 +474,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.UNUSED, null, DataSize.UNKNOWN));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -497,7 +497,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.UNUSED, "SID > 0", DataSize.UNKNOWN));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -512,7 +512,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.UNUSED, null, DataSize.UNKNOWN, Ex1.class));
         Out<Cached> out = flow.createOut("out1", new Export("default", Ex1.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -527,7 +527,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.TABLE, null, DataSize.UNKNOWN));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -542,7 +542,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.CHECK, null, DataSize.UNKNOWN));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));
@@ -557,7 +557,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.ROW, null, DataSize.UNKNOWN));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -572,7 +572,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.ROW_OR_SKIP, null, DataSize.UNKNOWN));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -587,7 +587,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.UNUSED, null, DataSize.TINY));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -602,7 +602,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.UNUSED, null, DataSize.SMALL));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, is(nullValue()));
@@ -617,7 +617,7 @@ public class BulkLoaderIoProcessorTest {
         FlowDescriptionDriver flow = new FlowDescriptionDriver();
         In<Cached> in = flow.createIn("in1", new ImportCached("default", LockType.UNUSED, null, DataSize.LARGE));
         Out<Cached> out = flow.createOut("out1", new Export("default", Cached.class));
-        FlowDescription desc = new IdentityFlow<Cached>(in, out);
+        FlowDescription desc = new IdentityFlow<>(in, out);
 
         JobflowInfo info = compile(flow, desc);
         assertThat(info, not(nullValue()));

@@ -126,7 +126,7 @@ public class LockReleaseTest {
 
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setExportTempTableName(tempTable1);
         table1.setDuplicateFlagTableName("EXPORT_TEMP_TEST_01_DF");
@@ -135,7 +135,7 @@ public class LockReleaseTest {
         table2.setExportTempTableName(tempTable2);
         table2.setDuplicateFlagTableName("EXPORT_TEMP_TEST_02_DF");
         exportTargetTable.put("IMPORT_TARGET2", table2);
-        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<>();
         ImportTargetTableBean table3 = new ImportTargetTableBean();
         importTargetTable.put("IMPORT_TARGET1", table3);
         ImportTargetTableBean table4 = new ImportTargetTableBean();
@@ -188,8 +188,8 @@ public class LockReleaseTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<String, ExportTargetTableBean>();
-        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<>();
+        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<>();
         ImportTargetTableBean table1 = new ImportTargetTableBean();
         importTargetTable.put("IMPORT_TARGET1", table1);
         ImportTargetTableBean table2 = new ImportTargetTableBean();
@@ -269,10 +269,10 @@ public class LockReleaseTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         exportTargetTable.put("IMPORT_TARGET1", table1);
-        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<>();
         ImportTargetTableBean table4 = new ImportTargetTableBean();
         importTargetTable.put("IMPORT_TARGET2", table4);
         ExporterBean bean = new ExporterBean();
@@ -328,8 +328,8 @@ public class LockReleaseTest {
     @Test
     public void releaseLockTest05() throws Exception {
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<String, ExportTargetTableBean>();
-        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<>();
+        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<>();
         ExporterBean bean = new ExporterBean();
         bean.setExportTargetTable(exportTargetTable);
         bean.setImportTargetTable(importTargetTable);
@@ -388,7 +388,7 @@ public class LockReleaseTest {
         UnitTestUtil.executeUpdate(dup2Sql.toString());
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> exportTargetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setExportTempTableName(tempTable1);
         table1.setDuplicateFlagTableName("EXPORT_TEMP_TEST_01_DF");
@@ -397,7 +397,7 @@ public class LockReleaseTest {
         table2.setExportTempTableName(tempTable2);
         table2.setDuplicateFlagTableName("EXPORT_TEMP_TEST_02_DF");
         exportTargetTable.put("IMPORT_TARGET2", table2);
-        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> importTargetTable = new LinkedHashMap<>();
         ImportTargetTableBean table3 = new ImportTargetTableBean();
         importTargetTable.put("IMPORT_TARGET1", table3);
         ImportTargetTableBean table4 = new ImportTargetTableBean();

@@ -86,7 +86,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -133,7 +133,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -180,7 +180,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -237,7 +237,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -294,7 +294,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -351,7 +351,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -408,7 +408,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -466,7 +466,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         bean.setExportTargetTable(targetTable);
 
         Properties p = ConfigurationLoader.getProperty();
@@ -510,7 +510,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid(null);
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);
@@ -556,7 +556,7 @@ public class JudgeExecProcessTest {
         bean.setJobflowSid("11");
         bean.setJobflowId("jobflow1");
         bean.setExecutionId("11-1");
-        Map<String, ExportTargetTableBean> targetTable = new HashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new HashMap<>();
         targetTable.put("table1", new ExportTargetTableBean());
         targetTable.put("table2", new ExportTargetTableBean());
         bean.setExportTargetTable(targetTable);

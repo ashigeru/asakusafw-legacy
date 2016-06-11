@@ -126,100 +126,80 @@ public class DatabaseSource implements Closeable {
             + " ORDER BY TABLE_NAME, ORDINAL_POSITION";
 
         List<ModelDescription> results = Lists.create();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = conn.prepareStatement(sql);
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, databaseName);
-            rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
+                String prevTableName = null;
+                TableModelBuilder builder = null;
+                while (rs.next()) {
+                    // カラム情報の取り出し
+                    String tableName = rs.getString(1);
+                    String columnName = rs.getString(2);
+                    String columnComment = rs.getString(3);
+                    String dataType = rs.getString(4);
+                    long characterMaximumLength = rs.getLong(5);
+                    int numericPrecision = rs.getInt(6);
+                    int numericScale = rs.getInt(7);
+                    String isNullable = rs.getString(8);
+                    String columnKey = rs.getString(9);
 
-            String prevTableName = null;
-            TableModelBuilder builder = null;
-            while (rs.next()) {
-                // カラム情報の取り出し
-                String tableName = rs.getString(1);
-                String columnName = rs.getString(2);
-                String columnComment = rs.getString(3);
-                String dataType = rs.getString(4);
-                long characterMaximumLength = rs.getLong(5);
-                int numericPrecision = rs.getInt(6);
-                int numericScale = rs.getInt(7);
-                String isNullable = rs.getString(8);
-                String columnKey = rs.getString(9);
+                    if (filter.acceptModel(tableName) == false) {
+                        if (tableName.equals(prevTableName) == false) {
+                            LOG.info("テーブル{}はユーザの指定によりスキップされます", tableName);
+                            prevTableName = tableName;
+                        }
+                        continue;
+                    }
 
-                if (filter.acceptModel(tableName) == false) {
-                    if (tableName.equals(prevTableName) == false) {
-                        LOG.info("テーブル{}はユーザの指定によりスキップされます", tableName);
+                    // 対象テーブルが変わったかを確認
+                    if (builder == null
+                            || prevTableName == null
+                            || prevTableName.equals(tableName) == false) {
+                        if (builder != null) {
+                            results.add(builder.toDescription());
+                        }
+                        builder = new TableModelBuilder(tableName);
                         prevTableName = tableName;
                     }
-                    continue;
-                }
 
-                // 対象テーブルが変わったかを確認
-                if (builder == null
-                        || prevTableName == null
-                        || prevTableName.equals(tableName) == false) {
-                    if (builder != null) {
-                        results.add(builder.toDescription());
+                    // データ型からプロパティの型を得る
+                    PropertyTypeKind propertyType = MySqlDataType.getPropertyTypeByString(dataType);
+                    if (propertyType == null) {
+                        LOG.error("データ型{}は未サポートのため、無視されます({}:{})", new Object[] {
+                                dataType,
+                                tableName,
+                                columnName,
+                        });
+                        continue;
                     }
-                    builder = new TableModelBuilder(tableName);
-                    prevTableName = tableName;
-                }
 
-                // データ型からプロパティの型を得る
-                PropertyTypeKind propertyType = MySqlDataType.getPropertyTypeByString(dataType);
-                if (propertyType == null) {
-                    LOG.error("データ型{}は未サポートのため、無視されます({}:{})", new Object[] {
-                            dataType,
-                            tableName,
-                            columnName,
-                    });
-                    continue;
-                }
+                    // Attributeに設定すべき項目があるか調べる
+                    // 現状は、NOT NULL制約と、PRIMARY KEY制約にのみ対応
+                    List<Attribute> attributeList = Lists.create();
+                    if (isNullable != null && isNullable.equals(STR_NOT_NULL)) {
+                        attributeList.add(Attribute.NOT_NULL);
+                    }
+                    if (columnKey != null && columnKey.equals(MySQLConstants.STR_IS_PK)) {
+                        attributeList.add(Attribute.PRIMARY_KEY);
+                    }
 
-                // Attributeに設定すべき項目があるか調べる
-                // 現状は、NOT NULL制約と、PRIMARY KEY制約にのみ対応
-                List<Attribute> attributeList = Lists.create();
-                if (isNullable != null && isNullable.equals(STR_NOT_NULL)) {
-                    attributeList.add(Attribute.NOT_NULL);
+                    Attribute[] attributes = attributeList.toArray(new Attribute[attributeList.size()]);
+                    switch (propertyType) {
+                    case BIG_DECIMAL:
+                        DecimalType decimalType = new DecimalType(numericPrecision, numericScale);
+                        builder.add(columnComment, columnName, decimalType, attributes);
+                        break;
+                    case STRING:
+                        StringType stringType = new StringType((int) characterMaximumLength);
+                        builder.add(columnComment, columnName, stringType, attributes);
+                        break;
+                    default:
+                        builder.add(columnComment, columnName, propertyType, attributes);
+                        break;
+                    }
                 }
-                if (columnKey != null && columnKey.equals(MySQLConstants.STR_IS_PK)) {
-                    attributeList.add(Attribute.PRIMARY_KEY);
-                }
-
-                Attribute[] attributes = attributeList.toArray(new Attribute[attributeList.size()]);
-                switch (propertyType) {
-                case BIG_DECIMAL:
-                    DecimalType decimalType = new DecimalType(numericPrecision, numericScale);
-                    builder.add(columnComment, columnName, decimalType, attributes);
-                    break;
-                case STRING:
-                    StringType stringType = new StringType((int) characterMaximumLength);
-                    builder.add(columnComment, columnName, stringType, attributes);
-                    break;
-                default:
-                    builder.add(columnComment, columnName, propertyType, attributes);
-                    break;
-                }
-            }
-            if (builder != null) {
-                results.add(builder.toDescription());
-            }
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    // ignored
-                    LOG.debug("Failed to close ResultSet", e);
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (Exception e) {
-                    // ignored
-                    LOG.debug("Failed to close PreparedStatement", e);
+                if (builder != null) {
+                    results.add(builder.toDescription());
                 }
             }
         }
@@ -264,41 +244,19 @@ public class DatabaseSource implements Closeable {
         String sql = "SELECT TABLE_NAME, VIEW_DEFINITION"
             + " FROM INFORMATION_SCHEMA.VIEWS"
             + " WHERE TABLE_SCHEMA = ?";
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
         List<ViewDefinition> results = Lists.create();
-
-        try {
-            ps = conn.prepareStatement(sql);
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, databaseName);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                // カラム情報の取り出し
-                String viewName = rs.getString(1);
-                if (filter.acceptModel(viewName) == false) {
-                    LOG.info("ビュー{}はユーザの指定によりスキップされます", viewName);
-                    continue;
-                }
-                String statement = rs.getString(2);
-                results.add(new ViewDefinition(viewName, statement));
-            }
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    // ignored
-                    LOG.debug("Failed to close ResultSet", e);
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (Exception e) {
-                    // ignored
-                    LOG.debug("Failed to close PreparedStatement", e);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // カラム情報の取り出し
+                    String viewName = rs.getString(1);
+                    if (filter.acceptModel(viewName) == false) {
+                        LOG.info("ビュー{}はユーザの指定によりスキップされます", viewName);
+                        continue;
+                    }
+                    String statement = rs.getString(2);
+                    results.add(new ViewDefinition(viewName, statement));
                 }
             }
         }

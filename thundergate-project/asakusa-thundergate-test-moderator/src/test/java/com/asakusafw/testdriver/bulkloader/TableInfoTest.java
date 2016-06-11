@@ -38,16 +38,16 @@ import com.asakusafw.testdriver.model.SimpleDataModelDefinition;
  */
 public class TableInfoTest {
 
-    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<Simple>(Simple.class);
+    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<>(Simple.class);
 
-    static final DataModelDefinition<CacheSupport> CACHE = new SimpleDataModelDefinition<CacheSupport>(CacheSupport.class);
+    static final DataModelDefinition<CacheSupport> CACHE = new SimpleDataModelDefinition<>(CacheSupport.class);
 
     /**
      * simple.
      */
     @Test
     public void simple() {
-        TableInfo<Simple> info = new TableInfo<Simple>(SIMPLE, "SMPL", Arrays.asList(new String[] {
+        TableInfo<Simple> info = new TableInfo<>(SIMPLE, "SMPL", Arrays.asList(new String[] {
                 "NUMBER"
         }));
         assertThat(info.getDefinition(), is(SIMPLE));
@@ -63,7 +63,7 @@ public class TableInfoTest {
      */
     @Test
     public void ordered() {
-        TableInfo<Simple> info = new TableInfo<Simple>(SIMPLE, "SMPL", Arrays.asList(new String[] {
+        TableInfo<Simple> info = new TableInfo<>(SIMPLE, "SMPL", Arrays.asList(new String[] {
                 "C_BYTE",
                 "C_SHORT",
                 "C_FLOAT",
@@ -77,7 +77,7 @@ public class TableInfoTest {
         assertThat(map.get("C_SHORT"), is(name("short_value")));
         assertThat(map.get("C_FLOAT"), is(name("float_value")));
         assertThat(map.get("C_DOUBLE"), is(name("double_value")));
-        List<String> names =  new ArrayList<String>(map.keySet());
+        List<String> names =  new ArrayList<>(map.keySet());
         assertThat(names, is(Arrays.asList("C_BYTE", "C_SHORT", "C_FLOAT", "C_DOUBLE")));
     }
 
@@ -86,7 +86,7 @@ public class TableInfoTest {
      */
     @Test
     public void infer() {
-        TableInfo<Simple> info = new TableInfo<Simple>(SIMPLE, "SMPL", Arrays.asList(new String[] {
+        TableInfo<Simple> info = new TableInfo<>(SIMPLE, "SMPL", Arrays.asList(new String[] {
                 "INFER_ORIGINAL_NAME"
         }));
         assertThat(info.getDefinition(), is(SIMPLE));
@@ -101,7 +101,7 @@ public class TableInfoTest {
      */
     @Test
     public void skip() {
-        TableInfo<Simple> info = new TableInfo<Simple>(SIMPLE, "SMPL", Arrays.asList(new String[] {
+        TableInfo<Simple> info = new TableInfo<>(SIMPLE, "SMPL", Arrays.asList(new String[] {
                 "C_INTEGER"
         }));
         assertThat(info.getDefinition(), is(SIMPLE));
@@ -115,7 +115,7 @@ public class TableInfoTest {
      */
     @Test
     public void unknown() {
-        TableInfo<Simple> info = new TableInfo<Simple>(SIMPLE, "SMPL", Arrays.asList(new String[] {
+        TableInfo<Simple> info = new TableInfo<>(SIMPLE, "SMPL", Arrays.asList(new String[] {
                 "UNKNOWN_COLUMN"
         }));
         assertThat(info.getDefinition(), is(SIMPLE));
@@ -129,7 +129,7 @@ public class TableInfoTest {
      */
     @Test
     public void timestamp() {
-        TableInfo<CacheSupport> info = new TableInfo<CacheSupport>(CACHE, "SMPL", Arrays.asList(new String[] {
+        TableInfo<CacheSupport> info = new TableInfo<>(CACHE, "SMPL", Arrays.asList(new String[] {
                 "NUMBER"
         }));
         assertThat(info.getTimestampColumn(), is("C_DATETIME"));

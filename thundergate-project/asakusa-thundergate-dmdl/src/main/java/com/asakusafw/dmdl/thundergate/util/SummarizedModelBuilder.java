@@ -57,7 +57,7 @@ public class SummarizedModelBuilder extends ModelBuilder<SummarizedModelBuilder>
             String alias) {
         super(tableName);
         this.alias = (alias == null) ? model.getReference().getSimpleName() : alias;
-        this.sources = new TreeMap<String, Source>();
+        this.sources = new TreeMap<>();
         this.groupProperties = Lists.create();
         this.columns = Lists.create();
         for (Source s : model.getPropertiesAsSources()) {
@@ -170,7 +170,7 @@ public class SummarizedModelBuilder extends ModelBuilder<SummarizedModelBuilder>
         if (groupProperties.isEmpty()) {
             return;
         }
-        Set<String> rest = new LinkedHashSet<String>();
+        Set<String> rest = new LinkedHashSet<>();
         for (Source source : groupProperties) {
             rest.add(source.getName());
         }

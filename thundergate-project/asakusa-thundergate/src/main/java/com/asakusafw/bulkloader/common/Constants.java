@@ -490,7 +490,7 @@ public final class Constants {
      * @return Export対象テーブルのシステムカラム
      */
     public static List<String> getSystemColumns() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add(Constants.getSidColumnName());
         list.add(Constants.getVersionColumnName());
         list.add(Constants.getRegisteredDateTimeColumnName());
@@ -503,7 +503,7 @@ public final class Constants {
      * @return 異常データテーブルのシステムカラム
      */
     public static List<String> getErrorSystemColumns() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add(Constants.getSidColumnName());
         list.add(Constants.getVersionColumnName());
         list.add(Constants.getRegisteredDateTimeColumnName());

@@ -190,11 +190,8 @@ public class PropertyLoader implements Closeable {
     private Properties loadProperties(String path) throws IOException {
         assert path != null;
         Properties result = new Properties();
-        InputStream input = open(path);
-        try {
+        try (InputStream input = open(path)) {
             result.load(input);
-        } finally {
-            input.close();
         }
         return result;
     }

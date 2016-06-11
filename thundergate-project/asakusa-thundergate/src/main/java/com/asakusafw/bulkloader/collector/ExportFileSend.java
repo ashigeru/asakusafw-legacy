@@ -58,7 +58,7 @@ public class ExportFileSend {
     /**
      * ファイル名作成の為のマップ。
      */
-    Map<String, Integer> fileNameMap = new HashMap<String, Integer>();
+    Map<String, Integer> fileNameMap = new HashMap<>();
     /**
      * Export対象ファイルをDBサーバへ送信する。
      * <p>
@@ -165,7 +165,7 @@ public class ExportFileSend {
         long maxSize = Long.parseLong(ConfigurationLoader.getProperty(Constants.PROP_KEY_EXP_LOAD_MAX_SIZE));
 
         try {
-            TsvIoFactory<T> factory = new TsvIoFactory<T>(targetTableModel);
+            TsvIoFactory<T> factory = new TsvIoFactory<>(targetTableModel);
             Configuration conf = new Configuration();
             fs = FileSystem.get(new URI(filePath), conf);
 

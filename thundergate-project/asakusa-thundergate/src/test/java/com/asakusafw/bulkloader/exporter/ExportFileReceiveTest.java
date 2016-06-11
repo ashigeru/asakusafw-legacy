@@ -112,7 +112,7 @@ public class ExportFileReceiveTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         targetTable.put("EXP_TARGET1", table1);
         ExportTargetTableBean table2 = new ExportTargetTableBean();
@@ -160,7 +160,7 @@ public class ExportFileReceiveTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         targetTable.put("EXP_TARGET1", table1);
         ExportTargetTableBean table2 = new ExportTargetTableBean();
@@ -208,7 +208,7 @@ public class ExportFileReceiveTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         targetTable.put("EXP_TARGET1", table1);
         ExportTargetTableBean table2 = new ExportTargetTableBean();
@@ -254,7 +254,7 @@ public class ExportFileReceiveTest {
 //        String pattern = "patternR01";
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         targetTable.put("EXP_TARGET11", table1);
         ExportTargetTableBean table2 = new ExportTargetTableBean();
@@ -292,7 +292,7 @@ public class ExportFileReceiveTest {
 //        String pattern = "patternR01";
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         targetTable.put("EXP_TARGET1", table1);
         ExportTargetTableBean table2 = new ExportTargetTableBean();
@@ -336,7 +336,7 @@ public class ExportFileReceiveTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         targetTable.put("EXP_TARGET1", table1);
         ExportTargetTableBean table2 = new ExportTargetTableBean();

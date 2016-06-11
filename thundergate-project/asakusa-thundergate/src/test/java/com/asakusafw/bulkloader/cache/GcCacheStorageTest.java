@@ -319,7 +319,7 @@ public class GcCacheStorageTest {
 
     static class Mock extends GcCacheStorage {
 
-        final Map<String, FileProtocol.Kind> results = new LinkedHashMap<String, FileProtocol.Kind>();
+        final Map<String, FileProtocol.Kind> results = new LinkedHashMap<>();
 
         Mock put(LocalCacheInfo info, FileProtocol.Kind kind) {
             results.put(info.getPath(), kind);

@@ -40,7 +40,7 @@ import com.asakusafw.testdriver.model.SimpleDataModelDefinition;
  */
 public class TableSourceTest {
 
-    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<Simple>(Simple.class);
+    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<>(Simple.class);
 
     /**
      * H2 database.
@@ -59,11 +59,8 @@ public class TableSourceTest {
      */
     @Test
     public void empty() throws Exception {
-        TableSource<Simple> source = new TableSource<Simple>(info("NUMBER", "TEXT"), h2.open());
-        try {
+        try (TableSource<Simple> source = new TableSource<>(info("NUMBER", "TEXT"), h2.open())) {
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -78,12 +75,9 @@ public class TableSourceTest {
         s1.text = "Hello, world!";
         insert(s1);
 
-        TableSource<Simple> source = new TableSource<Simple>(info("NUMBER", "TEXT"), h2.open());
-        try {
+        try (TableSource<Simple> source = new TableSource<>(info("NUMBER", "TEXT"), h2.open())) {
             assertThat(next(source), is(s1));
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -108,9 +102,8 @@ public class TableSourceTest {
         s3.text = "ccc";
         insert(s3);
 
-        TableSource<Simple> source = new TableSource<Simple>(info("NUMBER", "TEXT"), h2.open());
-        try {
-            LinkedList<Simple> results = new LinkedList<Simple>();
+        try (TableSource<Simple> source = new TableSource<>(info("NUMBER", "TEXT"), h2.open())) {
+            LinkedList<Simple> results = new LinkedList<>();
             results.addLast(next(source));
             assertThat(results.getLast(), not(nullValue()));
             results.addLast(next(source));
@@ -126,8 +119,6 @@ public class TableSourceTest {
                 }
             });
             assertThat(results, is(Arrays.asList(s1, s2, s3)));
-        } finally {
-            source.close();
         }
     }
 
@@ -163,12 +154,9 @@ public class TableSourceTest {
         simple.datetimeValue.set(2000, 0, 2, 3, 4, 5);
         insert(simple);
 
-        TableSource<Simple> source = new TableSource<Simple>(all(), h2.open());
-        try {
+        try (TableSource<Simple> source = new TableSource<>(all(), h2.open())) {
             assertThat(next(source), is(simple));
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -182,12 +170,9 @@ public class TableSourceTest {
         simple.number = 100;
         insert(simple);
 
-        TableSource<Simple> source = new TableSource<Simple>(all(), h2.open());
-        try {
+        try (TableSource<Simple> source = new TableSource<>(all(), h2.open())) {
             assertThat(next(source), is(simple));
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -197,9 +182,10 @@ public class TableSourceTest {
      */
     @Test
     public void reclose() throws Exception {
-        TableSource<Simple> source = new TableSource<Simple>(info("NUMBER", "TEXT"), h2.open());
-        source.close();
-        source.close();
+        try (TableSource<Simple> source = new TableSource<>(info("NUMBER", "TEXT"), h2.open())) {
+            source.close();
+            source.close();
+        }
     }
 
     /**
@@ -209,17 +195,9 @@ public class TableSourceTest {
     @Test(expected = IOException.class)
     public void dropCtor() throws Exception {
         h2.execute("DROP TABLE SIMPLE");
-        Connection conn = h2.open();
-        try {
-            TableSource<Simple> source = new TableSource<Simple>(info("NUMBER", "TEXT"), conn);
-            try {
-                source.next();
-                source.close();
-            } finally {
-                source.close();
-            }
-        } finally {
-            conn.close();
+        try (Connection conn = h2.open();
+                TableSource<Simple> source = new TableSource<>(info("NUMBER", "TEXT"), conn)) {
+            source.next();
         }
     }
 
@@ -230,29 +208,16 @@ public class TableSourceTest {
     @Test(expected = IOException.class)
     public void dropNext() throws Exception {
         h2.execute("DROP TABLE SIMPLE");
-        Connection conn = h2.open();
-        try {
-            TableSource<Simple> source = new TableSource<Simple>(info("NUMBER", "TEXT"), conn);
-            try {
-                h2.execute("DROP TABLE SIMPLE");
-                source.next();
-                source.close();
-            } finally {
-                source.close();
-            }
-        } finally {
-            conn.close();
+        try (Connection conn = h2.open();
+                TableSource<Simple> source = new TableSource<>(info("NUMBER", "TEXT"), conn)) {
+            h2.execute("DROP TABLE SIMPLE");
+            source.next();
         }
     }
 
     private void insert(Simple simple) {
-        try {
-            TableOutput<Simple> output = new TableOutput<Simple>(all(), h2.open());
-            try {
-                output.write(simple);
-            } finally {
-                output.close();
-            }
+        try (TableOutput<Simple> output = new TableOutput<>(all(), h2.open())) {
+            output.write(simple);
         } catch (Exception e) {
             throw new AssertionError(e);
         }
@@ -284,6 +249,6 @@ public class TableSourceTest {
     }
 
     private TableInfo<Simple> info(String... columns) {
-        return new TableInfo<Simple>(SIMPLE, "SIMPLE", Arrays.asList(columns));
+        return new TableInfo<>(SIMPLE, "SIMPLE", Arrays.asList(columns));
     }
 }

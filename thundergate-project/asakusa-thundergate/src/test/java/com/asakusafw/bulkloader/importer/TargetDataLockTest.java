@@ -111,7 +111,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL01";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);
@@ -177,7 +177,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL02";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -243,7 +243,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL03";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition("TEXTDATA1='testdata1-2'");
@@ -312,7 +312,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL04";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean1.setSearchCondition("INTDATA1=11");
@@ -370,7 +370,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL05";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);
@@ -428,7 +428,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL06";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA1", "INTDATA1", "DATEDATA1"}));
         tableBean.setSearchCondition(null);
@@ -486,7 +486,7 @@ public class TargetDataLockTest {
 //        String pattern = "patternL07";
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean = new ImportTargetTableBean();
         tableBean.setImportTargetColumns(Arrays.asList(new String[]{"TEXTDATA2"}));
         tableBean.setSearchCondition(null);

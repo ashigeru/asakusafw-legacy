@@ -37,19 +37,19 @@ public class ExportTargetTableBean {
     /**
      * Export中間TSVファイルに対応するカラム名。
      */
-    private List<String> exportTsvColumns = new ArrayList<String>();
+    private List<String> exportTsvColumns = new ArrayList<>();
     /**
      * Export対象テーブルのカラム名。
      */
-    private List<String> exportTableColumns = new ArrayList<String>();
+    private List<String> exportTableColumns = new ArrayList<>();
     /**
      * 異常データテーブルのカラム名。
      */
-    private List<String> errorTableColumns = new ArrayList<String>();
+    private List<String> errorTableColumns = new ArrayList<>();
     /**
      * キー項目のカラム名。
      */
-    private List<String> keyColumns = new ArrayList<String>();
+    private List<String> keyColumns = new ArrayList<>();
     /**
      * エラーコードを格納するカラム名。
      */
@@ -65,11 +65,11 @@ public class ExportTargetTableBean {
     /**
      * Export対象テーブルのデータをHDFS上に書き出す際のファイルパス。
      */
-    private List<String> dfsFilePaths = new ArrayList<String>();
+    private List<String> dfsFilePaths = new ArrayList<>();
     /**
      * DBサーバ上のExport対象ファイル。
      */
-    private List<File> exportFiles = new ArrayList<File>();
+    private List<File> exportFiles = new ArrayList<>();
     /**
      * Exportテンポラリテーブル名。
      */

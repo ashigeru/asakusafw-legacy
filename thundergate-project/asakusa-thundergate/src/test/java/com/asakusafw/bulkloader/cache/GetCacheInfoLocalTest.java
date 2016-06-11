@@ -114,7 +114,7 @@ public class GetCacheInfoLocalTest {
     @Test(timeout =  5000L)
     public void withoutCache() throws Exception {
         ImportBean bean = createBean();
-        Map<String, ImportTargetTableBean> map = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> map = new HashMap<>();
         ImportTargetTableBean table = new ImportTargetTableBean();
         table.setDfsFilePath("normal");
         map.put("normal", table);
@@ -132,7 +132,7 @@ public class GetCacheInfoLocalTest {
     @Test(timeout =  5000L)
     public void nothing() throws Exception {
         ImportBean bean = createBean();
-        Map<String, ImportTargetTableBean> map = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> map = new HashMap<>();
         ImportTargetTableBean table = new ImportTargetTableBean();
         table.setDfsFilePath("nothing");
         table.setCacheId("nothing");
@@ -167,7 +167,7 @@ public class GetCacheInfoLocalTest {
         }
 
         ImportBean bean = createBean();
-        Map<String, ImportTargetTableBean> map = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> map = new HashMap<>();
         ImportTargetTableBean table = new ImportTargetTableBean();
         table.setDfsFilePath("available");
         table.setCacheId("available");
@@ -203,7 +203,7 @@ public class GetCacheInfoLocalTest {
         }
 
         ImportBean bean = createBean();
-        Map<String, ImportTargetTableBean> map = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> map = new HashMap<>();
 
         ImportTargetTableBean table1 = new ImportTargetTableBean();
         table1.setDfsFilePath("nothing1");
@@ -251,7 +251,7 @@ public class GetCacheInfoLocalTest {
     @Test(timeout =  5000L)
     public void fail() throws Exception {
         ImportBean bean = createBean();
-        Map<String, ImportTargetTableBean> map = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> map = new HashMap<>();
         ImportTargetTableBean table = new ImportTargetTableBean();
         table.setDfsFilePath("nothing");
         table.setCacheId("nothing");

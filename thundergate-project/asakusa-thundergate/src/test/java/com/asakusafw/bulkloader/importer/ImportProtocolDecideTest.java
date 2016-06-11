@@ -109,7 +109,7 @@ public class ImportProtocolDecideTest {
     @Test
     public void contents() throws Exception {
         ImportBean bean = createBean();
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId(null);
@@ -135,7 +135,7 @@ public class ImportProtocolDecideTest {
     public void create_cache() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -165,7 +165,7 @@ public class ImportProtocolDecideTest {
         assertThat(info.getFeatureVersion(), is(CacheInfo.FEATURE_VERSION));
         assertThat(info.getTimestamp(), is(not(nullValue())));
         assertThat(info.getTableName(), is("__TG_TEST1"));
-        assertThat(info.getColumnNames(), is((Object) new HashSet<String>(tb1.getImportTargetColumns())));
+        assertThat(info.getColumnNames(), is((Object) new HashSet<>(tb1.getImportTargetColumns())));
         assertThat(info.getModelClassName(), is(ImportTarget1.class.getName()));
         assertThat(info.getModelClassVersion(), is(new ImportTarget1().__tgc__DataModelVersion()));
     }
@@ -178,7 +178,7 @@ public class ImportProtocolDecideTest {
     public void update_cache() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -229,7 +229,7 @@ public class ImportProtocolDecideTest {
         assertThat(info.getFeatureVersion(), is(CacheInfo.FEATURE_VERSION));
         assertThat(info.getTimestamp(), is(not(nullValue())));
         assertThat(info.getTableName(), is("__TG_TEST1"));
-        assertThat(info.getColumnNames(), is((Object) new HashSet<String>(tb1.getImportTargetColumns())));
+        assertThat(info.getColumnNames(), is((Object) new HashSet<>(tb1.getImportTargetColumns())));
         assertThat(info.getModelClassName(), is(ImportTarget1.class.getName()));
         assertThat(info.getModelClassVersion(), is(new ImportTarget1().__tgc__DataModelVersion()));
     }
@@ -242,7 +242,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_rebuild() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -294,7 +294,7 @@ public class ImportProtocolDecideTest {
         assertThat(info.getFeatureVersion(), is(CacheInfo.FEATURE_VERSION));
         assertThat(info.getTimestamp(), is(not(nullValue())));
         assertThat(info.getTableName(), is("__TG_TEST1"));
-        assertThat(info.getColumnNames(), is((Object) new HashSet<String>(tb1.getImportTargetColumns())));
+        assertThat(info.getColumnNames(), is((Object) new HashSet<>(tb1.getImportTargetColumns())));
         assertThat(info.getModelClassName(), is(ImportTarget1.class.getName()));
         assertThat(info.getModelClassVersion(), is(new ImportTarget1().__tgc__DataModelVersion()));
     }
@@ -307,7 +307,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_db_rollback() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -359,7 +359,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_dfs_rollback() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -411,7 +411,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_broken_local() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -449,7 +449,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_broken_remote() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -494,7 +494,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_feature_changed() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -546,7 +546,7 @@ public class ImportProtocolDecideTest {
     public void update_cache_inconsistent_model() throws Exception {
         ImportBean bean = createBean();
 
-        Map<String, ImportTargetTableBean> targetTable = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new HashMap<>();
 
         final ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
@@ -597,7 +597,7 @@ public class ImportProtocolDecideTest {
     @Test
     public void conflict_lock() throws Exception {
         ImportBean bean1 = createBean();
-        Map<String, ImportTargetTableBean> targetTable1 = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable1 = new HashMap<>();
         ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
         tb1.setDfsFilePath("tb1");
@@ -608,7 +608,7 @@ public class ImportProtocolDecideTest {
         bean1.setTargetTable(targetTable1);
 
         ImportBean bean2 = createBean();
-        Map<String, ImportTargetTableBean> targetTable2 = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable2 = new HashMap<>();
         ImportTargetTableBean tb2 = new ImportTargetTableBean();
         tb2.setCacheId("tb1");
         tb2.setDfsFilePath("tb1");
@@ -641,7 +641,7 @@ public class ImportProtocolDecideTest {
     @Test
     public void release_lock() throws Exception {
         ImportBean bean1 = createBean();
-        Map<String, ImportTargetTableBean> targetTable1 = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable1 = new HashMap<>();
         ImportTargetTableBean tb1 = new ImportTargetTableBean();
         tb1.setCacheId("tb1");
         tb1.setDfsFilePath("tb1");
@@ -652,7 +652,7 @@ public class ImportProtocolDecideTest {
         bean1.setTargetTable(targetTable1);
 
         ImportBean bean2 = createBean();
-        Map<String, ImportTargetTableBean> targetTable2 = new HashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable2 = new HashMap<>();
         ImportTargetTableBean tb2 = new ImportTargetTableBean();
         tb2.setCacheId("tb1");
         tb2.setDfsFilePath("tb1");

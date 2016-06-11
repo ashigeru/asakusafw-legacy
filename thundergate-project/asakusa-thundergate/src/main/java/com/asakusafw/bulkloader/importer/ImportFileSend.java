@@ -133,9 +133,9 @@ public class ImportFileSend {
 
     private List<String> arrangeSendOrder(ImportBean bean) {
         assert bean != null;
-        final Map<String, ImportTargetTableBean> tables = new HashMap<String, ImportTargetTableBean>();
-        final Map<String, Long> sizes = new HashMap<String, Long>();
-        List<String> tableNames = new ArrayList<String>(bean.getImportTargetTableList());
+        final Map<String, ImportTargetTableBean> tables = new HashMap<>();
+        final Map<String, Long> sizes = new HashMap<>();
+        List<String> tableNames = new ArrayList<>(bean.getImportTargetTableList());
         for (String tableName : tableNames) {
             ImportTargetTableBean tableBean = bean.getTargetTable(tableName);
             tables.put(tableName, tableBean);
@@ -244,7 +244,7 @@ public class ImportFileSend {
         String userName = ConfigurationLoader.getProperty(Constants.PROP_KEY_NAMENODE_USER);
         String scriptPath = ConfigurationLoader.getRemoteScriptPath(Constants.PATH_REMOTE_EXTRACTOR);
         String variableTable = Constants.createVariableTable().toSerialString();
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add(scriptPath);
         command.add(targetName);
         command.add(batchId);
@@ -252,7 +252,7 @@ public class ImportFileSend {
         command.add(executionId);
         command.add(variableTable);
 
-        Map<String, String> env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<>();
         env.putAll(ConfigurationLoader.getPropSubMap(Constants.PROP_PREFIX_HC_ENV));
         env.putAll(RuntimeContext.get().unapply());
 

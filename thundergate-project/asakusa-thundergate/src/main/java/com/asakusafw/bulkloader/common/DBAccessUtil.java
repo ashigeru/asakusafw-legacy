@@ -128,7 +128,7 @@ public final class DBAccessUtil {
                 stmt.setString(1, executionId);
             }
             rs = DBConnection.executeQuery(stmt, sql, new String[] { executionId });
-            List<ExporterBean> beanList = new ArrayList<ExporterBean>();
+            List<ExporterBean> beanList = new ArrayList<>();
             while (rs.next()) {
                 ExporterBean bean = new ExporterBean();
                 bean.setJobflowSid(rs.getString("JOBFLOW_SID"));
@@ -171,7 +171,7 @@ public final class DBAccessUtil {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<ExportTempTableBean> beanList = new ArrayList<ExportTempTableBean>();
+        List<ExportTempTableBean> beanList = new ArrayList<>();
         try {
             conn = DBConnection.getConnection();
             stmt = conn.prepareStatement(sql);
@@ -216,7 +216,7 @@ public final class DBAccessUtil {
      */
     public static List<String> delErrorSystemColumn(List<String> tableColumn, String errorCodeColumn) {
         List<String> errorSystemColumns = Constants.getErrorSystemColumns();
-        List<String> sysColumn = new ArrayList<String>(errorSystemColumns);
+        List<String> sysColumn = new ArrayList<>(errorSystemColumns);
         sysColumn.add(errorCodeColumn);
         return delColumn(tableColumn, sysColumn);
     }
@@ -227,7 +227,7 @@ public final class DBAccessUtil {
      * @return 特定の要素を取り除いた配列
      */
     private static List<String> delColumn(List<String> tableColumn, List<String> delColumn) {
-        List<String> resultList = new ArrayList<String>();
+        List<String> resultList = new ArrayList<>();
 
         // カラム名のリストからシステムカラムを取り除く
         int tableCount = tableColumn.size();

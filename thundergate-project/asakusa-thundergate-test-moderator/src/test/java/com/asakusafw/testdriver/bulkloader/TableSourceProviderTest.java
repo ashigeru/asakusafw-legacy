@@ -37,7 +37,7 @@ import com.asakusafw.testdriver.model.SimpleDataModelDefinition;
  */
 public class TableSourceProviderTest {
 
-    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<Simple>(Simple.class);
+    static final DataModelDefinition<Simple> SIMPLE = new SimpleDataModelDefinition<>(Simple.class);
 
     /**
      * H2 database.
@@ -72,13 +72,12 @@ public class TableSourceProviderTest {
         insert(simple, SIMPLE, "SIMPLE");
 
         TableSourceProvider provider = new TableSourceProvider();
-        DataModelSource source = provider.open(SIMPLE, new URI("bulkloader:provider:SIMPLE"), new TestContext.Empty());
-
-        try {
+        try (DataModelSource source = provider.open(
+                SIMPLE,
+                new URI("bulkloader:provider:SIMPLE"),
+                new TestContext.Empty())) {
             assertThat(next(source), is(simple));
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -101,14 +100,13 @@ public class TableSourceProviderTest {
         insert(s2, SIMPLE, "SIMPLE");
 
         TableSourceProvider provider = new TableSourceProvider();
-        DataModelSource source = provider.open(SIMPLE, new URI("bulkloader:provider:SIMPLE"), new TestContext.Empty());
-
-        try {
+        try (DataModelSource source = provider.open(
+                SIMPLE,
+                new URI("bulkloader:provider:SIMPLE"),
+                new TestContext.Empty())) {
             assertThat(next(source), is(s1));
             assertThat(next(source), is(s2));
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -121,11 +119,11 @@ public class TableSourceProviderTest {
         context.put("provider", "provider");
 
         TableSourceProvider provider = new TableSourceProvider();
-        DataModelSource source = provider.open(SIMPLE, new URI("bulkloader:provider:SIMPLE"), new TestContext.Empty());
-        try {
+        try (DataModelSource source = provider.open(
+                SIMPLE,
+                new URI("bulkloader:provider:SIMPLE"),
+                new TestContext.Empty())) {
             assertThat(next(source), is(nullValue()));
-        } finally {
-            source.close();
         }
     }
 
@@ -143,15 +141,10 @@ public class TableSourceProviderTest {
     }
 
     private <T> void insert(T simple, DataModelDefinition<T> def, String table) {
-        try {
-            TableInfo<T> info = new TableInfo<T>(def, table, Arrays.asList("NUMBER", "TEXT", "C_BOOL", "C_BYTE",
-                    "C_SHORT", "C_LONG", "C_FLOAT", "C_DOUBLE", "C_DECIMAL", "C_DATE", "C_TIME", "C_DATETIME"));
-            TableOutput<T> output = new TableOutput<T>(info, h2.open());
-            try {
-                output.write(simple);
-            } finally {
-                output.close();
-            }
+        TableInfo<T> info = new TableInfo<>(def, table, Arrays.asList("NUMBER", "TEXT", "C_BOOL", "C_BYTE",
+                "C_SHORT", "C_LONG", "C_FLOAT", "C_DOUBLE", "C_DECIMAL", "C_DATE", "C_TIME", "C_DATETIME"));
+        try (TableOutput<T> output = new TableOutput<>(info, h2.open())) {
+            output.write(simple);
         } catch (Exception e) {
             throw new AssertionError(e);
         }
@@ -164,5 +157,4 @@ public class TableSourceProviderTest {
         }
         return null;
     }
-
 }

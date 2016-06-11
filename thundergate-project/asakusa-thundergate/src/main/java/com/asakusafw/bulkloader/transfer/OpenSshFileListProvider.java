@@ -94,7 +94,7 @@ public class OpenSshFileListProvider extends StreamFileListProvider {
         assert hostName != null;
         assert remoteCommand != null;
         assert remoteEnv != null;
-        List<String> localCommand = new ArrayList<String>();
+        List<String> localCommand = new ArrayList<>();
         localCommand.add(sshExec);
         localCommand.add("-l");
         localCommand.add(userName);

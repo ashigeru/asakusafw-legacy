@@ -94,7 +94,7 @@ public class ExportFileLoadTest {
     @Test
     public void loadFileTest01() throws Exception {
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.addExportFile(new File(new File ("src/test/data/exporter/EXP_EXP_TARGET1_1.tsv").getAbsolutePath()));
@@ -189,7 +189,7 @@ public class ExportFileLoadTest {
         util1.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(false);
         table1.addExportFile(new File(new File ("src/test/data/exporter/EXP_EXP_TARGET1_1.tsv").getAbsolutePath()));
@@ -268,7 +268,7 @@ public class ExportFileLoadTest {
         util1.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(false);
         table1.addExportFile(new File(new File ("src/test/data/exporter/EXP_EXP_TARGET1_1.tsv").getAbsolutePath()));
@@ -320,7 +320,7 @@ public class ExportFileLoadTest {
         util1.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.addExportFile(new File(new File ("src/test/data/exporter/EXP_EXP_TARGET1_4.tsv").getAbsolutePath()));
@@ -391,7 +391,7 @@ public class ExportFileLoadTest {
         util1.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.addExportFile(new File(new File ("src/test/data/exporter/EXP_EXP_TARGET1_1.tsv").getAbsolutePath()));
@@ -453,7 +453,7 @@ public class ExportFileLoadTest {
        util1.storeToDatabase(false);
 
        // ExportBeanを生成
-       Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+       Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
        ExportTargetTableBean table1 = new ExportTargetTableBean();
        table1.setDuplicateCheck(true);
        table1.addExportFile(new File(new File ("src/test/data/exporter/EXP_EXP_TARGET1_1.tsv").getAbsolutePath()));

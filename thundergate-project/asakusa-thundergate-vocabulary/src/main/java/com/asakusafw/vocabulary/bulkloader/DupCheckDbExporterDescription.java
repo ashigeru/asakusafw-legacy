@@ -187,7 +187,7 @@ public abstract class DupCheckDbExporterDescription extends BulkLoadExporterDesc
         String errorTableName = getErrorTableName();
 
         // エラーコードカラムをエクスポート対象から外す
-        List<String> errorColumnNames = new ArrayList<String>(getErrorColumnNames());
+        List<String> errorColumnNames = new ArrayList<>(getErrorColumnNames());
         String errorCodeColumnName = getErrorCodeColumnName();
         errorColumnNames.remove(errorCodeColumnName);
 

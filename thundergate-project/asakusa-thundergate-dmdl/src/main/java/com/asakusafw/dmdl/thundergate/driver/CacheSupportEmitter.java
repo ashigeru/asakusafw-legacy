@@ -86,6 +86,7 @@ public class CacheSupportEmitter extends JavaDataModelDriver {
         results.add(createModelVersionMethod(context, model, trait));
         results.add(createTimestampColumnMethod(context, model, trait.getTimestamp()));
         results.add(createSystemIdMethod(context, model, trait.getSid()));
+        results.add(createTimestampMethod(context, model, trait.getTimestamp()));
         results.add(createDeletedMethod(context, model, trait.getDeleteFlag()));
         return results;
     }
@@ -215,6 +216,31 @@ public class CacheSupportEmitter extends JavaDataModelDriver {
                     .toAttributes(),
                 context.resolve(long.class),
                 f.newSimpleName("__tgc__SystemId"),
+                Collections.<FormalParameterDeclaration>emptyList(),
+                statements);
+    }
+
+    private MethodDeclaration createTimestampMethod(
+            EmitContext context,
+            ModelDeclaration model,
+            PropertySymbol timestamp) {
+        assert context != null;
+        assert model != null;
+        assert timestamp != null;
+        ModelFactory f = context.getModelFactory();
+        List<Statement> statements = Lists.create();
+        statements.add(new ExpressionBuilder(f, f.newThis())
+                .method(context.getValueGetterName(timestamp.findDeclaration()))
+                .method("getElapsedSeconds")
+                .toReturnStatement());
+        return f.newMethodDeclaration(
+                null,
+                new AttributeBuilder(f)
+                .annotation(context.resolve(Override.class))
+                .Public()
+                .toAttributes(),
+                context.resolve(long.class),
+                f.newSimpleName("__tgc__Timestamp"),
                 Collections.<FormalParameterDeclaration>emptyList(),
                 statements);
     }

@@ -139,7 +139,7 @@ public class GcCacheStorage {
         boolean green = true;
         try {
             LOG.info("TG-GCCACHE-01010", targetName, executionId);
-            List<LocalCacheInfo> locked = new ArrayList<LocalCacheInfo>();
+            List<LocalCacheInfo> locked = new ArrayList<>();
             for (LocalCacheInfo info : deleted) {
                 LOG.debugMessage("Trying to acquire a cache lock: cacheId={0}, targetName={1}, executionId={2}",
                         info.getId(), targetName, executionId);

@@ -55,6 +55,11 @@ import com.asakusafw.vocabulary.model.TableModel;
     }
 
     @Override
+    public long __tgc__Timestamp() {
+        return updtDate.get().getElapsedSeconds();
+    }
+
+    @Override
     public boolean __tgc__Deleted() {
         return false;
     }

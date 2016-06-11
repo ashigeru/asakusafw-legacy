@@ -87,52 +87,41 @@ public class GenerateTask implements Callable<ModelRepository> {
         LOG.info("データベース\"{}\"からテーブルの定義を読み込んでいます",
                 configuration.getJdbcUrl());
 
-        DatabaseSource source = new DatabaseSource(
+        try (DatabaseSource source = new DatabaseSource(
                 configuration.getJdbcDriver(),
                 configuration.getJdbcUrl(),
                 configuration.getJdbcUser(),
                 configuration.getJdbcPassword(),
-                configuration.getDatabaseName());
-        try {
+                configuration.getDatabaseName())) {
             List<ModelDescription> collected = source.collectTables(
                     configuration.getMatcher());
-
             for (ModelDescription model : collected) {
                 LOG.info("データベースから読み込んだテーブルモデル{}を登録しています",
                         model.getReference());
                 repository.add(model);
             }
-
             LOG.info("データベースから{}個のテーブルモデルを登録しました", collected.size());
-        } finally {
-            source.close();
         }
     }
 
     private void collectFromViews(ModelRepository repository) throws IOException, SQLException {
         LOG.info("データベース\"{}\"からビューの定義を読み込んでいます",
                 configuration.getJdbcUrl());
-
-        DatabaseSource source = new DatabaseSource(
+        try (DatabaseSource source = new DatabaseSource(
                 configuration.getJdbcDriver(),
                 configuration.getJdbcUrl(),
                 configuration.getJdbcUser(),
                 configuration.getJdbcPassword(),
-                configuration.getDatabaseName());
-        try {
+                configuration.getDatabaseName())) {
             List<ModelDescription> collected = source.collectViews(
                     repository,
                     configuration.getMatcher());
-
             for (ModelDescription model : collected) {
                 LOG.info("データベースから読み込んだビューモデル{}を登録しています",
                         model.getReference());
                 repository.add(model);
             }
-
             LOG.info("データベースから{}個のビューモデルを登録しました", collected.size());
-        } finally {
-            source.close();
         }
     }
 
@@ -186,13 +175,8 @@ public class GenerateTask implements Callable<ModelRepository> {
             return;
         }
         LOG.info("レコードロック用のDDLを生成しています: {}", output);
-        try {
-            FileOutputStream stream = FileUtils.openOutputStream(output);
-            try {
-                generator.appendTo(stream);
-            } finally {
-                stream.close();
-            }
+        try (FileOutputStream stream = FileUtils.openOutputStream(output)) {
+            generator.appendTo(stream);
         } catch (IOException e) {
             LOG.error("レコードロック用のDDL生成に失敗しました", e);
         }

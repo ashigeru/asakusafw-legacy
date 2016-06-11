@@ -30,12 +30,20 @@ public class DeleteMapper extends Mapper<
         NullWritable, ThunderGateCacheSupport,
         NullWritable, ThunderGateCacheSupport> {
 
+    private long invalidate;
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+        super.setup(context);
+        this.invalidate = Invalidation.getInvalidationTimestamp(context.getConfiguration());
+    }
+
     @Override
     protected void map(
             NullWritable key,
             ThunderGateCacheSupport value,
             Context context) throws IOException, InterruptedException {
-        if (value.__tgc__Deleted() == false) {
+        if (value.__tgc__Deleted() == false && Invalidation.isStillValid(value, invalidate)) {
             context.write(key, value);
         }
     }

@@ -20,7 +20,7 @@ usage() {
 Builds cache for ThunderGate.
 
 Usage:
-    $0 subcommand batch-id flow-id execution-id cache-path model-class
+    $0 subcommand batch-id flow-id execution-id cache-path model-class table-name [...]
 
 Parameters:
     subcommand
@@ -35,7 +35,11 @@ Parameters:
     cache-path
         path to the cache location
     model-class
-        Fully qualified class name of data model class
+        fully qualified class name of data model class
+    table-name
+        original table name
+    ...
+        extra arguments for Hadoop command
 EOF
 }
 
@@ -55,7 +59,7 @@ _TGC_ROOT="$(cd "$(dirname "$0")/.." ; pwd)"
 import "$_TGC_ROOT/conf/env.sh"
 import "$_TGC_ROOT/libexec/validate-env.sh"
 
-if [ $# -ne 6 ]
+if [ $# -lt 7 ]
 then
     echo "$@" 1>&2
     usage
@@ -73,6 +77,8 @@ shift
 _OPT_CACHE_PATH="$1"
 shift
 _OPT_MODEL_CLASS="$1"
+shift
+_OPT_TABLE_NAME="$1"
 shift
 
 # Move to home directory
@@ -96,6 +102,8 @@ echo "        Flow ID: $_OPT_FLOW_ID"
 echo "   Execution ID: $_OPT_EXECUTION_ID"
 echo "     Cache Path: $_OPT_CACHE_PATH"
 echo "      Data Type: $_OPT_MODEL_CLASS"
+echo "     Table Name: $_OPT_TABLE_NAME"
+echo "     Extra Args: $@"
 
 export HADOOP_CLASSPATH=""
 "$HADOOP_CMD" jar \
@@ -104,9 +112,11 @@ export HADOOP_CLASSPATH=""
     "$_TGC_CLASS_NAME" \
     -conf "$_TGC_PLUGIN_CONF" \
     -libjars "$_TGC_LIBJARS" \
+    "$@" \
     "$_OPT_SUBCOMMAND" \
     "$_OPT_CACHE_PATH" \
-    "$_OPT_MODEL_CLASS"
+    "$_OPT_MODEL_CLASS" \
+    "$_OPT_TABLE_NAME"
 
 _TGC_RET=$?
 if [ $_TGC_RET -ne 0 ]
@@ -117,7 +127,9 @@ then
     echo "   Main Class: $_TGC_CLASS_NAME" 1>&2
     echo "  Sub Command: $_OPT_SUBCOMMAND"  1>&2
     echo "   Cache Path: $_OPT_CACHE_PATH"  1>&2
-    echo "   Model Type: $_OPT_MODEL_CLASS"  1>&2
+    echo "    Data Type: $_OPT_MODEL_CLASS"  1>&2
+    echo "   Table Name: $_OPT_TABLE_NAME"  1>&2
     echo "    Libraries: -libjars $_TGC_LIBJARS"  1>&2
+    echo "   Extra Args: $@"  1>&2
     exit $_TGC_RET
 fi

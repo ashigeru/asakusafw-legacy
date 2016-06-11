@@ -321,7 +321,7 @@ public class LocalCacheInfoRepository {
             LOG.debugMessage("collecting deleted cache info");
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
-            List<LocalCacheInfo> results = new ArrayList<LocalCacheInfo>();
+            List<LocalCacheInfo> results = new ArrayList<>();
             while (resultSet.next()) {
                 LocalCacheInfo found = toCacheInfoObject(resultSet);
                 LOG.debugMessage("found deleted cache info: {0}", found.getId());

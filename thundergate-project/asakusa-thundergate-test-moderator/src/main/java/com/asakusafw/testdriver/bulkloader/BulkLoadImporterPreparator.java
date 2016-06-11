@@ -64,7 +64,7 @@ public class BulkLoadImporterPreparator extends AbstractImporterPreparator<BulkL
         Connection conn = conf.open();
         boolean green = false;
         try {
-            ModelOutput<V> output = new TableOutput<V>(info, conn);
+            ModelOutput<V> output = new TableOutput<>(info, conn);
             green = true;
             return output;
         } finally {
@@ -83,7 +83,7 @@ public class BulkLoadImporterPreparator extends AbstractImporterPreparator<BulkL
             BulkLoadImporterDescription description) {
         assert definition != null;
         assert description != null;
-        return new TableInfo<V>(
+        return new TableInfo<>(
                 definition,
                 description.getTableName(),
                 description.getColumnNames(),

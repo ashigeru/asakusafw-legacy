@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
@@ -78,9 +79,11 @@ public class CacheBuildClient extends Configured implements Tool {
 
     private Class<?> modelClass;
 
+    private String tableName;
+
     @Override
     public int run(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length != 4) {
             throw new IllegalArgumentException(MessageFormat.format(
                     "Invalid arguments: {0}",
                     Arrays.toString(args)));
@@ -99,6 +102,7 @@ public class CacheBuildClient extends Configured implements Tool {
 
         Path cacheDirectory = new Path(args[1]);
         modelClass = getConf().getClassByName(args[2]);
+        tableName = args[3];
         this.storage = new CacheStorage(getConf(), cacheDirectory.toUri());
         try {
             clearNext();
@@ -121,10 +125,9 @@ public class CacheBuildClient extends Configured implements Tool {
     }
 
     private void update() throws IOException, InterruptedException {
-        Job job = JobCompatibility.newJob(getConf());
-        job.setJobName("TGC-UPDATE-" + storage.getPatchDirectory());
+        Job job = newJob();
 
-        List<StageInput> inputList = new ArrayList<StageInput>();
+        List<StageInput> inputList = new ArrayList<>();
         inputList.add(new StageInput(
                 storage.getHeadContents("*").toString(),
                 TemporaryInputFormat.class,
@@ -188,10 +191,8 @@ public class CacheBuildClient extends Configured implements Tool {
     }
 
     private void create() throws InterruptedException, IOException {
-        Job job = JobCompatibility.newJob(getConf());
-        job.setJobName("TGC-CREATE-" + storage.getPatchDirectory());
-
-        List<StageInput> inputList = new ArrayList<StageInput>();
+        Job job = newJob();
+        List<StageInput> inputList = new ArrayList<>();
         inputList.add(new StageInput(
                 storage.getPatchContents("*").toString(),
                 TemporaryInputFormat.class,
@@ -244,6 +245,14 @@ public class CacheBuildClient extends Configured implements Tool {
                 getNextProperties(),
                 false,
                 storage.getConfiguration());
+    }
+
+    private Job newJob() throws IOException {
+        Job job = JobCompatibility.newJob(getConf());
+        job.setJobName("TGC-CREATE-" + tableName);
+        Configuration conf = job.getConfiguration();
+        Invalidation.setupInvalidationTimestamp(conf, tableName);
+        return job;
     }
 
     private void switchHead() throws IOException {

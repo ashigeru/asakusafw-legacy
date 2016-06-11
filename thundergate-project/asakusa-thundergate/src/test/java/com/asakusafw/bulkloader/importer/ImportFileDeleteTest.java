@@ -99,7 +99,7 @@ public class ImportFileDeleteTest {
         importFile3.createNewFile();
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportFile(importFile1);
         targetTable.put("IMPORT_TARGET1", tableBean1);
@@ -141,7 +141,7 @@ public class ImportFileDeleteTest {
         File importFile3 = new File(dumpDir, "IMP_IMPORT_TARGET3.tsv");
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportFile(importFile1);
         targetTable.put("IMPORT_TARGET1", tableBean1);
@@ -181,7 +181,7 @@ public class ImportFileDeleteTest {
         File importFile3 = null;
 
         // ImportBeanを生成
-        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+        Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
         ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
         tableBean1.setImportFile(importFile1);
         targetTable.put("IMPORT_TARGET1", tableBean1);
@@ -226,7 +226,7 @@ public class ImportFileDeleteTest {
             fos.write(123);
 
             // ImportBeanを生成
-            Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<String, ImportTargetTableBean>();
+            Map<String, ImportTargetTableBean> targetTable = new LinkedHashMap<>();
             ImportTargetTableBean tableBean1 = new ImportTargetTableBean();
             tableBean1.setImportFile(importFile1);
             targetTable.put("IMPORT_TARGET1", tableBean1);

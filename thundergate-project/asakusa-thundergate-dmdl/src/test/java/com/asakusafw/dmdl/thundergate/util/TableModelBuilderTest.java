@@ -124,7 +124,8 @@ public class TableModelBuilderTest {
         assertThat(bAttr.containsAll(list(Attribute.UNIQUE, Attribute.NOT_NULL)), is(true));
     }
 
-    private <T> List<T> list(T... values) {
+    @SafeVarargs
+    private static <T> List<T> list(T... values) {
         return Arrays.asList(values);
     }
 }

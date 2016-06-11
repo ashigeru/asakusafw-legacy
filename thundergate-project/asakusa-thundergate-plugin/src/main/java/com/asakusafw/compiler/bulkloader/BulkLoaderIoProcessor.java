@@ -196,7 +196,7 @@ public class BulkLoaderIoProcessor extends ExternalIoDescriptionProcessor {
     private Set<String> diff(Collection<String> a, Collection<String> b) {
         assert a != null;
         assert b != null;
-        Set<String> diff = new TreeSet<String>(a);
+        Set<String> diff = new TreeSet<>(a);
         diff.removeAll(b);
         return diff;
     }
@@ -509,11 +509,8 @@ public class BulkLoaderIoProcessor extends ExternalIoDescriptionProcessor {
     private void emitProperties(String path, Properties properties) throws IOException {
         assert path != null;
         assert properties != null;
-        OutputStream output = getEnvironment().openResource(null, path);
-        try {
+        try (OutputStream output = getEnvironment().openResource(null, path)) {
             properties.store(output, getEnvironment().getTargetId());
-        } finally {
-            output.close();
         }
     }
 
@@ -536,8 +533,8 @@ public class BulkLoaderIoProcessor extends ExternalIoDescriptionProcessor {
     @Override
     public ExternalIoCommandProvider createCommandProvider(IoContext context) {
         String primary = null;
-        Map<String, IoContextBuilder> targets = new TreeMap<String, IoContextBuilder>();
-        Map<String, IoContextBuilder> caches = new TreeMap<String, IoContextBuilder>();
+        Map<String, IoContextBuilder> targets = new TreeMap<>();
+        Map<String, IoContextBuilder> caches = new TreeMap<>();
         for (Input input : context.getInputs()) {
             BulkLoadImporterDescription desc = extract(input.getDescription());
             String target = desc.getTargetName();
@@ -584,7 +581,7 @@ public class BulkLoaderIoProcessor extends ExternalIoDescriptionProcessor {
     }
 
     private Map<String, IoContext> build(Map<String, IoContextBuilder> builders) {
-        Map<String, IoContext> results = new TreeMap<String, IoContext>();
+        Map<String, IoContext> results = new TreeMap<>();
         for (Map.Entry<String, IoContextBuilder> entry : builders.entrySet()) {
             results.put(entry.getKey(), entry.getValue().build());
         }

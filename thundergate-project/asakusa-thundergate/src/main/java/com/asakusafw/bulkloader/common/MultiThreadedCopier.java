@@ -52,10 +52,10 @@ public final class MultiThreadedCopier<T> {
         assert input != null;
         assert output != null;
         assert working != null;
-        this.outputChannel = new ArrayBlockingQueue<T>(working.size() + 1);
-        this.buffer = new ArrayBlockingQueue<T>(working.size() + 1, false, working);
+        this.outputChannel = new ArrayBlockingQueue<>(working.size() + 1);
+        this.buffer = new ArrayBlockingQueue<>(working.size() + 1, false, working);
         this.input = input;
-        this.task = new OutputTask<T>(outputChannel, buffer, output);
+        this.task = new OutputTask<>(outputChannel, buffer, output);
         this.task.setDaemon(true);
     }
 
@@ -87,7 +87,7 @@ public final class MultiThreadedCopier<T> {
         if (working.isEmpty()) {
             throw new IllegalArgumentException("working must not be empty"); //$NON-NLS-1$
         }
-        return new MultiThreadedCopier<T>(input, output, working).process();
+        return new MultiThreadedCopier<>(input, output, working).process();
     }
 
     private long process() throws IOException, InterruptedException {
@@ -148,7 +148,7 @@ public final class MultiThreadedCopier<T> {
 
         final AtomicBoolean finished = new AtomicBoolean();
 
-        final AtomicReference<Throwable> occurred = new AtomicReference<Throwable>();
+        final AtomicReference<Throwable> occurred = new AtomicReference<>();
 
         long count;
 

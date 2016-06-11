@@ -80,7 +80,7 @@ public class BulkLoaderIoProcessorRunTest {
                 return Ex1.class;
             }
         });
-        JobflowInfo info = tester.compileFlow(new IdentityFlow<Ex1>(in, out));
+        JobflowInfo info = tester.compileFlow(new IdentityFlow<>(in, out));
 
         BulkLoaderScript script = loadScript(info);
         assertThat(script.getImportTargetTables().size(), is(1));
@@ -90,18 +90,18 @@ public class BulkLoaderIoProcessorRunTest {
         ExportTable etable = script.getExportTargetTables().get(0);
         assertThat(etable.getSources().size(), is(1));
 
-        ModelOutput<Ex1> source = tester.openOutput(Ex1.class, itable.getDestination());
-        Ex1 ex1 = new Ex1();
-        ex1.setSid(200);
-        ex1.setValue(1);
-        source.write(ex1);
-        ex1.setSid(300);
-        ex1.setValue(2);
-        source.write(ex1);
-        ex1.setSid(100);
-        ex1.setValue(3);
-        source.write(ex1);
-        source.close();
+        try (ModelOutput<Ex1> source = tester.openOutput(Ex1.class, itable.getDestination())) {
+            Ex1 ex1 = new Ex1();
+            ex1.setSid(200);
+            ex1.setValue(1);
+            source.write(ex1);
+            ex1.setSid(300);
+            ex1.setValue(2);
+            source.write(ex1);
+            ex1.setSid(100);
+            ex1.setValue(3);
+            source.write(ex1);
+        }
 
         assertThat(tester.runStages(info), is(true));
 
@@ -153,7 +153,7 @@ public class BulkLoaderIoProcessorRunTest {
                 return Ex1.class;
             }
         });
-        JobflowInfo info = tester.compileFlow(new IdentityFlow<Ex1>(in, out));
+        JobflowInfo info = tester.compileFlow(new IdentityFlow<>(in, out));
 
         BulkLoaderScript script = loadScript(info);
         assertThat(script.getImportTargetTables().size(), is(1));
@@ -163,18 +163,18 @@ public class BulkLoaderIoProcessorRunTest {
         ExportTable etable = script.getExportTargetTables().get(0);
         assertThat(etable.getSources().size(), is(1));
 
-        ModelOutput<Ex1> source = tester.openOutput(Ex1.class, itable.getDestination());
-        Ex1 ex1 = new Ex1();
-        ex1.setSid(200);
-        ex1.setValue(1);
-        source.write(ex1);
-        ex1.setSid(300);
-        ex1.setValue(2);
-        source.write(ex1);
-        ex1.setSid(100);
-        ex1.setValue(3);
-        source.write(ex1);
-        source.close();
+        try (ModelOutput<Ex1> source = tester.openOutput(Ex1.class, itable.getDestination())) {
+            Ex1 ex1 = new Ex1();
+            ex1.setSid(200);
+            ex1.setValue(1);
+            source.write(ex1);
+            ex1.setSid(300);
+            ex1.setValue(2);
+            source.write(ex1);
+            ex1.setSid(100);
+            ex1.setValue(3);
+            source.write(ex1);
+        }
 
         assertThat(tester.runStages(info), is(true));
 
@@ -197,20 +197,14 @@ public class BulkLoaderIoProcessorRunTest {
     }
 
     private BulkLoaderScript loadScript(JobflowInfo info) throws IOException {
-        PropertyLoader loader = new PropertyLoader(info.getPackageFile(), "default");
-        BulkLoaderScript script;
-        try {
+        try (PropertyLoader loader = new PropertyLoader(info.getPackageFile(), "default")) {
             List<ImportTable> importers = ImportTable.fromProperties(
                     loader.loadImporterProperties(),
                     getClass().getClassLoader());
             List<ExportTable> exporters = ExportTable.fromProperties(
                     loader.loadExporterProperties(),
                     getClass().getClassLoader());
-            script = new BulkLoaderScript(importers, exporters);
-        } finally {
-            loader.close();
+            return new BulkLoaderScript(importers, exporters);
         }
-        return script;
     }
-
 }

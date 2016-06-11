@@ -127,7 +127,7 @@ public class DeleteCacheStorageLocalTest {
      */
     @Test(timeout =  5000L)
     public void nothing() throws Exception {
-        List<LocalCacheInfo> list = new ArrayList<LocalCacheInfo>();
+        List<LocalCacheInfo> list = new ArrayList<>();
         Map<String, Kind> results = new Mock().delete(list, "dummy");
         assertThat(results.size(), is(0));
     }
@@ -140,7 +140,7 @@ public class DeleteCacheStorageLocalTest {
     public void delete() throws Exception {
         prepare(info1);
 
-        List<LocalCacheInfo> list = new ArrayList<LocalCacheInfo>();
+        List<LocalCacheInfo> list = new ArrayList<>();
         list.add(info1);
 
         Map<String, Kind> results = new Mock().delete(list, "dummy");
@@ -154,7 +154,7 @@ public class DeleteCacheStorageLocalTest {
      */
     @Test(timeout =  5000L)
     public void delete_missing() throws Exception {
-        List<LocalCacheInfo> list = new ArrayList<LocalCacheInfo>();
+        List<LocalCacheInfo> list = new ArrayList<>();
         list.add(info1);
 
         Map<String, Kind> results = new Mock().delete(list, "dummy");
@@ -170,7 +170,7 @@ public class DeleteCacheStorageLocalTest {
     public void delete_multiple() throws Exception {
         prepare(info1, info3);
 
-        List<LocalCacheInfo> list = new ArrayList<LocalCacheInfo>();
+        List<LocalCacheInfo> list = new ArrayList<>();
         list.add(info1);
         list.add(info2);
         list.add(info3);

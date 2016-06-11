@@ -136,7 +136,7 @@ public class ConfigurationLoaderTest {
     @Test
     public void checkEnvTest01() throws Exception {
         ConfigurationLoader.init(properties_db, true, false);
-        Map<String, String> m = new HashMap<String, String>();
+        Map<String, String> m = new HashMap<>();
         m.put(Constants.ASAKUSA_HOME, ConfigurationLoader.getEnvProperty(Constants.ASAKUSA_HOME));
         m.put(Constants.THUNDER_GATE_HOME, null);
         ConfigurationLoader.setEnv(m);
@@ -163,7 +163,7 @@ public class ConfigurationLoaderTest {
     @Test
     public void checkEnvTest02() throws Exception {
         ConfigurationLoader.init(properties_db, true, false);
-        Map<String, String> m = new HashMap<String, String>();
+        Map<String, String> m = new HashMap<>();
         m.put(Constants.ASAKUSA_HOME, ConfigurationLoader.getEnvProperty(Constants.ASAKUSA_HOME));
         m.put(Constants.THUNDER_GATE_HOME, "J:\temp");
         ConfigurationLoader.setEnv(m);
@@ -194,7 +194,7 @@ public class ConfigurationLoaderTest {
     @Test
     public void checkEnvTest03() throws Exception {
         ConfigurationLoader.init(properties_db, true, false);
-        Map<String, String> m = new HashMap<String, String>();
+        Map<String, String> m = new HashMap<>();
         m.put(Constants.ASAKUSA_HOME, null);
         m.put(Constants.THUNDER_GATE_HOME, ConfigurationLoader.getEnvProperty(Constants.THUNDER_GATE_HOME));
         ConfigurationLoader.setEnv(m);
@@ -221,7 +221,7 @@ public class ConfigurationLoaderTest {
     @Test
     public void checkEnvTest04() throws Exception {
         ConfigurationLoader.init(properties_db, true, false);
-        Map<String, String> m = new HashMap<String, String>();
+        Map<String, String> m = new HashMap<>();
         m.put(Constants.ASAKUSA_HOME, "J:\temp");
         m.put(Constants.THUNDER_GATE_HOME, ConfigurationLoader.getEnvProperty(Constants.THUNDER_GATE_HOME));
         ConfigurationLoader.setEnv(m);

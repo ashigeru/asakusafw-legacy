@@ -96,7 +96,7 @@ public class ExportDataCopyTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1");
@@ -173,7 +173,7 @@ public class ExportDataCopyTest {
         ConfigurationLoader.setProperty(prop);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1");
@@ -239,7 +239,7 @@ public class ExportDataCopyTest {
         ConfigurationLoader.setProperty(prop);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1");
@@ -305,7 +305,7 @@ public class ExportDataCopyTest {
         ConfigurationLoader.setProperty(prop);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1");
@@ -361,7 +361,7 @@ public class ExportDataCopyTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1");
@@ -428,7 +428,7 @@ public class ExportDataCopyTest {
         util.storeToDatabase(false);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1_1");
@@ -502,7 +502,7 @@ public class ExportDataCopyTest {
         ConfigurationLoader.setProperty(prop);
 
         // ExportBeanを生成
-        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<String, ExportTargetTableBean>();
+        Map<String, ExportTargetTableBean> targetTable = new LinkedHashMap<>();
         ExportTargetTableBean table1 = new ExportTargetTableBean();
         table1.setDuplicateCheck(true);
         table1.setExportTempTableName("TEMP_IMPORT_TARGET1");

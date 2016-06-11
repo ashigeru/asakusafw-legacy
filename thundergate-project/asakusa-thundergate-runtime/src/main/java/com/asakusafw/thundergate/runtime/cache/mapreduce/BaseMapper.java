@@ -32,12 +32,22 @@ public class BaseMapper extends Mapper<
 
     private final PatchApplyKey shuffleKey = new PatchApplyKey();
 
+    private long invalidate;
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+        super.setup(context);
+        this.invalidate = Invalidation.getInvalidationTimestamp(context.getConfiguration());
+    }
+
     @Override
     protected void map(
             NullWritable key,
             ThunderGateCacheSupport value,
             Context context) throws IOException, InterruptedException {
-        shuffleKey.setBase(value);
-        context.write(shuffleKey, value);
+        if (value.__tgc__Deleted() == false && Invalidation.isStillValid(value, invalidate)) {
+            shuffleKey.setBase(value);
+            context.write(shuffleKey, value);
+        }
     }
 }

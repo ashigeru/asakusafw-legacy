@@ -74,7 +74,7 @@ public class ExporterBean {
      * @return エクスポート対象テーブル名の一覧
      */
     public List<String> getExportTargetTableList() {
-        return new ArrayList<String>(exportTargetTable.keySet());
+        return new ArrayList<>(exportTargetTable.keySet());
         // return exportTargetTable.keySet().iterator();
     }
     /**
@@ -97,7 +97,7 @@ public class ExporterBean {
      * @return インポート対象テーブル名の一覧
      */
     public List<String> getImportTargetTableList() {
-        return new ArrayList<String>(importTargetTable.keySet());
+        return new ArrayList<>(importTargetTable.keySet());
 //        return importTargetTable.keySet().iterator();
     }
     /**

@@ -162,7 +162,7 @@ public final class FileNameUtil {
         } catch (IOException e) {
             throw new BulkLoaderSystemException(e, CLASS, "TG-COMMON-00019", rawPaths);
         }
-        List<Path> results = new ArrayList<Path>();
+        List<Path> results = new ArrayList<>();
         for (String rawPath : rawPaths) {
             String resolved = variables.parse(rawPath, false);
             Path fullPath;

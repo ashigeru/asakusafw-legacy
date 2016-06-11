@@ -80,7 +80,7 @@ public final class Constants {
      */
     public static final Set<String> SYSTEM_TABLE_NAMES;
     static {
-        Set<String> set = new TreeSet<String>();
+        Set<String> set = new TreeSet<>();
         set.add("RUNNING_JOBFLOWS");
         set.add("IMPORT_TABLE_LOCK");
         set.add("IMPORT_RECORD_LOCK");
