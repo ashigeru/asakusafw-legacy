@@ -27,7 +27,7 @@ import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
  * Reducer class for ThunderGate Cache merging.
  * @since 0.2.3
  */
-public class PatchApplyReducer extends Reducer<
+public class MergeJoinReducer extends Reducer<
         PatchApplyKey, ThunderGateCacheSupport,
         NullWritable, ThunderGateCacheSupport> {
 

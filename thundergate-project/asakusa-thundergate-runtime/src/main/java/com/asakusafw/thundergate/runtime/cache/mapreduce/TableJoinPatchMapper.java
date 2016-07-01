@@ -23,27 +23,19 @@ import org.apache.hadoop.mapreduce.Mapper;
 import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
 
 /**
- * Logical deleted filter.
- * @since 0.2.3
+ * Logical deleted filter for patches.
+ * @since 0.8.1
  */
-public class DeleteMapper extends Mapper<
+public class TableJoinPatchMapper extends Mapper<
         NullWritable, ThunderGateCacheSupport,
         NullWritable, ThunderGateCacheSupport> {
-
-    private long invalidate;
-
-    @Override
-    protected void setup(Context context) throws IOException, InterruptedException {
-        super.setup(context);
-        this.invalidate = Invalidation.getInvalidationTimestamp(context.getConfiguration());
-    }
 
     @Override
     protected void map(
             NullWritable key,
             ThunderGateCacheSupport value,
             Context context) throws IOException, InterruptedException {
-        if (value.__tgc__Deleted() == false && Invalidation.isStillValid(value, invalidate)) {
+        if (value.__tgc__Deleted() == false) {
             context.write(key, value);
         }
     }

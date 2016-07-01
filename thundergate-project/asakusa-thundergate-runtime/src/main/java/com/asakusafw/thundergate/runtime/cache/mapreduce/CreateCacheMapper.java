@@ -16,29 +16,35 @@
 package com.asakusafw.thundergate.runtime.cache.mapreduce;
 
 import java.io.IOException;
-import java.util.Iterator;
 
-import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.mapreduce.Mapper;
 
 import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
 
 /**
- * Combiner class for ThunderGate Cache merging.
+ * Logical deleted filter.
  * @since 0.2.3
  */
-public class PatchApplyCombiner extends Reducer<
-        PatchApplyKey, ThunderGateCacheSupport,
-        PatchApplyKey, ThunderGateCacheSupport> {
+public class CreateCacheMapper extends Mapper<
+        NullWritable, ThunderGateCacheSupport,
+        NullWritable, ThunderGateCacheSupport> {
+
+    private long invalidate;
 
     @Override
-    protected void reduce(
-            PatchApplyKey key,
-            Iterable<ThunderGateCacheSupport> values,
+    protected void setup(Context context) throws IOException, InterruptedException {
+        super.setup(context);
+        this.invalidate = Invalidation.getInvalidationTimestamp(context.getConfiguration());
+    }
+
+    @Override
+    protected void map(
+            NullWritable key,
+            ThunderGateCacheSupport value,
             Context context) throws IOException, InterruptedException {
-        Iterator<ThunderGateCacheSupport> iter = values.iterator();
-        if (iter.hasNext()) {
-            ThunderGateCacheSupport first = iter.next();
-            context.write(key, first);
+        if (value.__tgc__Deleted() == false && Invalidation.isStillValid(value, invalidate)) {
+            context.write(key, value);
         }
     }
 }
