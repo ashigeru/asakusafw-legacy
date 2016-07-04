@@ -23,7 +23,6 @@ import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -43,7 +42,6 @@ import com.asakusafw.bulkloader.bean.ImportTargetTableBean;
 import com.asakusafw.bulkloader.common.ConfigurationLoader;
 import com.asakusafw.bulkloader.common.Constants;
 import com.asakusafw.bulkloader.common.FileNameUtil;
-import com.asakusafw.bulkloader.common.MultiThreadedCopier;
 import com.asakusafw.bulkloader.exception.BulkLoaderSystemException;
 import com.asakusafw.bulkloader.log.Log;
 import com.asakusafw.bulkloader.transfer.FileList;
@@ -65,8 +63,6 @@ public class DfsFileImport {
     static final Log LOG = new Log(DfsFileImport.class);
 
     private static final int INPUT_BUFFER_BYTES = 128 * 1024;
-
-    private static final int COPY_BUFFER_RECORDS = 1000;
 
     private final ExecutorService executor;
 
@@ -449,25 +445,19 @@ public class DfsFileImport {
             Class<T> targetTableModel,
             URI dfsFilePath,
             InputStream inputStream) throws BulkLoaderSystemException {
+        Configuration conf = new Configuration();
         TsvIoFactory<T> factory = new TsvIoFactory<>(targetTableModel);
         try (ModelInput<T> input = factory.createModelInput(inputStream)) {
-            // TSVファイルをBeanに変換するオブジェクトを生成する
-
-            // ジョブ入力テンポラリ領域に出力するオブジェクトを生成する
-            Configuration conf = new Configuration();
-
-            // コピー用のバッファを作成する
-            Collection<T> working = new ArrayList<>(COPY_BUFFER_RECORDS);
-            for (int i = 0; i < COPY_BUFFER_RECORDS; i++) {
-                working.add(factory.createModelObject());
-            }
+            long count = 0;
+            T buffer = factory.createModelObject();
             try (ModelOutput<T> output = TemporaryStorage.openOutput(conf, targetTableModel, new Path(dfsFilePath))) {
-                return MultiThreadedCopier.copy(input, output, working);
+                while (input.readTo(buffer)) {
+                    count++;
+                    output.write(buffer);
+                }
             }
+            return count;
         } catch (IOException e) {
-            throw new BulkLoaderSystemException(e, getClass(), "TG-EXTRACTOR-02001",
-                    "DFSにファイルを書き出す処理に失敗。URI：" + dfsFilePath);
-        } catch (InterruptedException e) {
             throw new BulkLoaderSystemException(e, getClass(), "TG-EXTRACTOR-02001",
                     "DFSにファイルを書き出す処理に失敗。URI：" + dfsFilePath);
         }
