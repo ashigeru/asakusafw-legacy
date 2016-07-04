@@ -24,6 +24,7 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,6 +40,9 @@ import org.apache.hadoop.fs.Path;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.asakusafw.bulkloader.common.Constants;
 import com.asakusafw.bulkloader.common.FileNameUtil;
@@ -55,17 +59,19 @@ import com.asakusafw.thundergate.runtime.cache.CacheInfo;
 import com.asakusafw.thundergate.runtime.cache.CacheStorage;
 import com.asakusafw.thundergate.runtime.cache.mapreduce.CacheBuildClient;
 import com.asakusafw.thundergate.runtime.cache.mapreduce.Invalidation;
+import com.asakusafw.thundergate.runtime.cache.mapreduce.PatchStrategy;
 
 /**
  * Test for building caches ({@link CacheBuildClient}).
  */
+@RunWith(Parameterized.class)
 public class CacheBuildTest {
 
     /**
      * This test class requires Hadoop is installed.
      */
     @Rule
-    public HadoopEnvironmentChecker check = new HadoopEnvironmentChecker(false);
+    public final HadoopEnvironmentChecker check = new HadoopEnvironmentChecker(false);
 
     /**
      * Deploys framework.
@@ -74,9 +80,32 @@ public class CacheBuildTest {
     public final FrameworkDeployer framework = new FrameworkDeployer() {
         @Override
         protected void deploy() throws IOException {
-            deployLibrary(CacheInfo.class, "core/lib/asakusa-thundergate.jar");
+            deployLibrary(CacheInfo.class, "core/lib/asakusa-thundergate-runtime.jar");
         }
     };
+
+    /**
+     * Returns the parameters.
+     * @return the parameters
+     */
+    @Parameters(name = "{0}")
+    public static List<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                { "merge", -1L },
+                { "table", Long.MAX_VALUE },
+        });
+    }
+
+    private final long limit;
+
+    /**
+     * Creates a new instance.
+     * @param label the parameter label
+     * @param limit the table join limit
+     */
+    public CacheBuildTest(String label, long limit) {
+        this.limit = limit;
+    }
 
     /**
      * Initializes the test.
@@ -528,6 +557,7 @@ public class CacheBuildTest {
                 TestDataModel.class.getName(),
                 "tbl_testing");
         Collections.addAll(args, extra);
+        Collections.addAll(args, "-D", String.format("%s=%d", PatchStrategy.KEY_TABLE_JOIN_LIMIT, limit));
         try (FileListProvider provider = exec(Constants.PATH_REMOTE_ROOT + Constants.PATH_LOCAL_CACHE_BUILD, args)) {
             provider.discardReader();
             provider.discardWriter();

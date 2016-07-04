@@ -34,7 +34,7 @@ import org.apache.hadoop.io.WritableUtils;
 import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
 
 /**
- * Shuffle key object for {@link PatchApplyReducer}.
+ * Shuffle key object for {@link MergeJoinReducer}.
  * @since 0.2.3
  */
 public class PatchApplyKey implements WritableComparable<PatchApplyKey> {

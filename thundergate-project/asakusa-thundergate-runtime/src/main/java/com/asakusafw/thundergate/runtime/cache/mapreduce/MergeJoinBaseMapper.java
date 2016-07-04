@@ -26,7 +26,7 @@ import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
  * Mapper class for base (which should be applied patches) input.
  * @since 0.2.3
  */
-public class BaseMapper extends Mapper<
+public class MergeJoinBaseMapper extends Mapper<
         NullWritable, ThunderGateCacheSupport,
         PatchApplyKey, ThunderGateCacheSupport> {
 

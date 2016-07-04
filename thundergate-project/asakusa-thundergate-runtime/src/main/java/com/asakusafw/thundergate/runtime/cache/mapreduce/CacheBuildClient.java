@@ -39,23 +39,54 @@ import com.asakusafw.runtime.stage.input.StageInputMapper;
 import com.asakusafw.runtime.stage.input.TemporaryInputFormat;
 import com.asakusafw.runtime.stage.output.LegacyBridgeOutputCommitter;
 import com.asakusafw.runtime.stage.output.TemporaryOutputFormat;
+import com.asakusafw.runtime.stage.resource.StageResourceDriver;
 import com.asakusafw.thundergate.runtime.cache.CacheStorage;
 
 /**
  * MapReduce job client for applying cache patch.
+ *
  * This requires following command line arguments:
  * <ol>
  * <li> subcommand:
  *   <ul>
  *   <li> {@code "create"} - create a new cache head from {@code <directory>/PATCH} </li>
  *   <li> {@code "update"} - update cache head with merging {@code <directory>/HEAD} and {@code <directory>/PATCH} </li>
- *   <li> </li>
  *   </ul>
  * </li>
  * <li> path to the cache directory </li>
  * <li> fully qualified data model class name </li>
  * </ol>
+ *
+ * This accepts following Hadoop properties:
+ * <ul>
+ * <li> <code>com.asakusafw.thundergate.cache.invalidate.tables=[regex-table-names]</code>
+ *   <ul>
+ *   <li>
+ *       Invalidation target table names in regular expression:
+ *       to invalidate historical data in the cache for all tables, please put <code>.+</code> explicitly
+ *   </li>
+ *   <li> default: <code>N/A</code> (disabled) </li>
+ *   </ul>
+ * </li>
+ * <li> <code>com.asakusafw.thundergate.cache.invalidate.until=[yyyy-MM-dd HH:mm:ss]</code>
+ *   <ul>
+ *   <li> MAY remove records (exclusive) older than the specified timestamp </li>
+ *   <li> default: <code>N/A</code> (disabled) </li>
+ *   </ul>
+ * </li>
+ * <li> <code>com.asakusafw.thundergate.cache.tablejoin.limit=[size-in-bytes]</code>
+ *   <ul>
+ *   <li>
+ *       The maximum patch size (in bytes) to enable distributed hash based join to update the cache:
+ *       otherwise this will use sorted-merge join
+ *   </li>
+ *   <li> default: <code>-1</code> (distributed hash based join is always disabled) </li>
+ *   </ul>
+ * </li>
+ * </ul>
+ *
  * @since 0.2.3
+ * @version 0.8.1
  */
 public class CacheBuildClient extends Configured implements Tool {
 
@@ -108,8 +139,10 @@ public class CacheBuildClient extends Configured implements Tool {
             clearNext();
             if (create) {
                 create();
+            } else if (PatchStrategy.isTableJoin(tableName, storage)) {
+                updateTable();
             } else {
-                update();
+                updateMerge();
             }
             switchHead();
         } finally {
@@ -124,18 +157,18 @@ public class CacheBuildClient extends Configured implements Tool {
         storage.getFileSystem().delete(getNextDirectory(), true);
     }
 
-    private void update() throws IOException, InterruptedException {
+    private void updateMerge() throws IOException, InterruptedException {
         Job job = newJob();
 
         List<StageInput> inputList = new ArrayList<>();
         inputList.add(new StageInput(
                 storage.getHeadContents("*").toString(),
                 TemporaryInputFormat.class,
-                BaseMapper.class));
+                MergeJoinBaseMapper.class));
         inputList.add(new StageInput(
                 storage.getPatchContents("*").toString(),
                 TemporaryInputFormat.class,
-                PatchMapper.class));
+                MergeJoinPatchMapper.class));
         StageInputDriver.set(job, inputList);
         job.setInputFormatClass(StageInputFormat.class);
         job.setMapperClass(StageInputMapper.class);
@@ -143,7 +176,7 @@ public class CacheBuildClient extends Configured implements Tool {
         job.setMapOutputValueClass(modelClass);
 
         // combiner may have no effect in normal cases
-        job.setReducerClass(PatchApplyReducer.class);
+        job.setReducerClass(MergeJoinReducer.class);
         job.setOutputKeyClass(NullWritable.class);
         job.setOutputValueClass(modelClass);
         job.setPartitionerClass(PatchApplyKey.Partitioner.class);
@@ -157,19 +190,19 @@ public class CacheBuildClient extends Configured implements Tool {
                 LegacyBridgeOutputCommitter.class,
                 org.apache.hadoop.mapred.OutputCommitter.class);
 
-        LOG.info(MessageFormat.format("Applying patch: {0} / {1} -> {2}",
+        LOG.info(MessageFormat.format("applying patch (merge join): {0} / {1} -> {2}",
                 storage.getPatchContents("*"),
                 storage.getHeadContents("*"),
                 getNextContents()));
         try {
             boolean succeed = job.waitForCompletion(true);
-            LOG.info(MessageFormat.format("Applied patch: succeed={0}, {1} / {2} -> {3}",
+            LOG.info(MessageFormat.format("applied patch (merge join): succeed={0}, {1} / {2} -> {3}",
                     succeed,
                     storage.getPatchContents("*"),
                     storage.getHeadContents("*"),
                     getNextContents()));
             if (succeed == false) {
-                throw new IOException(MessageFormat.format("Failed to apply patch: {0} / {1} -> {2}",
+                throw new IOException(MessageFormat.format("failed to apply patch (merge join): {0} / {1} -> {2}",
                         storage.getPatchContents("*"),
                         storage.getHeadContents("*"),
                         getNextContents()));
@@ -177,8 +210,11 @@ public class CacheBuildClient extends Configured implements Tool {
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
         }
+        putMeta();
+    }
 
-        LOG.info(MessageFormat.format("Setting patched properties: {0} -> {1}",
+    private void putMeta() throws IOException {
+        LOG.info(MessageFormat.format("setting patched properties: {0} -> {1}",
                 storage.getPatchProperties(),
                 getNextDirectory()));
         FileUtil.copy(
@@ -190,13 +226,65 @@ public class CacheBuildClient extends Configured implements Tool {
                 storage.getConfiguration());
     }
 
+    private void updateTable() throws IOException, InterruptedException {
+        Job job = newJob();
+        List<StageInput> inputList = new ArrayList<>();
+        inputList.add(new StageInput(
+                storage.getHeadContents("*").toString(),
+                TemporaryInputFormat.class,
+                TableJoinBaseMapper.class));
+        inputList.add(new StageInput(
+                storage.getPatchContents("*").toString(),
+                TemporaryInputFormat.class,
+                TableJoinPatchMapper.class));
+        StageInputDriver.set(job, inputList);
+        StageResourceDriver.add(job, storage.getPatchContents("*").toString(), TableJoinBaseMapper.RESOURCE_KEY);
+        job.setInputFormatClass(StageInputFormat.class);
+        job.setMapperClass(StageInputMapper.class);
+        job.setMapOutputKeyClass(NullWritable.class);
+        job.setMapOutputValueClass(modelClass);
+        job.setOutputKeyClass(NullWritable.class);
+        job.setOutputValueClass(modelClass);
+
+        TemporaryOutputFormat.setOutputPath(job, getNextDirectory());
+        job.setOutputFormatClass(TemporaryOutputFormat.class);
+        job.getConfiguration().setClass(
+                "mapred.output.committer.class",
+                LegacyBridgeOutputCommitter.class,
+                org.apache.hadoop.mapred.OutputCommitter.class);
+
+        job.setNumReduceTasks(0);
+
+        LOG.info(MessageFormat.format("applying patch (table join): {0} / {1} -> {2}",
+                storage.getPatchContents("*"),
+                storage.getHeadContents("*"),
+                getNextContents()));
+        try {
+            boolean succeed = job.waitForCompletion(true);
+            LOG.info(MessageFormat.format("applied patch (table join): succeed={0}, {1} / {2} -> {3}",
+                    succeed,
+                    storage.getPatchContents("*"),
+                    storage.getHeadContents("*"),
+                    getNextContents()));
+            if (succeed == false) {
+                throw new IOException(MessageFormat.format("failed to apply patch (table join): {0} / {1} -> {2}",
+                        storage.getPatchContents("*"),
+                        storage.getHeadContents("*"),
+                        getNextContents()));
+            }
+        } catch (ClassNotFoundException e) {
+            throw new IOException(e);
+        }
+        putMeta();
+    }
+
     private void create() throws InterruptedException, IOException {
         Job job = newJob();
         List<StageInput> inputList = new ArrayList<>();
         inputList.add(new StageInput(
                 storage.getPatchContents("*").toString(),
                 TemporaryInputFormat.class,
-                DeleteMapper.class));
+                CreateCacheMapper.class));
         StageInputDriver.set(job, inputList);
         job.setInputFormatClass(StageInputFormat.class);
         job.setMapperClass(StageInputMapper.class);
@@ -214,19 +302,19 @@ public class CacheBuildClient extends Configured implements Tool {
 
         job.setNumReduceTasks(0);
 
-        LOG.info(MessageFormat.format("Applying patch: {0} / (empty) -> {2}",
+        LOG.info(MessageFormat.format("applying patch (no join): {0} / (empty) -> {2}",
                 storage.getPatchContents("*"),
                 storage.getHeadContents("*"),
                 getNextContents()));
         try {
             boolean succeed = job.waitForCompletion(true);
-            LOG.info(MessageFormat.format("Applied patch: succeed={0}, {1} / (empty) -> {3}",
+            LOG.info(MessageFormat.format("applied patch (no join): succeed={0}, {1} / (empty) -> {3}",
                     succeed,
                     storage.getPatchContents("*"),
                     storage.getHeadContents("*"),
                     getNextContents()));
             if (succeed == false) {
-                throw new IOException(MessageFormat.format("Failed to apply patch: {0} / (empty) -> {2}",
+                throw new IOException(MessageFormat.format("failed to apply patch (no join): {0} / (empty) -> {2}",
                         storage.getPatchContents("*"),
                         storage.getHeadContents("*"),
                         getNextContents()));
@@ -234,17 +322,7 @@ public class CacheBuildClient extends Configured implements Tool {
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
         }
-
-        LOG.info(MessageFormat.format("Setting patched properties: {0} -> {1}",
-                storage.getPatchProperties(),
-                getNextDirectory()));
-        FileUtil.copy(
-                storage.getFileSystem(),
-                storage.getPatchProperties(),
-                storage.getFileSystem(),
-                getNextProperties(),
-                false,
-                storage.getConfiguration());
+        putMeta();
     }
 
     private Job newJob() throws IOException {

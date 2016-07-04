@@ -26,7 +26,7 @@ import com.asakusafw.thundergate.runtime.cache.ThunderGateCacheSupport;
  * Mapper class for base input.
  * @since 0.2.3
  */
-public class PatchMapper extends Mapper<
+public class MergeJoinPatchMapper extends Mapper<
         NullWritable, ThunderGateCacheSupport,
         PatchApplyKey, ThunderGateCacheSupport> {
 
