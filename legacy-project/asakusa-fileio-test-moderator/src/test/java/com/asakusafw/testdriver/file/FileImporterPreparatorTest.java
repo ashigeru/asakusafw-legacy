@@ -94,21 +94,17 @@ public class FileImporterPreparatorTest {
     @Test
     public void simple() throws Exception {
         FileImporterPreparator target = new FileImporterPreparator(factory);
-        ModelOutput<Text> open = target.createOutput(
+        try (ModelOutput<Text> open = target.createOutput(
                 new MockTextDefinition(),
                 new MockFileImporter(Text.class, TextInputFormat.class, "target/testing/input"),
-                EMPTY);
-        try {
+                EMPTY)) {
             open.write(new Text("Hello, world!"));
-        } finally {
-            open.close();
         }
-        InputStream result = loadResult("target/testing/input");
-        Scanner scanner = new Scanner(result, "UTF-8");
-        assertThat(scanner.hasNextLine(), is(true));
-        assertThat(scanner.nextLine(), is("Hello, world!"));
-        assertThat(scanner.hasNextLine(), is(false));
-        scanner.close();
+        try (Scanner scanner = new Scanner(loadResult("target/testing/input"), "UTF-8")) {
+            assertThat(scanner.hasNextLine(), is(true));
+            assertThat(scanner.nextLine(), is("Hello, world!"));
+            assertThat(scanner.hasNextLine(), is(false));
+        }
     }
 
     /**
@@ -118,36 +114,28 @@ public class FileImporterPreparatorTest {
     @Test
     public void sequenceFile() throws Exception {
         FileImporterPreparator target = new FileImporterPreparator(factory);
-        ModelOutput<Text> open = target.createOutput(
+        try (ModelOutput<Text> open = target.createOutput(
                 new MockTextDefinition(),
                 new MockFileImporter(Text.class, SequenceFileInputFormat.class, "target/testing/input"),
-                EMPTY);
-        try {
+                EMPTY)) {
             open.write(new Text("Hello, world!"));
             open.write(new Text("This is a test."));
-        } finally {
-            open.close();
         }
-        SequenceFile.Reader reader = new SequenceFile.Reader(
-                fileSystem,
-                new Path("target/testing/input"),
-                factory.newInstance());
-        try {
+        try (SequenceFile.Reader reader = new SequenceFile.Reader(
+                factory.newInstance(),
+                SequenceFile.Reader.file(fileSystem.makeQualified(new Path("target/testing/input"))))) {
             Text text = new Text();
             assertThat(reader.next(NullWritable.get(), text), is(true));
             assertThat(text.toString(), is("Hello, world!"));
             assertThat(reader.next(NullWritable.get(), text), is(true));
             assertThat(text.toString(), is("This is a test."));
             assertThat(reader.next(NullWritable.get(), text), is(false));
-        } finally {
-            reader.close();
         }
     }
 
     private InputStream loadResult(String path) throws IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        FSDataInputStream input = fileSystem.open(new Path(path));
-        try {
+        try (FSDataInputStream input = fileSystem.open(new Path(path))) {
             byte[] bytes = new byte[1024];
             while (true) {
                 int read = input.read(bytes);
@@ -156,8 +144,6 @@ public class FileImporterPreparatorTest {
                 }
                 buffer.write(bytes, 0, read);
             }
-        } finally {
-            input.close();
         }
         fileSystem.delete(new Path(path), true);
         return new ByteArrayInputStream(buffer.toByteArray());
@@ -175,7 +161,7 @@ public class FileImporterPreparatorTest {
         MockFileImporter(Class<?> modelType, Class<? extends FileInputFormat> format, String... paths) {
             this.modelType = modelType;
             this.format = format;
-            this.paths = new HashSet<String>(Arrays.asList(paths));
+            this.paths = new HashSet<>(Arrays.asList(paths));
         }
 
         @Override

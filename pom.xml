@@ -58,8 +58,6 @@
     <!-- artifact id/versions -->
     <asakusafw.version>0.9.0-SNAPSHOT</asakusafw.version>
     <hadoop.version>2.7.2</hadoop.version>
-    <hadoop1.version>1.2.1</hadoop1.version>
-    <hadoop2.version>2.7.2</hadoop2.version>
     <hadoop.artifact.id>hadoop-client</hadoop.artifact.id>
     <hive.version>1.2.1</hive.version>
     <sdk.hive.version>1.1.1</sdk.hive.version>
@@ -90,24 +88,13 @@
 
     <!-- build configuration -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
     <artifact.name>${project.artifactId}</artifact.name>
     <artifact.version>${asakusafw.version}</artifact.version>
     <artifact.id>${artifact.name}-${artifact.version}</artifact.id>
   </properties>
 
   <profiles>
-    <profile>
-      <id>hadoop1</id>
-      <properties>
-        <hadoop.version>${hadoop1.version}</hadoop.version>
-      </properties>
-    </profile>
-    <profile>
-      <id>hadoop2</id>
-      <properties>
-        <hadoop.version>${hadoop2.version}</hadoop.version>
-      </properties>
-    </profile>
     <profile>
       <id>compiler.bootclasspath</id>
       <activation>
@@ -129,6 +116,25 @@
             </configuration>
           </plugin>
         </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>disable-doclint</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+                <additionalparam>-Xdoclint:all,-Xdoclint:-missing</additionalparam>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
       </build>
     </profile>
   </profiles>
@@ -280,8 +286,8 @@
           <configuration>
             <fork>true</fork>
             <encoding>UTF-8</encoding>
-            <source>1.7</source>
-            <target>1.7</target>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
             <proc>none</proc>
           </configuration>
         </plugin>
@@ -343,7 +349,7 @@
             <downloadSources>true</downloadSources>
             <downloadJavadocs>false</downloadJavadocs>
             <classpathContainers>
-              <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</classpathContainer>
+              <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${java.version}</classpathContainer>
             </classpathContainers>
             <additionalConfig>
               <file>

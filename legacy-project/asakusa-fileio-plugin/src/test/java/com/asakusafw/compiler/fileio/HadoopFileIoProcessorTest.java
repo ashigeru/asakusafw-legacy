@@ -111,13 +111,10 @@ public class HadoopFileIoProcessorTest {
             if (corelib != null) {
                 String classFile = "org/apache/hadoop/mapreduce/lib/output/MultipleOutputs.class";
                 LOG.debug("Searching MultipleOutputs");
-                JarFile jar = new JarFile(corelib);
-                try {
+                try (JarFile jar = new JarFile(corelib)) {
                     boolean found = jar.getJarEntry(classFile) != null;
                     LOG.debug("Searched MultipleOutputs: found={}", found);
                     return found;
-                } finally {
-                    jar.close();
                 }
             }
         } catch (Exception e) {
@@ -353,9 +350,9 @@ public class HadoopFileIoProcessorTest {
                 GenericOptionValue.ENABLED.getSymbol());
         JobflowInfo info = tester.compileJobflow(SingleOutputJob.class);
 
-        ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"));
-        writeTestData(source);
-        source.close();
+        try (ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"))) {
+            writeTestData(source);
+        }
 
         assertThat(tester.run(info), is(true));
 
@@ -375,9 +372,9 @@ public class HadoopFileIoProcessorTest {
                 GenericOptionValue.ENABLED.getSymbol());
         JobflowInfo info = tester.compileJobflow(MultipleOutputJob.class);
 
-        ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"));
-        writeTestData(source);
-        source.close();
+        try (ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"))) {
+            writeTestData(source);
+        }
 
         assertThat(tester.run(info), is(true));
 
@@ -409,9 +406,9 @@ public class HadoopFileIoProcessorTest {
                 GenericOptionValue.ENABLED.getSymbol());
         JobflowInfo info = tester.compileJobflow(IndependentOutputJob.class);
 
-        ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"));
-        writeTestData(source);
-        source.close();
+        try (ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"))) {
+            writeTestData(source);
+        }
 
         assertThat(tester.run(info), is(true));
 
@@ -435,9 +432,9 @@ public class HadoopFileIoProcessorTest {
                 GenericOptionValue.ENABLED.getSymbol());
         JobflowInfo info = tester.compileJobflow(NestedOutputJob.class);
 
-        ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"));
-        writeTestData(source);
-        source.close();
+        try (ModelOutput<Ex1> source = tester.openOutput(Ex1.class, tester.getImporter(info, "input"))) {
+            writeTestData(source);
+        }
 
         assertThat(tester.run(info), is(true));
 
@@ -454,8 +451,12 @@ public class HadoopFileIoProcessorTest {
         Configuration conf = tester.configuration();
         Path path = new Path(location.toPath('/'));
         FileSystem fs = path.getFileSystem(conf);
-        SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf, path, NullWritable.class, aClass);
-        return new SequenceFileModelOutput<T>(writer);
+        SequenceFile.Writer writer = SequenceFile.createWriter(
+                conf,
+                SequenceFile.Writer.file(fs.makeQualified(path)),
+                SequenceFile.Writer.keyClass(NullWritable.class),
+                SequenceFile.Writer.valueClass(aClass));
+        return new SequenceFileModelOutput<>(writer);
     }
 
     private void checkSids(List<Ex1> results) {
@@ -501,18 +502,17 @@ public class HadoopFileIoProcessorTest {
             Path path = new Path(Location.fromPath(instance.getPathPrefix(), '/').toString());
             FileSystem fs = path.getFileSystem(tester.configuration());
             FileStatus[] statuses = fs.globStatus(path);
-            List<Ex1> results = new ArrayList<Ex1>();
+            List<Ex1> results = new ArrayList<>();
             for (FileStatus status : statuses) {
-                SequenceFile.Reader reader = new SequenceFile.Reader(fs, status.getPath(), tester.configuration());
-                try {
+                try (SequenceFile.Reader reader = new SequenceFile.Reader(
+                        tester.configuration(),
+                        SequenceFile.Reader.file(fs.makeQualified(status.getPath())))) {
                     Ex1 model = new Ex1();
                     while (reader.next(NullWritable.get(), model)) {
                         Ex1 copy = new Ex1();
                         copy.copyFrom(model);
                         results.add(copy);
                     }
-                } finally {
-                    reader.close();
                 }
             }
             Collections.sort(results, new Comparator<Ex1>() {

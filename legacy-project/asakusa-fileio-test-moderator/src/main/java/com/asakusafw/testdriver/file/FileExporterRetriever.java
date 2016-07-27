@@ -25,14 +25,18 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.JobID;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.apache.hadoop.mapreduce.TaskAttemptID;
+import org.apache.hadoop.mapreduce.TaskID;
+import org.apache.hadoop.mapreduce.TaskType;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl;
 import org.apache.hadoop.util.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.asakusafw.runtime.compatibility.JobCompatibility;
 import com.asakusafw.runtime.io.ModelOutput;
 import com.asakusafw.runtime.util.VariableTable;
 import com.asakusafw.testdriver.core.BaseExporterRetriever;
@@ -122,14 +126,14 @@ public class FileExporterRetriever extends BaseExporterRetriever<FileExporterDes
         VariableTable variables = createVariables(context);
         checkType(definition, description);
         Configuration conf = configurations.newInstance();
-        Job job = JobCompatibility.newJob(conf);
+        Job job = Job.getInstance(conf);
         String resolved = variables.parse(description.getPathPrefix(), false);
         FileInputFormat.setInputPaths(job, new Path(resolved));
-        TaskAttemptContext taskContext = JobCompatibility.newTaskAttemptContext(
+        TaskAttemptContext taskContext = new TaskAttemptContextImpl(
                 job.getConfiguration(),
-                JobCompatibility.newTaskAttemptId(JobCompatibility.newTaskId(JobCompatibility.newJobId())));
+                new TaskAttemptID(new TaskID(new JobID(), TaskType.MAP, 0), 0));
         FileInputFormat<?, V> format = getOpposite(conf, description.getOutputFormat());
-        FileInputFormatDriver<V> result = new FileInputFormatDriver<V>(definition, taskContext, format);
+        FileInputFormatDriver<V> result = new FileInputFormatDriver<>(definition, taskContext, format);
         return result;
     }
 

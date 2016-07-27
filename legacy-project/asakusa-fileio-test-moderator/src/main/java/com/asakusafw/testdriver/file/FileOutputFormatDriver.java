@@ -78,7 +78,6 @@ class FileOutputFormatDriver<V> implements ModelOutput<V> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void write(V model) throws IOException {
         try {

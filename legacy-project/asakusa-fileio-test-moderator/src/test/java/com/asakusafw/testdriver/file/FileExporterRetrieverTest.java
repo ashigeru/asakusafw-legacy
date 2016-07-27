@@ -93,8 +93,7 @@ public class FileExporterRetrieverTest {
         putTextRaw("target/testing/hello", "Hello, world!\nThis is a test.\n".getBytes("UTF-8"));
 
         MockTextDefinition definition = new MockTextDefinition();
-        DataModelSource result = retriever.createSource(definition, exporter, EMPTY);
-        try {
+        try (DataModelSource result = retriever.createSource(definition, exporter, EMPTY)) {
             DataModelReflection ref;
             ref = result.next();
             assertThat(ref, is(not(nullValue())));
@@ -106,8 +105,6 @@ public class FileExporterRetrieverTest {
 
             ref = result.next();
             assertThat(ref, is(nullValue()));
-        } finally {
-            result.close();
         }
     }
 
@@ -123,8 +120,7 @@ public class FileExporterRetrieverTest {
         putTextSequenceFile("target/testing/hello", "Hello, world!", "This is a test.");
 
         MockTextDefinition definition = new MockTextDefinition();
-        DataModelSource result = retriever.createSource(definition, exporter, EMPTY);
-        try {
+        try (DataModelSource result = retriever.createSource(definition, exporter, EMPTY)) {
             DataModelReflection ref;
             ref = result.next();
             assertThat(ref, is(not(nullValue())));
@@ -136,33 +132,24 @@ public class FileExporterRetrieverTest {
 
             ref = result.next();
             assertThat(ref, is(nullValue()));
-        } finally {
-            result.close();
         }
     }
 
     private void putTextRaw(String path, byte[] bytes) throws IOException {
-        FSDataOutputStream output = fileSystem.create(new Path(path), true);
-        try {
+        try (FSDataOutputStream output = fileSystem.create(new Path(path), true)) {
             output.write(bytes);
-        } finally {
-            output.close();
         }
     }
 
     private void putTextSequenceFile(String path, String... lines) throws IOException {
-        SequenceFile.Writer writer = new SequenceFile.Writer(
-                fileSystem,
+        try (SequenceFile.Writer writer = SequenceFile.createWriter(
                 factory.newInstance(),
-                new Path(path),
-                NullWritable.class,
-                Text.class);
-        try {
+                SequenceFile.Writer.file(fileSystem.makeQualified(new Path(path))),
+                SequenceFile.Writer.keyClass(NullWritable.class),
+                SequenceFile.Writer.valueClass(Text.class))) {
             for (String s : lines) {
                 writer.append(NullWritable.get(), new Text(s));
             }
-        } finally {
-            writer.close();
         }
     }
 

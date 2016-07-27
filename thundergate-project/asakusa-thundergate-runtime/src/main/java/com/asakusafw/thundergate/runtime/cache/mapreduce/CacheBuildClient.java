@@ -31,7 +31,6 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.Tool;
 
-import com.asakusafw.runtime.compatibility.JobCompatibility;
 import com.asakusafw.runtime.stage.StageInput;
 import com.asakusafw.runtime.stage.input.StageInputDriver;
 import com.asakusafw.runtime.stage.input.StageInputFormat;
@@ -326,7 +325,7 @@ public class CacheBuildClient extends Configured implements Tool {
     }
 
     private Job newJob() throws IOException {
-        Job job = JobCompatibility.newJob(getConf());
+        Job job = Job.getInstance(getConf());
         job.setJobName("TGC-CREATE-" + tableName);
         Configuration conf = job.getConfiguration();
         Invalidation.setupInvalidationTimestamp(conf, tableName);

@@ -185,7 +185,7 @@ public final class Constants {
 
     private static List<String> buildEnvProperties(String suffix) {
         assert suffix != null;
-        List<String> properties = new ArrayList<String>(ENV_PREFIX.length);
+        List<String> properties = new ArrayList<>(ENV_PREFIX.length);
         for (String prefix : ENV_PREFIX) {
             properties.add(prefix + suffix);
         }
