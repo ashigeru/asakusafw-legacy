@@ -75,7 +75,7 @@ class FileInputFormatDriver<V> implements DataModelSource {
         this.format = format;
 
         LOG.debug("Computing input splits: {}", format.getClass().getName());
-        this.splits = new LinkedList<InputSplit>(format.getSplits(context));
+        this.splits = new LinkedList<>(format.getSplits(context));
     }
 
     @Override

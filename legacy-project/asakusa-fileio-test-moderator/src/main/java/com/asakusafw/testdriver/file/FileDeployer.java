@@ -25,18 +25,22 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.JobID;
 import org.apache.hadoop.mapreduce.OutputFormat;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.apache.hadoop.mapreduce.TaskAttemptID;
+import org.apache.hadoop.mapreduce.TaskID;
+import org.apache.hadoop.mapreduce.TaskType;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.asakusafw.runtime.compatibility.JobCompatibility;
 import com.asakusafw.runtime.io.ModelOutput;
 import com.asakusafw.testdriver.core.DataModelDefinition;
 
 /**
- * Open output and finally deployes result data.
+ * Open output and finally deploys result data.
  */
 final class FileDeployer {
 
@@ -73,7 +77,7 @@ final class FileDeployer {
         assert destination != null;
         assert output != null;
         LOG.debug("Opening {} using {}", destination, output.getClass().getName());
-        Job job = JobCompatibility.newJob(configuration);
+        Job job = Job.getInstance(configuration);
         job.setOutputKeyClass(NullWritable.class);
         job.setOutputValueClass(definition.getModelClass());
         final File temporaryDir = File.createTempFile("asakusa", ".tempdir");
@@ -83,9 +87,9 @@ final class FileDeployer {
         LOG.debug("Using staging deploy target: {}", temporaryDir);
         URI uri = temporaryDir.toURI();
         FileOutputFormat.setOutputPath(job, new Path(uri));
-        TaskAttemptContext context = JobCompatibility.newTaskAttemptContext(
+        TaskAttemptContext context = new TaskAttemptContextImpl(
                 job.getConfiguration(),
-                JobCompatibility.newTaskAttemptId(JobCompatibility.newTaskId(JobCompatibility.newJobId())));
+                new TaskAttemptID(new TaskID(new JobID(), TaskType.MAP, 0), 0));
         FileOutputFormatDriver<V> result = new FileOutputFormatDriver<V>(context, output, NullWritable.get()) {
             @Override
             public void close() throws IOException {

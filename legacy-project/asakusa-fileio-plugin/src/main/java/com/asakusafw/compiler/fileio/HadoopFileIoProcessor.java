@@ -298,7 +298,7 @@ public class HadoopFileIoProcessor extends ExternalIoDescriptionProcessor {
 
     private Map<Location, List<Slot>> groupByOutputLocation(IoContext context) {
         assert context != null;
-        Map<Location, List<Slot>> results = new TreeMap<Location, List<Slot>>(new Comparator<Location>() {
+        Map<Location, List<Slot>> results = new TreeMap<>(new Comparator<Location>() {
             @Override
             public int compare(Location o1, Location o2) {
                 // o1.parent が o2.parent の祖先パスである場合に、o1がo2より手前に来るように並び替える。

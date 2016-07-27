@@ -80,7 +80,7 @@ public class TableJoinBaseMapper extends Mapper<
     }
 
     private static List<Path> getPatchPaths(Context context) throws IOException {
-        try (StageResourceDriver driver = new StageResourceDriver(context.getConfiguration())) {
+        try (StageResourceDriver driver = new StageResourceDriver(context)) {
             return driver.findCache(RESOURCE_KEY);
         }
     }
