@@ -12,7 +12,7 @@
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-test-moderator</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-fileio-vocabulary</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>

@@ -68,12 +68,12 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-thundergate-runtime</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-test-tools</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -106,7 +106,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime-configuration</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>tests</classifier>

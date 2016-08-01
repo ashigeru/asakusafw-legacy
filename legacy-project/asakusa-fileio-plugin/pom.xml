@@ -14,12 +14,12 @@
     <dependency>
       <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-fileio-vocabulary</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ashigel-compiler</artifactId>
-      <version>${asakusafw.version}</version>
+      <groupId>com.asakusafw.mapreduce.compiler</groupId>
+      <artifactId>asakusa-mapreduce-compiler-core</artifactId>
+      <version>${asakusafw-mapreduce.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -36,7 +36,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime-configuration</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>tests</classifier>
@@ -44,15 +44,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ashigel-compiler</artifactId>
-      <version>${asakusafw.version}</version>
+      <groupId>com.asakusafw.mapreduce.compiler</groupId>
+      <artifactId>asakusa-mapreduce-compiler-core</artifactId>
+      <version>${asakusafw-mapreduce.version}</version>
       <classifier>tests</classifier>
       <optional>true</optional>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-simple-mapreduce</artifactId>
       <version>${asakusafw.version}</version>
       <scope>test</scope>
