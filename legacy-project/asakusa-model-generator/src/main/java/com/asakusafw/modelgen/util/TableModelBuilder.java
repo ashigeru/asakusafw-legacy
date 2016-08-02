@@ -44,7 +44,7 @@ public class TableModelBuilder extends ModelBuilder<TableModelBuilder> {
      */
     public TableModelBuilder(String tableName) {
         super(tableName);
-        this.columns = new ArrayList<Column>();
+        this.columns = new ArrayList<>();
     }
 
     /**
@@ -112,7 +112,7 @@ public class TableModelBuilder extends ModelBuilder<TableModelBuilder> {
                     "プロパティが追加されていません ({0})",
                     getReference()));
         }
-        List<ModelProperty> properties = new ArrayList<ModelProperty>();
+        List<ModelProperty> properties = new ArrayList<>();
         for (Column column : columns) {
             ModelProperty property = toProperty(column);
             properties.add(property);

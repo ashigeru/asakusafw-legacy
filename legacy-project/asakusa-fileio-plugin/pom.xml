@@ -37,10 +37,16 @@
     </dependency>
     <dependency>
       <groupId>com.asakusafw</groupId>
+      <artifactId>asakusa-runtime</artifactId>
+      <version>${asakusafw.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime-configuration</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>tests</classifier>
-      <optional>true</optional>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -48,7 +54,6 @@
       <artifactId>asakusa-mapreduce-compiler-core</artifactId>
       <version>${asakusafw-mapreduce.version}</version>
       <classifier>tests</classifier>
-      <optional>true</optional>
       <scope>test</scope>
     </dependency>
     <dependency>

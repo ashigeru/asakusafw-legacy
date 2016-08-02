@@ -46,7 +46,7 @@ public class ViewAnalyzer {
 
     static final Logger LOG = LoggerFactory.getLogger(ViewAnalyzer.class);
 
-    private List<View> added = new ArrayList<View>();
+    private List<View> added = new ArrayList<>();
 
     /**
      * この解析器に指定のビューを追加する。
@@ -79,8 +79,8 @@ public class ViewAnalyzer {
         List<View> sorted = sort();
 
         Map<Name, ModelDescription> context =
-            new HashMap<Name, ModelDescription>();
-        List<ModelDescription> analyzed = new ArrayList<ModelDescription>();
+            new HashMap<>();
+        List<ModelDescription> analyzed = new ArrayList<>();
         for (View view : sorted) {
             LOG.info("ビューの構造を解析しています: {}", view.ast.name);
             ModelDescription model = transform(view, repository, context);
@@ -222,7 +222,7 @@ public class ViewAnalyzer {
     }
 
     private List<View> sort() {
-        Map<Name, View> map = new HashMap<Name, View>();
+        Map<Name, View> map = new HashMap<>();
         Graph<Name> dependencies = Graphs.newInstance();
         for (View view : added) {
             Name name = view.ast.name;
@@ -243,7 +243,7 @@ public class ViewAnalyzer {
         // 依存関係の逆順に整列
         List<Name> sorted = Graphs.sortPostOrder(dependencies);
 
-        List<View> results = new ArrayList<View>();
+        List<View> results = new ArrayList<>();
         for (Name name : sorted) {
             // 外部参照でないものについてのみ結果に残す
             View view = map.get(name);

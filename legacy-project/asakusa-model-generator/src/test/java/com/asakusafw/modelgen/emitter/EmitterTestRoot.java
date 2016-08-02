@@ -82,7 +82,7 @@ public abstract class EmitterTestRoot {
     @Before
     public void setUp() throws Exception {
         f = Models.getModelFactory();
-        files = new ArrayList<VolatileJavaFile>();
+        files = new ArrayList<>();
         compiler = new VolatileCompiler();
     }
 
@@ -333,7 +333,7 @@ public abstract class EmitterTestRoot {
     }
 
     private static Method find(Object object, String name) {
-        List<Method> found = new ArrayList<Method>();
+        List<Method> found = new ArrayList<>();
         for (Method method : object.getClass().getMethods()) {
             if (method.getName().equals(name)) {
                 found.add(method);
@@ -359,7 +359,7 @@ public abstract class EmitterTestRoot {
             ByteArrayOutputStream write = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(write);
             writable.write(out);
-            out.close();
+            out.flush();
 
             ByteArrayInputStream read = new ByteArrayInputStream(write.toByteArray());
             ObjectInputStream in = new ObjectInputStream(read);

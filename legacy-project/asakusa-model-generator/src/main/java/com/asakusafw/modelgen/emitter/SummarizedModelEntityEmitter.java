@@ -85,7 +85,7 @@ public class SummarizedModelEntityEmitter
     private TypeBodyDeclaration createStartSummarize(
             SummarizedModelDescription model) {
         SimpleName param = common.getVariableNameOf(model, "original");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             statements.add(createStartSummarizeFor(param, property));
         }
@@ -136,7 +136,7 @@ public class SummarizedModelEntityEmitter
     private TypeBodyDeclaration createProcessSummarize(
             SummarizedModelDescription model) {
         SimpleName param = common.getVariableNameOf(model, "original");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             // IDENTは一度だけ
             if (property.getFrom().getAggregator() == Aggregator.IDENT) {
@@ -217,7 +217,7 @@ public class SummarizedModelEntityEmitter
     private Annotation createModelRefAnnotation(
             ModelReference reference,
             List<Source> groupSources) {
-        List<String> groupKeys = new ArrayList<String>();
+        List<String> groupKeys = new ArrayList<>();
         for (Source s : groupSources) {
             groupKeys.add(common.getFieldNameOf(
                     s.getName(),
@@ -258,7 +258,7 @@ public class SummarizedModelEntityEmitter
 
     @Override
     protected Javadoc createJavadocForModel(SummarizedModelDescription model) {
-        List<String> groupByNames = new ArrayList<String>();
+        List<String> groupByNames = new ArrayList<>();
         for (Source source : model.getGroupBy()) {
             groupByNames.add(source.getName());
         }

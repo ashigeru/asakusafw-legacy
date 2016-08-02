@@ -60,7 +60,7 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
         if (right == null) {
             throw new IllegalArgumentException("right must not be null"); //$NON-NLS-1$
         }
-        this.columns = new ArrayList<String>();
+        this.columns = new ArrayList<>();
         this.left = new Side(left);
         this.right = new Side(right);
         if (leftAlias != null) {
@@ -200,7 +200,7 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
 
     private List<ModelProperty> buildProperties() {
         // ペア用のコンテナを作成
-        Map<String, SourcePair> pairs = new TreeMap<String, SourcePair>();
+        Map<String, SourcePair> pairs = new TreeMap<>();
         for (String mapTo : columns) {
             pairs.put(mapTo, new SourcePair());
         }
@@ -226,7 +226,7 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
         }
 
         // ペアの情報を元にプロパティを構築
-        List<ModelProperty> properties = new ArrayList<ModelProperty>();
+        List<ModelProperty> properties = new ArrayList<>();
         for (String mapTo : columns) {
             SourcePair sources = pairs.get(mapTo);
             assert sources != null;
@@ -294,11 +294,11 @@ public class JoinedModelBuilder extends ModelBuilder<JoinedModelBuilder> {
         Side(ModelDescription model) {
             assert model != null;
             this.model = model;
-            this.sources = new TreeMap<String, Source>();
+            this.sources = new TreeMap<>();
             // FIXME 標準のエイリアス
             this.alias = model.getReference().getSimpleName();
-            this.condition = new ArrayList<Source>();
-            this.mapping = new TreeMap<String, String>();
+            this.condition = new ArrayList<>();
+            this.mapping = new TreeMap<>();
             for (Source s : model.getPropertiesAsSources()) {
                 sources.put(s.getName(), s);
                 mapping.put(s.getName(), null);

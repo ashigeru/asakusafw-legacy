@@ -56,7 +56,7 @@ public class Join {
         }
         this.table = table;
         this.alias = alias;
-        this.condition = Collections.unmodifiableList(new ArrayList<On>(condition));
+        this.condition = Collections.unmodifiableList(new ArrayList<>(condition));
     }
 
     @Override

@@ -34,6 +34,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.SequenceFile;
 import org.junit.Assume;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
@@ -68,6 +69,7 @@ import com.asakusafw.compiler.util.tester.CompilerTester;
 import com.asakusafw.runtime.io.ModelOutput;
 import com.asakusafw.runtime.io.sequencefile.SequenceFileModelOutput;
 import com.asakusafw.runtime.value.IntOption;
+import com.asakusafw.runtime.windows.WindowsSupport;
 import com.asakusafw.vocabulary.external.FileExporterDescription;
 
 /**
@@ -76,6 +78,12 @@ import com.asakusafw.vocabulary.external.FileExporterDescription;
 public class HadoopFileIoProcessorTest {
 
     static final Logger LOG = LoggerFactory.getLogger(HadoopFileIoProcessorTest.class);
+
+    /**
+     * Support for Windows platform.
+     */
+    @ClassRule
+    public static final WindowsSupport WINDOWS_SUPPORT = new WindowsSupport();
 
     static volatile boolean enableOutput = false;
 

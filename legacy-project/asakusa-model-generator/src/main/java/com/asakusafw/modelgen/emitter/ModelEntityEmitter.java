@@ -101,7 +101,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
         bless(common.getModelType(model.getReference()));
 
         List<Annotation> annotations = createAnnotationsForModel(model);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(new AttributeBuilder(f)
             .annotation(
                     bless(Generated.class),
@@ -129,7 +129,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected List<TypeBodyDeclaration> createMembers(T model) {
         List<ModelProperty> properties = model.getProperties();
-        List<TypeBodyDeclaration> body = new ArrayList<TypeBodyDeclaration>();
+        List<TypeBodyDeclaration> body = new ArrayList<>();
         for (ModelProperty property : properties) {
             TypeBodyDeclaration member = createField(property);
             body.add(member);
@@ -171,7 +171,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected FieldDeclaration createField(ModelProperty property) {
         List<Annotation> annotations = createAnnotationsForField(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PRIVATE));
         return f.newFieldDeclaration(
@@ -189,7 +189,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected MethodDeclaration createGetter(ModelProperty property) {
         List<Annotation> annotations = createAnnotationsForGetter(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PUBLIC));
         return f.newMethodDeclaration(
@@ -211,7 +211,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected MethodDeclaration createSetter(ModelProperty property) {
         List<Annotation> annotations = createAnnotationsForSetter(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PUBLIC));
         SimpleName parameterName = createNameForParameter(property);
@@ -244,7 +244,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
         }
         // Javadocは通常のものを代用
         List<Annotation> annotations = createAnnotationsForGetter(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PUBLIC));
         return f.newMethodDeclaration(
@@ -272,7 +272,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
         }
         // Javadocは通常のものを代用
         List<Annotation> annotations = createAnnotationsForSetter(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PUBLIC));
         SimpleName parameterName = createNameForParameter(property);
@@ -299,7 +299,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected MethodDeclaration createOptionGetter(ModelProperty property) {
         List<Annotation> annotations = createAnnotationsForOptionGetter(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PUBLIC));
         return f.newMethodDeclaration(
@@ -321,7 +321,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected MethodDeclaration createOptionSetter(ModelProperty property) {
         List<Annotation> annotations = createAnnotationsForOptionSetter(property);
-        List<Attribute> modifiers = new ArrayList<Attribute>();
+        List<Attribute> modifiers = new ArrayList<>();
         modifiers.addAll(annotations);
         modifiers.add(f.newModifier(ModifierKind.PUBLIC));
         SimpleName parameterName = createNameForParameter(property);
@@ -348,7 +348,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      */
     protected TypeBodyDeclaration createCopier(T model) {
         SimpleName parameter = common.getVariableNameOf(model, "source");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             statements.add(createCopierFor(
                     parameter,
@@ -378,7 +378,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
 
     private TypeBodyDeclaration createWritableWrite(T model) {
         SimpleName parameter = common.getVariableNameOf(model, "out");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             SimpleName fieldName = common.getFieldNameOf(
                     property.getName(),
@@ -406,7 +406,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
 
     private TypeBodyDeclaration createWritableReadFields(T model) {
         SimpleName parameter = common.getVariableNameOf(model, "in");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             SimpleName fieldName = common.getFieldNameOf(
                     property.getName(),
@@ -433,7 +433,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
     }
 
     private TypeBodyDeclaration createHashCode(T model) {
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         SimpleName prime = common.getVariableNameOf(model, "prime");
         SimpleName result = common.getVariableNameOf(model, "result");
         statements.add(new ExpressionBuilder(f, Models.toLiteral(f, HASHCODE_PRIME))
@@ -468,7 +468,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
     }
 
     private TypeBodyDeclaration createEquals(T model) {
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         SimpleName obj = common.getVariableNameOf(model, "obj");
         statements.add(f.newIfStatement(
                 new ExpressionBuilder(f, f.newThis())
@@ -523,7 +523,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
     }
 
     private TypeBodyDeclaration createToString(T model) {
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         SimpleName buffer = common.getVariableNameOf(model, "result");
         statements.add(new TypeBuilder(f, bless(StringBuilder.class))
             .newObject()
@@ -681,7 +681,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      * @return 対応するブロック
      */
     protected Block createBodyForGetter(ModelProperty property) {
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         statements.add(thisFieldFor(property)
             .method(Constants.NAME_OPTION_EXTRACTOR)
             .toReturnStatement());
@@ -697,7 +697,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
     protected Block createBodyForSetter(
             ModelProperty property,
             SimpleName parameterName) {
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         statements.add(thisFieldFor(property)
             .method(Constants.NAME_OPTION_MODIFIER, parameterName)
             .toStatement());
@@ -710,7 +710,7 @@ public abstract class ModelEntityEmitter<T extends ModelDescription>
      * @return 対応するブロック
      */
     protected Block createBodyForAltGetter(ModelProperty property) {
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         statements.add(thisFieldFor(property)
             .method(common.toAltMemberName(Constants.NAME_OPTION_EXTRACTOR, property.getType()))
             .toReturnStatement());

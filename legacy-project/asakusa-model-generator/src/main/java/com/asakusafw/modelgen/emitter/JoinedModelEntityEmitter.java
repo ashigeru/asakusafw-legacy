@@ -89,7 +89,7 @@ public class JoinedModelEntityEmitter extends ModelEntityEmitter<JoinedModelDesc
 
     @Override
     protected List<Annotation> createAnnotationsForField(ModelProperty property) {
-        List<AnnotationElement> elements = new ArrayList<AnnotationElement>();
+        List<AnnotationElement> elements = new ArrayList<>();
         if (property.getFrom() != null) {
             elements.add(f.newAnnotationElement(
                     f.newSimpleName("from"),
@@ -109,7 +109,7 @@ public class JoinedModelEntityEmitter extends ModelEntityEmitter<JoinedModelDesc
     private Annotation createModelRefAnnotation(
             ModelReference reference,
             List<Source> joinCondition) {
-        List<String> groupKeys = new ArrayList<String>();
+        List<String> groupKeys = new ArrayList<>();
         for (Source s : joinCondition) {
             groupKeys.add(common.getFieldNameOf(
                     s.getName(),
@@ -160,7 +160,7 @@ public class JoinedModelEntityEmitter extends ModelEntityEmitter<JoinedModelDesc
     private TypeBodyDeclaration createJoiner(JoinedModelDescription model) {
         SimpleName left = common.getVariableNameOf(model, "left");
         SimpleName right = common.getVariableNameOf(model, "right");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             statements.add(createJoinerFor(model, property, left, right));
         }
@@ -211,7 +211,7 @@ public class JoinedModelEntityEmitter extends ModelEntityEmitter<JoinedModelDesc
     private TypeBodyDeclaration createSplitter(JoinedModelDescription model) {
         SimpleName left = common.getVariableNameOf(model, "left");
         SimpleName right = common.getVariableNameOf(model, "right");
-        List<Statement> statements = new ArrayList<Statement>();
+        List<Statement> statements = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             if (property.getFrom() != null) {
                 statements.add(createSplitterFor(model, property, property.getFrom(), left));

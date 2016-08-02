@@ -149,8 +149,8 @@ public class JoinedModelBuilderTest {
     }
 
     private List<Source> sources(ModelDescription model, String... names) {
-        List<Source> results = new ArrayList<Source>();
-        Set<String> targets = new HashSet<String>();
+        List<Source> results = new ArrayList<>();
+        Set<String> targets = new HashSet<>();
         Collections.addAll(targets, names);
         for (Source s : model.getPropertiesAsSources()) {
             if (targets.contains(s.getName())) {

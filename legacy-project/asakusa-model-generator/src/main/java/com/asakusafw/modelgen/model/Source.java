@@ -53,7 +53,7 @@ public class Source {
         this.declaring = declaring;
         this.name = name;
         this.type = type;
-        this.attributes = Collections.unmodifiableSet(new HashSet<Attribute>(attributes));
+        this.attributes = Collections.unmodifiableSet(new HashSet<>(attributes));
     }
 
     /**

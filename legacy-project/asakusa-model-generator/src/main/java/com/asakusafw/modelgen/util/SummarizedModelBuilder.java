@@ -58,9 +58,9 @@ public class SummarizedModelBuilder extends ModelBuilder<SummarizedModelBuilder>
         super(tableName);
         // TODO 標準のエイリアス名
         this.alias = (alias == null) ? model.getReference().getSimpleName() : alias;
-        this.sources = new TreeMap<String, Source>();
-        this.groupProperties = new ArrayList<Source>();
-        this.columns = new ArrayList<Column>();
+        this.sources = new TreeMap<>();
+        this.groupProperties = new ArrayList<>();
+        this.columns = new ArrayList<>();
         for (Source s : model.getPropertiesAsSources()) {
             sources.put(s.getName(), s);
         }
@@ -154,7 +154,7 @@ public class SummarizedModelBuilder extends ModelBuilder<SummarizedModelBuilder>
                     "プロパティが追加されていません ({0})",
                     getReference()));
         }
-        List<ModelProperty> properties = new ArrayList<ModelProperty>();
+        List<ModelProperty> properties = new ArrayList<>();
         for (Column column : columns) {
             Aggregator aggregator = column.aggregator;
             Source source = column.source;
@@ -180,7 +180,7 @@ public class SummarizedModelBuilder extends ModelBuilder<SummarizedModelBuilder>
         if (groupProperties.isEmpty()) {
             return;
         }
-        Set<String> rest = new LinkedHashSet<String>();
+        Set<String> rest = new LinkedHashSet<>();
         for (Source source : groupProperties) {
             rest.add(source.getName());
         }

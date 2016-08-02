@@ -24,36 +24,20 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.zip.ZipOutputStream;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * Test for {@link PropertyLoader}.
  */
 public class PropertyLoaderTest {
 
-    private File zip;
-
     /**
-     * Initializes the test.
-     * @throws Exception if some errors were occurred
+     * temporary folder.
      */
-    @Before
-    public void setUp() throws Exception {
-        zip = File.createTempFile(getClass().getSimpleName(), ".zip");
-    }
-
-    /**
-     * Cleans up the test.
-     * @throws Exception if some errors were occurred
-     */
-    @After
-    public void tearDown() throws Exception {
-        if (zip != null && zip.exists()) {
-            assertThat(zip.delete(), is(true));
-        }
-    }
+    @Rule
+    public final TemporaryFolder temporary = new TemporaryFolder();
 
     /**
      * インポーターの設定
@@ -64,6 +48,7 @@ public class PropertyLoaderTest {
         Properties source = new Properties();
         source.setProperty("hello", "world");
 
+        File zip = temporary.newFile();
         try (ZipOutputStream archive = new ZipOutputStream(new FileOutputStream(zip))) {
             PropertyLoader.saveImporterProperties(archive, "default", source);
         }
@@ -89,6 +74,7 @@ public class PropertyLoaderTest {
         Properties source = new Properties();
         source.setProperty("hello", "world");
 
+        File zip = temporary.newFile();
         try (ZipOutputStream archive = new ZipOutputStream(new FileOutputStream(zip))){
             PropertyLoader.saveExporterProperties(archive, "default", source);
         }

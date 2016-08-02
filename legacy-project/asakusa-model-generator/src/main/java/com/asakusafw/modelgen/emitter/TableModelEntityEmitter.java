@@ -62,8 +62,8 @@ public class TableModelEntityEmitter
     protected List<Annotation> createAnnotationsForModel(
             TableModelDescription model) {
         String name = model.getReference().getSimpleName();
-        List<String> columnNames = new ArrayList<String>();
-        List<String> primaryKeys = new ArrayList<String>();
+        List<String> columnNames = new ArrayList<>();
+        List<String> primaryKeys = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             columnNames.add(property.getName());
             if (property.getSource().getAttributes().contains(Attribute.PRIMARY_KEY)) {

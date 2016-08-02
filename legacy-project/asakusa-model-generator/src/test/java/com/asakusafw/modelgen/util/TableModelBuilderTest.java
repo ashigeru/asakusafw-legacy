@@ -153,7 +153,8 @@ public class TableModelBuilderTest {
         assertThat(desc.getReference().getSimpleName(), is("Example"));
     }
 
-    private <T> List<T> list(T... values) {
+    @SafeVarargs
+    private static <T> List<T> list(T... values) {
         return Arrays.asList(values);
     }
 }

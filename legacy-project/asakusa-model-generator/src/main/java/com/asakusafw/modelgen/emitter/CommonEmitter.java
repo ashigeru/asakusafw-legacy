@@ -437,7 +437,7 @@ public class CommonEmitter {
      * @return 対応する名前
      */
     public SimpleName getVariableNameOf(ModelDescription model, String hint) {
-        Set<String> used = new HashSet<String>();
+        Set<String> used = new HashSet<>();
         for (ModelProperty p : model.getProperties()) {
             used.add(getFieldNameOf(p.getName(), p.getType()).getToken());
         }

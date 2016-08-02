@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -33,6 +34,7 @@ import com.asakusafw.compiler.flow.Location;
 import com.asakusafw.compiler.testing.JobflowInfo;
 import com.asakusafw.compiler.util.tester.CompilerTester;
 import com.asakusafw.runtime.io.ModelOutput;
+import com.asakusafw.runtime.windows.WindowsSupport;
 import com.asakusafw.thundergate.runtime.property.PropertyLoader;
 import com.asakusafw.vocabulary.bulkloader.DbExporterDescription;
 import com.asakusafw.vocabulary.bulkloader.DbImporterDescription;
@@ -43,6 +45,12 @@ import com.asakusafw.vocabulary.flow.Out;
  * Test for {@link BulkLoaderIoProcessor}.
  */
 public class BulkLoaderIoProcessorRunTest {
+
+    /**
+     * Support for Windows platform.
+     */
+    @ClassRule
+    public static final WindowsSupport WINDOWS_SUPPORT = new WindowsSupport();
 
     /**
      * テストヘルパー。

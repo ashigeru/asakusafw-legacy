@@ -82,33 +82,29 @@ public class ModelOutputEmitterTest extends EmitterTestRoot {
         ClassLoader loader = compile();
 
         Object obj = create(loader, "model.Model");
-        ModelOutput<Object> output = createOutput(loader, emitter, "io.ModelModelOutput");
+        try (ModelOutput<Object> output = createOutput(loader, emitter, "io.ModelModelOutput")) {
+            set(obj, "setId", 100L);
+            output.write(obj);
 
-        set(obj, "setId", 100L);
-        output.write(obj);
+            set(obj, "setId", 300L);
+            output.write(obj);
 
-        set(obj, "setId", 300L);
-        output.write(obj);
+            set(obj, "setId", 500L);
+            output.write(obj);
+        }
 
-        set(obj, "setId", 500L);
-        output.write(obj);
+        try (ModelInput<Object> input = createInput(loader, parser(), "io.ModelModelInput")) {
+            assertThat(input.readTo(obj), is(true));
+            assertThat(get(obj, "getId"), is((Object) 100L));
 
-        output.close();
+            assertThat(input.readTo(obj), is(true));
+            assertThat(get(obj, "getId"), is((Object) 300L));
 
-        RecordParser parser = parser();
-        ModelInput<Object> input = createInput(loader, parser, "io.ModelModelInput");
-        assertThat(input.readTo(obj), is(true));
-        assertThat(get(obj, "getId"), is((Object) 100L));
+            assertThat(input.readTo(obj), is(true));
+            assertThat(get(obj, "getId"), is((Object) 500L));
 
-        assertThat(input.readTo(obj), is(true));
-        assertThat(get(obj, "getId"), is((Object) 300L));
-
-        assertThat(input.readTo(obj), is(true));
-        assertThat(get(obj, "getId"), is((Object) 500L));
-
-        assertThat(input.readTo(obj), is(false));
-
-        input.close();
+            assertThat(input.readTo(obj), is(false));
+        }
     }
 
     /**
@@ -133,57 +129,53 @@ public class ModelOutputEmitterTest extends EmitterTestRoot {
         ClassLoader loader = compile();
 
         Object obj = create(loader, "model.Model");
-        ModelOutput<Object> output = createOutput(loader, emitter, "io.ModelModelOutput");
+        try (ModelOutput<Object> output = createOutput(loader, emitter, "io.ModelModelOutput")) {
+            set(obj, "setId", 100L);
+            set(obj, "setValueAsString", "Hello");
+            set(obj, "setDate", date(1999, 12, 31));
+            set(obj, "setPrice", 2000);
+            set(obj, "setFlag", true);
+            output.write(obj);
 
-        set(obj, "setId", 100L);
-        set(obj, "setValueAsString", "Hello");
-        set(obj, "setDate", date(1999, 12, 31));
-        set(obj, "setPrice", 2000);
-        set(obj, "setFlag", true);
-        output.write(obj);
+            set(obj, "setId", 300L);
+            set(obj, "setValueAsString", "World");
+            set(obj, "setDate", date(2100, 1, 1));
+            set(obj, "setPrice", 9999);
+            set(obj, "setFlag", false);
+            output.write(obj);
 
-        set(obj, "setId", 300L);
-        set(obj, "setValueAsString", "World");
-        set(obj, "setDate", date(2100, 1, 1));
-        set(obj, "setPrice", 9999);
-        set(obj, "setFlag", false);
-        output.write(obj);
+            set(obj, "setId", 500L);
+            set(obj, "setValueAsString", "");
+            set(obj, "setDate", date(1, 1, 1));
+            set(obj, "setPrice", 0);
+            set(obj, "setFlag", true);
+            output.write(obj);
+        }
 
-        set(obj, "setId", 500L);
-        set(obj, "setValueAsString", "");
-        set(obj, "setDate", date(1, 1, 1));
-        set(obj, "setPrice", 0);
-        set(obj, "setFlag", true);
-        output.write(obj);
+        try (ModelInput<Object> input = createInput(loader, parser(), "io.ModelModelInput")) {
+            assertThat(input.readTo(obj), is(true));
+            assertThat(get(obj, "getId"), is((Object) 100L));
+            assertThat(get(obj, "getValueAsString"), is((Object) "Hello"));
+            assertThat(get(obj, "getDate"), is((Object) date(1999, 12, 31)));
+            assertThat(get(obj, "getPrice"), is((Object) 2000));
+            assertThat(get(obj, "isFlag"), is((Object) true));
 
-        output.close();
+            assertThat(input.readTo(obj), is(true));
+            assertThat(get(obj, "getId"), is((Object) 300L));
+            assertThat(get(obj, "getValueAsString"), is((Object) "World"));
+            assertThat(get(obj, "getDate"), is((Object) date(2100, 1, 1)));
+            assertThat(get(obj, "getPrice"), is((Object) 9999));
+            assertThat(get(obj, "isFlag"), is((Object) false));
 
-        RecordParser parser = parser();
-        ModelInput<Object> input = createInput(loader, parser, "io.ModelModelInput");
-        assertThat(input.readTo(obj), is(true));
-        assertThat(get(obj, "getId"), is((Object) 100L));
-        assertThat(get(obj, "getValueAsString"), is((Object) "Hello"));
-        assertThat(get(obj, "getDate"), is((Object) date(1999, 12, 31)));
-        assertThat(get(obj, "getPrice"), is((Object) 2000));
-        assertThat(get(obj, "isFlag"), is((Object) true));
+            assertThat(input.readTo(obj), is(true));
+            assertThat(get(obj, "getId"), is((Object) 500L));
+            assertThat(get(obj, "getValueAsString"), is((Object) ""));
+            assertThat(get(obj, "getDate"), is((Object) date(1, 1, 1)));
+            assertThat(get(obj, "getPrice"), is((Object) 0));
+            assertThat(get(obj, "isFlag"), is((Object) true));
 
-        assertThat(input.readTo(obj), is(true));
-        assertThat(get(obj, "getId"), is((Object) 300L));
-        assertThat(get(obj, "getValueAsString"), is((Object) "World"));
-        assertThat(get(obj, "getDate"), is((Object) date(2100, 1, 1)));
-        assertThat(get(obj, "getPrice"), is((Object) 9999));
-        assertThat(get(obj, "isFlag"), is((Object) false));
-
-        assertThat(input.readTo(obj), is(true));
-        assertThat(get(obj, "getId"), is((Object) 500L));
-        assertThat(get(obj, "getValueAsString"), is((Object) ""));
-        assertThat(get(obj, "getDate"), is((Object) date(1, 1, 1)));
-        assertThat(get(obj, "getPrice"), is((Object) 0));
-        assertThat(get(obj, "isFlag"), is((Object) true));
-
-        assertThat(input.readTo(obj), is(false));
-
-        input.close();
+            assertThat(input.readTo(obj), is(false));
+        }
     }
 
     private Date date(int year, int month, int day) {

@@ -53,9 +53,9 @@ public class JoinedModelDescription extends ModelDescription {
                     reference));
         }
         this.leftCondition = Collections.unmodifiableList(
-                new ArrayList<Source>(leftCondition));
+                new ArrayList<>(leftCondition));
         this.rightCondition = Collections.unmodifiableList(
-                new ArrayList<Source>(rightCondition));
+                new ArrayList<>(rightCondition));
     }
 
     @Override

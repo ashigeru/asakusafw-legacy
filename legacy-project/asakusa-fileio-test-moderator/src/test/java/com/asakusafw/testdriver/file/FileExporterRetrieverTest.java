@@ -32,10 +32,12 @@ import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.asakusafw.runtime.configuration.HadoopEnvironmentChecker;
+import com.asakusafw.runtime.windows.WindowsSupport;
 import com.asakusafw.testdriver.core.DataModelReflection;
 import com.asakusafw.testdriver.core.DataModelSource;
 import com.asakusafw.testdriver.core.TestContext;
@@ -46,6 +48,12 @@ import com.asakusafw.vocabulary.external.FileExporterDescription;
  * Test for {@link FileExporterRetriever}.
  */
 public class FileExporterRetrieverTest {
+
+    /**
+     * Support for Windows platform.
+     */
+    @ClassRule
+    public static final WindowsSupport WINDOWS_SUPPORT = new WindowsSupport();
 
     private static final TestContext EMPTY = new TestContext.Empty();
 
