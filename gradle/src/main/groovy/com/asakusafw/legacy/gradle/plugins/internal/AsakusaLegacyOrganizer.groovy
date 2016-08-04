@@ -19,11 +19,11 @@ import org.gradle.api.Project
 
 import com.asakusafw.gradle.plugins.AsakusafwOrganizerProfile
 import com.asakusafw.gradle.plugins.internal.AbstractOrganizer
-import com.asakusafw.gradle.plugins.internal.PluginUtils
 
 /**
  * Processes an {@link AsakusafwOrganizerProfile} for legacy facilities.
  * @since 0.8.0
+ * @version 0.9.0
  */
 class AsakusaLegacyOrganizer extends AbstractOrganizer {
 
@@ -41,29 +41,6 @@ class AsakusaLegacyOrganizer extends AbstractOrganizer {
      */
     @Override
     void configureProfile() {
-        createConfigurations()
-        configureTasks()
-    }
-
-    private void createConfigurations() {
-        createConfigurations('asakusafw', [
-            DevelopmentDist : "Contents of Asakusa Framework development tools (${profile.name}).",
-        ])
-        PluginUtils.afterEvaluate(project) {
-            AsakusaLegacyBaseExtension base = AsakusaLegacyBasePlugin.get(project)
-            createDependencies('asakusafw', [
-                DevelopmentDist : "com.asakusafw:asakusa-development-tools:${base.featureVersion}:dist@jar",
-            ])
-        }
-    }
-
-    private void configureTasks() {
-        createAttachComponentTasks 'attachComponent', [
-            Development : {
-                into('.') {
-                    extract configuration('asakusafwDevelopmentDist')
-                }
-            },
-        ]
+        // do nothing
     }
 }

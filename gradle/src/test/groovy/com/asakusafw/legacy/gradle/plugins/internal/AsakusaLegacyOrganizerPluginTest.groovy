@@ -24,7 +24,6 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 import com.asakusafw.gradle.plugins.AsakusafwOrganizerPlugin
-import com.asakusafw.gradle.plugins.AsakusafwOrganizerProfile
 import com.asakusafw.gradle.plugins.OrganizerTestRoot
 import com.asakusafw.gradle.plugins.internal.AsakusaSdkPlugin
 
@@ -55,30 +54,5 @@ class AsakusaLegacyOrganizerPluginTest extends OrganizerTestRoot {
         assert !project.plugins.hasPlugin(AsakusaSdkPlugin)
         assert project.plugins.hasPlugin(AsakusafwOrganizerPlugin)
         assert project.plugins.hasPlugin(AsakusaLegacyBasePlugin)
-    }
-
-    /**
-     * Test for {@code project.tasks} for organizer facade tasks.
-     */
-    @Test
-    public void tasks_common() {
-        assert project.tasks.attachComponentDevelopment
-    }
-
-    /**
-     * Test for {@code project.tasks} for profile tasks.
-     */
-    @Test
-    public void tasks_profile() {
-        AsakusafwOrganizerProfile profile = project.asakusafwOrganizer.profiles.testp
-        assert ptask(profile, 'attachComponentDevelopment')
-    }
-
-    /**
-     * Test for dependencies of {@code project.tasks} in organizer facade tasks.
-     */
-    @Test
-    public void tasks_dependencies() {
-        checkDependencies('attachComponentDevelopment')
     }
 }
