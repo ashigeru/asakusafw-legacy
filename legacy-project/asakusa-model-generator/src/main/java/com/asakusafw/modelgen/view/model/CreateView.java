@@ -82,11 +82,11 @@ public class CreateView {
             throw new IllegalArgumentException("groupBy must not be null"); //$NON-NLS-1$
         }
         this.name = name;
-        this.selectList = Collections.unmodifiableList(new ArrayList<Select>(
+        this.selectList = Collections.unmodifiableList(new ArrayList<>(
                 selectList));
         this.from = from;
         this.groupBy = Collections
-                .unmodifiableList(new ArrayList<Name>(groupBy));
+                .unmodifiableList(new ArrayList<>(groupBy));
     }
 
     /**
@@ -120,7 +120,7 @@ public class CreateView {
      * @return このビューが参照する別のモデルの名前
      */
     public Set<Name> getDependencies() {
-        Set<Name> results = new HashSet<Name>();
+        Set<Name> results = new HashSet<>();
         results.add(from.table);
         if (from.join != null) {
             results.add(from.join.table);

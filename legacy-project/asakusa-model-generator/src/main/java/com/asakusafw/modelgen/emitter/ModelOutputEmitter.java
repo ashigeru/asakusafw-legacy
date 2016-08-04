@@ -103,7 +103,7 @@ public class ModelOutputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<TypeBodyDeclaration> createBodyDeclarations(ModelDescription model) {
-        List<TypeBodyDeclaration> results = new ArrayList<TypeBodyDeclaration>();
+        List<TypeBodyDeclaration> results = new ArrayList<>();
         results.add(createEmitterField(model));
         results.add(createConstructor(model));
         results.add(createWriter(model));
@@ -145,7 +145,7 @@ public class ModelOutputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<Statement> createConstructorBody(ModelDescription model) {
-        List<Statement> results = new ArrayList<Statement>();
+        List<Statement> results = new ArrayList<>();
 
         results.add(f.newIfStatement(
                 new ExpressionBuilder(f, createEmitterFieldName())
@@ -182,7 +182,7 @@ public class ModelOutputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<Statement> createWriterBody(ModelDescription model) {
-        List<Statement> results = new ArrayList<Statement>();
+        List<Statement> results = new ArrayList<>();
         for (ModelProperty property : model.getProperties()) {
             results.add(createWriterStatement(property));
         }
@@ -225,7 +225,7 @@ public class ModelOutputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<Statement> createCloserBody() {
-        List<Statement> results = new ArrayList<Statement>();
+        List<Statement> results = new ArrayList<>();
         results.add(new ExpressionBuilder(f, createEmitterFieldName())
             .method("close")
             .toStatement());

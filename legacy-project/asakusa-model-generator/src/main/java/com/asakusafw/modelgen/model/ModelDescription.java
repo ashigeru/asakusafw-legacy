@@ -44,7 +44,7 @@ public abstract class ModelDescription {
         }
         this.reference = reference;
         this.properties = Collections.unmodifiableList(
-                new ArrayList<ModelProperty>(properties));
+                new ArrayList<>(properties));
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class ModelDescription {
      * @return このモデルが有するプロパティの一覧
      */
     public List<Source> getPropertiesAsSources() {
-        List<Source> results = new ArrayList<Source>();
+        List<Source> results = new ArrayList<>();
         for (ModelProperty property : getProperties()) {
             Source source = convertPropertyToSource(property);
             results.add(source);

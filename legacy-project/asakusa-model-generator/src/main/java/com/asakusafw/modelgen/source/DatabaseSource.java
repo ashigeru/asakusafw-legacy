@@ -127,7 +127,7 @@ public class DatabaseSource implements Closeable {
             + " AND tables.TABLE_TYPE = 'BASE TABLE'"
             + " ORDER BY TABLE_NAME, ORDINAL_POSITION";
 
-        List<ModelDescription> results = new ArrayList<ModelDescription>();
+        List<ModelDescription> results = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -182,7 +182,7 @@ public class DatabaseSource implements Closeable {
 
                 // Attributeに設定すべき項目があるか調べる
                 // 現状は、NOT NULL制約と、PRIMARY KEY制約にのみ対応
-                ArrayList<Attribute> attributeList = new ArrayList<Attribute>();
+                ArrayList<Attribute> attributeList = new ArrayList<>();
                 if (isNullable != null && isNullable.equals(STR_NOT_NULL)) {
                     attributeList.add(Attribute.NOT_NULL);
                 }
@@ -270,7 +270,7 @@ public class DatabaseSource implements Closeable {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        List<ViewDefinition> results = new ArrayList<ViewDefinition>();
+        List<ViewDefinition> results = new ArrayList<>();
 
         try {
             ps = conn.prepareStatement(sql);

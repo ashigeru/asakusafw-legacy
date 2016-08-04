@@ -96,7 +96,7 @@ public enum MySqlDataType {
      * NFORMACTION_SCHEMA.COLUMNSのDATA_TYPEカラムの文字列と、
      * MySQLのデータ型との対応を保持するMap。
      */
-    private static Map<String, MySqlDataType> dataTypeMap = new HashMap<String, MySqlDataType>();
+    private static Map<String, MySqlDataType> dataTypeMap = new HashMap<>();
     static {
         for (MySqlDataType type : MySqlDataType.values()) {
             String mySqlStr = type.getDataTypeString();
@@ -111,7 +111,7 @@ public enum MySqlDataType {
      * NFORMACTION_SCHEMA.COLUMNSのDATA_TYPEカラムの文字列と、
      * プロパティの型との対応を保持するMap。
      */
-    private static Map<String, PropertyTypeKind> propertyMap = new HashMap<String, PropertyTypeKind>();
+    private static Map<String, PropertyTypeKind> propertyMap = new HashMap<>();
     static {
         for (MySqlDataType type : MySqlDataType.values()) {
             String mySqlStr = type.getDataTypeString();

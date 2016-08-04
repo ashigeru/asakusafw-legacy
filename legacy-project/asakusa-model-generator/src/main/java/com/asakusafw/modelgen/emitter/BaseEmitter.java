@@ -52,14 +52,14 @@ public abstract class BaseEmitter<T extends ModelDescription> {
      */
     protected final CommonEmitter common;
 
-    private List<String> headerComment;
+    private final List<String> headerComment;
 
     /**
      * インポート宣言を構築する。
      */
     protected ImportBuilder imports;
 
-    private Emitter emitter;
+    private final Emitter emitter;
 
     /**
      * インスタンスを生成する。
@@ -85,7 +85,7 @@ public abstract class BaseEmitter<T extends ModelDescription> {
         this.emitter = new Filer(output, Constants.OUTPUT_ENCODING);
         this.f = factory;
         this.common = new CommonEmitter(factory, rootPackageName);
-        this.headerComment = headerComment == null ? null : new ArrayList<String>(headerComment);
+        this.headerComment = headerComment == null ? null : new ArrayList<>(headerComment);
     }
 
     /**
@@ -95,11 +95,8 @@ public abstract class BaseEmitter<T extends ModelDescription> {
      */
     public void emit(T model) throws IOException {
         CompilationUnit source = createSource(model);
-        PrintWriter writer = openOutputFor(source);
-        try {
+        try (PrintWriter writer = openOutputFor(source)) {
             Models.emit(source, writer);
-        } finally {
-            writer.close();
         }
     }
 

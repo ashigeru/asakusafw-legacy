@@ -104,7 +104,7 @@ public class ModelInputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<TypeBodyDeclaration> createBodyDeclarations(ModelDescription model) {
-        List<TypeBodyDeclaration> results = new ArrayList<TypeBodyDeclaration>();
+        List<TypeBodyDeclaration> results = new ArrayList<>();
         results.add(createParserField(model));
         results.add(createConstructor(model));
         results.add(createReader(model));
@@ -146,7 +146,7 @@ public class ModelInputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<Statement> createConstructorBody(ModelDescription model) {
-        List<Statement> results = new ArrayList<Statement>();
+        List<Statement> results = new ArrayList<>();
 
         results.add(f.newIfStatement(
                 new ExpressionBuilder(f, createParserFieldName())
@@ -183,7 +183,7 @@ public class ModelInputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<Statement> createReaderBody(ModelDescription model) {
-        List<Statement> results = new ArrayList<Statement>();
+        List<Statement> results = new ArrayList<>();
 
         results.add(f.newIfStatement(
                 new ExpressionBuilder(f, createParserFieldName())
@@ -233,7 +233,7 @@ public class ModelInputEmitter extends BaseEmitter<ModelDescription> {
     }
 
     private List<Statement> createCloserBody() {
-        List<Statement> results = new ArrayList<Statement>();
+        List<Statement> results = new ArrayList<>();
         results.add(new ExpressionBuilder(f, createParserFieldName())
             .method("close")
             .toStatement());

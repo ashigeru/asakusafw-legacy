@@ -91,13 +91,12 @@ public class Main implements Callable<ModelRepository> {
         LOG.info("データベース\"{}\"からテーブルの定義を読み込んでいます",
                 configuration.getJdbcUrl());
 
-        DatabaseSource source = new DatabaseSource(
+        try (DatabaseSource source = new DatabaseSource(
                 configuration.getJdbcDriver(),
                 configuration.getJdbcUrl(),
                 configuration.getJdbcUser(),
                 configuration.getJdbcPassword(),
-                configuration.getDatabaseName());
-        try {
+                configuration.getDatabaseName())) {
             List<ModelDescription> collected = source.collectTables(
                     configuration.getMatcher());
 
@@ -108,8 +107,6 @@ public class Main implements Callable<ModelRepository> {
             }
 
             LOG.info("データベースから{}個のテーブルモデルを登録しました", collected.size());
-        } finally {
-            source.close();
         }
     }
 
@@ -117,13 +114,12 @@ public class Main implements Callable<ModelRepository> {
         LOG.info("データベース\"{}\"からビューの定義を読み込んでいます",
                 configuration.getJdbcUrl());
 
-        DatabaseSource source = new DatabaseSource(
+        try (DatabaseSource source = new DatabaseSource(
                 configuration.getJdbcDriver(),
                 configuration.getJdbcUrl(),
                 configuration.getJdbcUser(),
                 configuration.getJdbcPassword(),
-                configuration.getDatabaseName());
-        try {
+                configuration.getDatabaseName())) {
             List<ModelDescription> collected = source.collectViews(
                     repository,
                     configuration.getMatcher());
@@ -135,8 +131,6 @@ public class Main implements Callable<ModelRepository> {
             }
 
             LOG.info("データベースから{}個のビューモデルを登録しました", collected.size());
-        } finally {
-            source.close();
         }
     }
 
@@ -320,26 +314,20 @@ public class Main implements Callable<ModelRepository> {
     private static Properties loadProperties(String path) throws IOException {
         assert path != null;
         LOG.debug("Loading Properties: {}", path);
-        InputStream in = new FileInputStream(path);
-        try {
+        try (InputStream in = new FileInputStream(path)) {
             Properties result = new Properties();
             result.load(in);
             return result;
-        } finally {
-            in.close();
         }
     }
 
     private static List<String> loadLines(String path) throws IOException {
-        Scanner scanner = new Scanner(new File(path), "UTF-8");
-        try {
-            List<String> result = new ArrayList<String>();
+        try (Scanner scanner = new Scanner(new File(path), "UTF-8")) {
+            List<String> result = new ArrayList<>();
             while (scanner.hasNextLine()) {
                 result.add(scanner.nextLine());
             }
             return result;
-        } finally {
-            scanner.close();
         }
     }
 

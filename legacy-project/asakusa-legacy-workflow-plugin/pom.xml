@@ -36,9 +36,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ashigel-compiler</artifactId>
-      <version>${asakusafw.version}</version>
+      <groupId>com.asakusafw.mapreduce.compiler</groupId>
+      <artifactId>asakusa-mapreduce-compiler-core</artifactId>
+      <version>${asakusafw-mapreduce.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

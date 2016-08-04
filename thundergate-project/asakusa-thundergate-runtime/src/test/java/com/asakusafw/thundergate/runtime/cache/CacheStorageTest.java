@@ -31,14 +31,23 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 import org.junit.Assume;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import com.asakusafw.runtime.windows.WindowsSupport;
 
 /**
  * Test for {@link CacheStorage}.
  */
 public class CacheStorageTest {
+
+    /**
+     * Support for Windows platform.
+     */
+    @ClassRule
+    public static final WindowsSupport WINDOWS_SUPPORT = new WindowsSupport();
 
     /**
      * Temporary folder.

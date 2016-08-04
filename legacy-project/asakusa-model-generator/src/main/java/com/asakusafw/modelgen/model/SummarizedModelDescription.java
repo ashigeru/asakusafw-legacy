@@ -41,8 +41,8 @@ public class SummarizedModelDescription extends ModelDescription {
             List<Source> groupBy) {
         super(reference, properties);
         this.groupBy = Collections.unmodifiableList(
-                new ArrayList<Source>(groupBy));
-        Set<String> groupKeys = new HashSet<String>();
+                new ArrayList<>(groupBy));
+        Set<String> groupKeys = new HashSet<>();
         for (Source source : groupBy) {
             groupKeys.add(source.getName());
         }

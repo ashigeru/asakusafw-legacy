@@ -31,7 +31,7 @@ import com.asakusafw.utils.java.model.syntax.ModelFactory;
 public class AnyModelEntityEmitter {
 
     private Map<Class<? extends ModelDescription>, ModelEntityEmitter<?>> emitters =
-        new HashMap<Class<? extends ModelDescription>, ModelEntityEmitter<?>>();
+        new HashMap<>();
 
     /**
      * インスタンスを生成する。

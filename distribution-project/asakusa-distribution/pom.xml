@@ -67,18 +67,18 @@
 
     <!-- Core -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime-configuration</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-runtime-all</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>lib</classifier>
@@ -88,72 +88,72 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-thundergate</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-thundergate</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-thundergate-runtime</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- WindGate -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-bootstrap</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>asakusa-windgate-plugin</artifactId>
+      <groupId>com.asakusafw</groupId>
+      <artifactId>asakusa-windgate-bootstrap</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-core</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-hadoopfs</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-hadoopfs</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-stream</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-jdbc</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-windgate-retryable</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
 
     <!-- Direct I/O -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-directio-tools</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-directio-tools</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
@@ -161,66 +161,66 @@
 
     <!-- Direct I/O Hive -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-hive-core</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
 
     <!-- YAESS -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-bootstrap</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-bootstrap</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-core</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-core</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-flowlog</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-jsch</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-jobqueue</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-multidispatch</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-paralleljob</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-tools</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-yaess-tools</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
@@ -228,12 +228,12 @@
 
     <!-- Operation -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-operation-tools</artifactId>
       <version>${asakusafw.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-operation-tools</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
@@ -241,7 +241,7 @@
 
     <!-- Development -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.asakusafw</groupId>
       <artifactId>asakusa-test-driver</artifactId>
       <version>${asakusafw.version}</version>
       <classifier>dist</classifier>
@@ -249,7 +249,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-development-tools</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
       <classifier>dist</classifier>
     </dependency>
 
@@ -257,18 +257,18 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-legacy-workflow-plugin</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
       <classifier>dist</classifier>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-cleaner</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-cleaner</artifactId>
-      <version>${asakusafw.version}</version>
+      <version>${project.version}</version>
       <classifier>dist</classifier>
     </dependency>
 

@@ -33,7 +33,7 @@ public class JavaName {
         if (words.isEmpty()) {
             throw new IllegalArgumentException("words"); //$NON-NLS-1$
         }
-        this.words = new ArrayList<String>();
+        this.words = new ArrayList<>();
         for (String word : words) {
             this.words.add(normalize(word));
         }
@@ -49,7 +49,7 @@ public class JavaName {
             String[] segments = nameString.split("_");
             return new JavaName(normalize(Arrays.asList(segments)));
         } else {
-            List<String> segments = new ArrayList<String>();
+            List<String> segments = new ArrayList<>();
             int start = 0;
             for (int i = 1, n = nameString.length(); i < n; i++) {
                 if (Character.isUpperCase(nameString.charAt(i))) {
@@ -67,7 +67,7 @@ public class JavaName {
      * @return セグメント一覧
      */
     public List<String> getSegments() {
-        return new ArrayList<String>(words);
+        return new ArrayList<>(words);
     }
 
     /**
@@ -145,7 +145,7 @@ public class JavaName {
     }
 
     private static List<String> normalize(List<String> segments) {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         for (String segment : segments) {
             if (segment.isEmpty() == false) {
                 results.add(segment);
