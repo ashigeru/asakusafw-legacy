@@ -44,7 +44,6 @@ class AsakusaLegacyOrganizerPlugin implements Plugin<Project> {
 
         configureConvention()
         configureProfiles()
-        configureTasks()
     }
 
     /**
@@ -70,25 +69,5 @@ class AsakusaLegacyOrganizerPlugin implements Plugin<Project> {
         AsakusaLegacyOrganizer organizer = new AsakusaLegacyOrganizer(project, profile)
         organizer.configureProfile()
         organizers << organizer
-    }
-
-    private void configureTasks() {
-        defineFacadeTasks([
-              attachComponentDevelopment : 'Attaches development tools to assemblies.',
-        ])
-    }
-
-    private void defineFacadeTasks(Map<String, String> taskMap) {
-        taskMap.each { String taskName, String desc ->
-            project.task(taskName) { Task task ->
-                if (desc != null) {
-                    task.group AsakusafwOrganizerPlugin.ASAKUSAFW_ORGANIZER_GROUP
-                    task.description desc
-                }
-                organizers.all { AsakusaLegacyOrganizer organizer ->
-                    task.dependsOn organizer.task(task.name)
-                }
-            }
-        }
     }
 }
