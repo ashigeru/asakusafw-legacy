@@ -25,7 +25,6 @@ import com.asakusafw.vocabulary.bulkloader.PrimaryKey;
 
 /**
  * A simple data model.
- * @since 0.2.0
  */
 @PrimaryKey("number")
 @OriginalName("DUP_CHECK")

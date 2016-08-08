@@ -149,9 +149,8 @@ public class H2Resource extends TestWatcher {
     }
 
     private List<List<Object>> query0(String sql) throws SQLException {
-        Statement s = connection.createStatement();
-        try {
-            ResultSet rs = s.executeQuery(sql);
+        try (Statement s = connection.createStatement();
+                ResultSet rs = s.executeQuery(sql)) {
             ResultSetMetaData meta = rs.getMetaData();
             int size = meta.getColumnCount();
             List<List<Object>> results = new ArrayList<>();
@@ -163,8 +162,6 @@ public class H2Resource extends TestWatcher {
                 results.add(Arrays.asList(columns));
             }
             return results;
-        } finally {
-            s.close();
         }
     }
 

@@ -62,14 +62,14 @@ public class TableSourceProvider implements DataModelSourceProvider {
 
         Configuration conf = Configuration.load(targetName);
         Connection conn = null;
-        ResultSet res = null;
         try {
             conn = conf.open();
             DatabaseMetaData meta = conn.getMetaData();
-            res = meta.getColumns(null, null, tableName, "%");
             List<String> columnList = new ArrayList<>();
-            while (res.next()) {
-                columnList.add(res.getString("COLUMN_NAME"));
+            try (ResultSet res = meta.getColumns(null, null, tableName, "%")) {
+                while (res.next()) {
+                    columnList.add(res.getString("COLUMN_NAME"));
+                }
             }
             TableInfo<T> table = new TableInfo<>(definition, tableName, columnList);
             return new TableSource<>(table, conn);

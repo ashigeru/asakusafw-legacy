@@ -72,8 +72,8 @@ public class H2ResourceTest {
         h2.execute("INSERT INTO TESTING (NUMBER, TEXT) VALUES(100, 'Hello, world!')");
 
         try (Connection conn = DriverManager.getConnection("jdbc:h2:mem:test");
-                Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT NUMBER, TEXT FROM TESTING");
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT NUMBER, TEXT FROM TESTING")) {
             assertThat(rs.next(), is(true));
             assertThat(rs.getObject(1), is((Object) 100));
             assertThat(rs.getObject(2), is((Object) "Hello, world!"));
