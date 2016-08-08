@@ -42,7 +42,7 @@ import com.asakusafw.vocabulary.bulkloader.PrimaryKey;
     "C_TIME",
     "C_DATETIME"
 })
-public class Simple {
+public class Union {
 
     /**
      * int.
@@ -152,7 +152,7 @@ public class Simple {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Simple other = (Simple) obj;
+        Union other = (Union) obj;
         if (bigDecimalValue == null) {
             if (other.bigDecimalValue != null) {
                 return false;
@@ -249,6 +249,6 @@ public class Simple {
 
     @Override
     public String toString() {
-        return new SimpleDataModelDefinition<>(Simple.class).toReflection(this).toString();
+        return new SimpleDataModelDefinition<>(Union.class).toReflection(this).toString();
     }
 }

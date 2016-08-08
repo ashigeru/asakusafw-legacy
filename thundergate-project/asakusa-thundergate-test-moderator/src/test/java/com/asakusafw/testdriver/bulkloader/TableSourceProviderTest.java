@@ -134,10 +134,10 @@ public class TableSourceProviderTest {
     @Test
     public void invalid_scheme() throws Exception {
         context.put("provider", "provider");
-
         TableSourceProvider provider = new TableSourceProvider();
-        DataModelSource source = provider.open(SIMPLE, new URI("hoge:provider:SIMPLE"), new TestContext.Empty());
-        assertThat(source, is(nullValue()));
+        try (DataModelSource source = provider.open(SIMPLE, new URI("hoge:provider:SIMPLE"), new TestContext.Empty())) {
+            assertThat(source, is(nullValue()));
+        }
     }
 
     private <T> void insert(T simple, DataModelDefinition<T> def, String table) {
