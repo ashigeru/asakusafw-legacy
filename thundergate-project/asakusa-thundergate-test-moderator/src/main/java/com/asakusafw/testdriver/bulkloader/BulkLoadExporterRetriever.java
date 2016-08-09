@@ -139,7 +139,7 @@ public class BulkLoadExporterRetriever extends AbstractExporterRetriever<BulkLoa
         DuplicateRecordCheck dupcheck = description.getDuplicateRecordCheck();
         if (dupcheck != null && modelClass == dupcheck.getTableModelClass()) {
             return false;
-        } else if (modelClass == description.getTableModelClass()) {
+        } else if (modelClass == description.getModelType() || modelClass == description.getTableModelClass()) {
             return true;
         } else {
             throw new IOException(MessageFormat.format(

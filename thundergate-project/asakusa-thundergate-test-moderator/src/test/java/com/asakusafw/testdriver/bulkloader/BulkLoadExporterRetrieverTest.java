@@ -39,7 +39,6 @@ import com.asakusafw.vocabulary.bulkloader.DupCheckDbExporterDescription;
 
 /**
  * Test for {@link BulkLoadExporterRetriever}.
- * @since 0.2.0
  */
 public class BulkLoadExporterRetrieverTest {
 
@@ -47,7 +46,11 @@ public class BulkLoadExporterRetrieverTest {
 
     static final DataModelDefinition<DupCheck> DUP_CHECK = new SimpleDataModelDefinition<>(DupCheck.class);
 
-    static final BulkLoadExporterDescription NORMAL = new DupCheckDbExporterDescription() {
+    static final DataModelDefinition<Union> UNION = new SimpleDataModelDefinition<>(Union.class);
+
+    static final DataModelDefinition<Invalid> INVALID = new SimpleDataModelDefinition<>(Invalid.class);
+
+    static final BulkLoadExporterDescription NORMAL_DESC = new DupCheckDbExporterDescription() {
 
         @Override
         public Class<?> getModelType() {
@@ -85,7 +88,45 @@ public class BulkLoadExporterRetrieverTest {
         }
     };
 
-    static final BulkLoadExporterDescription MISSING = new DupCheckDbExporterDescription() {
+    static final BulkLoadExporterDescription UNION_DESC = new DupCheckDbExporterDescription() {
+
+        @Override
+        public Class<?> getModelType() {
+            return Union.class;
+        }
+
+        @Override
+        public String getTargetName() {
+            return "exporter";
+        }
+
+        @Override
+        protected Class<?> getNormalModelType() {
+            return Simple.class;
+        }
+
+        @Override
+        protected Class<?> getErrorModelType() {
+            return DupCheck.class;
+        }
+
+        @Override
+        protected String getErrorCodeValue() {
+            return "aaa";
+        }
+
+        @Override
+        protected String getErrorCodeColumnName() {
+            return "TEXT";
+        }
+
+        @Override
+        protected List<String> getCheckColumnNames() {
+            return Arrays.asList("NUMBER");
+        }
+    };
+
+    static final BulkLoadExporterDescription MISSING_DESC = new DupCheckDbExporterDescription() {
 
         @Override
         public Class<?> getModelType() {
@@ -172,7 +213,7 @@ public class BulkLoadExporterRetrieverTest {
 
         assertThat(h2.count("SIMPLE"), is(1));
         assertThat(h2.count("DUP_CHECK"), is(1));
-        exporter.truncate(NORMAL);
+        exporter.truncate(NORMAL_DESC);
 
         assertThat(h2.count("SIMPLE"), is(0));
         assertThat(h2.count("DUP_CHECK"), is(0));
@@ -190,7 +231,7 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (ModelOutput<Simple> output = exporter.createOutput(SIMPLE, NORMAL)) {
+        try (ModelOutput<Simple> output = exporter.createOutput(SIMPLE, NORMAL_DESC)) {
             output.write(object);
         }
         assertThat(h2.count("SIMPLE"), is(1));
@@ -212,7 +253,7 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (ModelOutput<DupCheck> output = exporter.createOutput(DUP_CHECK, NORMAL)) {
+        try (ModelOutput<DupCheck> output = exporter.createOutput(DUP_CHECK, NORMAL_DESC)) {
             output.write(object);
         }
         assertThat(h2.count("SIMPLE"), is(0));
@@ -230,8 +271,7 @@ public class BulkLoadExporterRetrieverTest {
     public void output_invalid() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (ModelOutput<?> output = exporter.createOutput(
-                new SimpleDataModelDefinition<>(Invalid.class), NORMAL)) {
+        try (ModelOutput<?> output = exporter.createOutput(INVALID, NORMAL_DESC)) {
             // do nothing
         }
     }
@@ -244,7 +284,7 @@ public class BulkLoadExporterRetrieverTest {
     public void output_missing() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (ModelOutput<?> output = exporter.createOutput(SIMPLE, MISSING)) {
+        try (ModelOutput<?> output = exporter.createOutput(SIMPLE, MISSING_DESC)) {
             // do nothing
         }
     }
@@ -262,7 +302,7 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (DataModelSource source = exporter.createSource(SIMPLE, NORMAL)) {
+        try (DataModelSource source = exporter.createSource(SIMPLE, NORMAL_DESC)) {
             List<Simple> results = drain(SIMPLE, source);
             assertThat(results, is(Arrays.asList(object)));
         }
@@ -281,7 +321,7 @@ public class BulkLoadExporterRetrieverTest {
 
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (DataModelSource source = exporter.createSource(DUP_CHECK, NORMAL)) {
+        try (DataModelSource source = exporter.createSource(DUP_CHECK, NORMAL_DESC)) {
             List<DupCheck> results = drain(DUP_CHECK, source);
             assertThat(results, is(Arrays.asList(object)));
         }
@@ -295,8 +335,7 @@ public class BulkLoadExporterRetrieverTest {
     public void source_invalid() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (DataModelSource source = exporter.createSource(
-                new SimpleDataModelDefinition<>(Invalid.class), NORMAL)) {
+        try (DataModelSource source = exporter.createSource(INVALID, NORMAL_DESC)) {
             // do nothing
         }
     }
@@ -309,7 +348,156 @@ public class BulkLoadExporterRetrieverTest {
     public void source_missing() throws Exception {
         context.put("exporter", "exporter");
         BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
-        try (DataModelSource source = exporter.createSource(SIMPLE, MISSING)) {
+        try (DataModelSource source = exporter.createSource(SIMPLE, MISSING_DESC)) {
+            // do nothing
+        }
+    }
+
+    /**
+     * output to normal w/ union.
+     * @throws Exception if occur
+     */
+    @Test
+    public void output_union() throws Exception {
+        Union object = new Union();
+        object.number = 100;
+        object.text = "Hello, world!";
+
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (ModelOutput<Union> output = exporter.createOutput(UNION, UNION_DESC)) {
+            output.write(object);
+        }
+        assertThat(h2.count("SIMPLE"), is(1));
+        assertThat(h2.count("DUP_CHECK"), is(0));
+
+        List<Union> list = retrieve(UNION, "SIMPLE");
+        assertThat(list, is(Arrays.asList(object)));
+    }
+
+    /**
+     * output to normal w/ union.
+     * @throws Exception if occur
+     */
+    @Test
+    public void output_union_normal() throws Exception {
+        Simple object = new Simple();
+        object.number = 100;
+        object.text = "Hello, world!";
+
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (ModelOutput<Simple> output = exporter.createOutput(SIMPLE, UNION_DESC)) {
+            output.write(object);
+        }
+        assertThat(h2.count("SIMPLE"), is(1));
+        assertThat(h2.count("DUP_CHECK"), is(0));
+
+        List<Simple> list = retrieve(SIMPLE, "SIMPLE");
+        assertThat(list, is(Arrays.asList(object)));
+    }
+
+    /**
+     * output to dupcheck w/ union.
+     * @throws Exception if occur
+     */
+    @Test
+    public void output_union_dupcheck() throws Exception {
+        DupCheck object = new DupCheck();
+        object.number = 100;
+        object.text = "Hello, world!";
+
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (ModelOutput<DupCheck> output = exporter.createOutput(DUP_CHECK, UNION_DESC)) {
+            output.write(object);
+        }
+        assertThat(h2.count("SIMPLE"), is(0));
+        assertThat(h2.count("DUP_CHECK"), is(1));
+
+        List<DupCheck> list = retrieve(DUP_CHECK, "DUP_CHECK");
+        assertThat(list, is(Arrays.asList(object)));
+    }
+
+    /**
+     * attempted to output to unknown table w/ union.
+     * @throws Exception if occur
+     */
+    @Test(expected = IOException.class)
+    public void output_union_missing() throws Exception {
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (ModelOutput<?> output = exporter.createOutput(SIMPLE, MISSING_DESC)) {
+            // do nothing
+        }
+    }
+
+    /**
+     * retrieve w/ union.
+     * @throws Exception if occur
+     */
+    @Test
+    public void source_union() throws Exception {
+        Union object = new Union();
+        object.number = 100;
+        object.text = "Hello, world!";
+        insert(object, UNION, "SIMPLE");
+
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (DataModelSource source = exporter.createSource(UNION, UNION_DESC)) {
+            List<Union> results = drain(UNION, source);
+            assertThat(results, is(Arrays.asList(object)));
+        }
+    }
+
+    /**
+     * retrieve from normal w/ union.
+     * @throws Exception if occur
+     */
+    @Test
+    public void source_union_normal() throws Exception {
+        Simple object = new Simple();
+        object.number = 100;
+        object.text = "Hello, world!";
+        insert(object, SIMPLE, "SIMPLE");
+
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (DataModelSource source = exporter.createSource(SIMPLE, UNION_DESC)) {
+            List<Simple> results = drain(SIMPLE, source);
+            assertThat(results, is(Arrays.asList(object)));
+        }
+    }
+
+    /**
+     * retrieve from dupcheck w/ union.
+     * @throws Exception if occur
+     */
+    @Test
+    public void source_union_dupcheck() throws Exception {
+        DupCheck object = new DupCheck();
+        object.number = 100;
+        object.text = "Hello, world!";
+        insert(object, DUP_CHECK, "DUP_CHECK");
+
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (DataModelSource source = exporter.createSource(DUP_CHECK, UNION_DESC)) {
+            List<DupCheck> results = drain(DUP_CHECK, source);
+            assertThat(results, is(Arrays.asList(object)));
+        }
+    }
+
+    /**
+     * attempt to retrieve from missing table w/ union.
+     * @throws Exception if occur
+     */
+    @Test(expected = IOException.class)
+    public void source_union_missing() throws Exception {
+        context.put("exporter", "exporter");
+        BulkLoadExporterRetriever exporter = new BulkLoadExporterRetriever();
+        try (DataModelSource source = exporter.createSource(SIMPLE, MISSING_DESC)) {
             // do nothing
         }
     }
@@ -349,8 +537,7 @@ public class BulkLoadExporterRetrieverTest {
                 "C_DATE",
                 "C_TIME",
                 "C_DATETIME"));
-        try {
-            TableSource<T> source = new TableSource<>(info, h2.open());
+        try (TableSource<T> source = new TableSource<>(info, h2.open())) {
             return drain(def, source);
         } catch (Exception e) {
             throw new AssertionError(e);
