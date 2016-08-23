@@ -137,15 +137,22 @@ public class TableOutput<T> implements ModelOutput<T> {
             statement.clearParameters();
             index = 1;
             String timestamp = table.getTimestampColumn();
+            Timestamp timestampValue = new Timestamp(0L);
             DataModelDefinition<?> def = table.getDefinition();
             for (Map.Entry<String, PropertyName> entry : table.getColumnsToProperties().entrySet()) {
-                if (entry.getKey().equals(timestamp) == false) {
+                if (entry.getKey().equals(timestamp)) {
+                    Calendar value = (Calendar) ref.getValue(entry.getValue());
+                    if (value != null) {
+                        timestampValue = new Timestamp(value.getTimeInMillis());
+                    }
+                } else {
                     scan(def, entry.getValue(), ref);
                     index++;
                 }
             }
+            // timestamp column (a.k.a. UPDT_DATE) must not be NULL for ThunderGate Cache
             if (timestamp != null) {
-                statement.setTimestamp(index, new Timestamp(0L));
+                statement.setTimestamp(index, timestampValue);
             }
             statement.executeUpdate();
         }
