@@ -259,7 +259,7 @@ public class TableOutputTest {
         assertThat(results.size(), is(1));
         Timestamp timestamp = (Timestamp) results.get(0).get(0);
         assertThat(timestamp, is(notNullValue()));
-        assertThat(timestamp.getTime(), is(0L));
+        assertThat("should keep explicit timestamp values", timestamp.getTime(), is(1L));
     }
 
     /**
