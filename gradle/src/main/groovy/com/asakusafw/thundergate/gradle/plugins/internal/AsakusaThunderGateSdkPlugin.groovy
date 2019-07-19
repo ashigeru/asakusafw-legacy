@@ -84,6 +84,9 @@ class AsakusaThunderGateSdkPlugin implements Plugin<Project> {
         PluginUtils.afterEvaluate(project) {
             AsakusaLegacyBaseExtension base = AsakusaLegacyBasePlugin.get(project)
             project.dependencies {
+                compile "com.asakusafw:asakusa-thundergate-vocabulary:${base.featureVersion}"
+                testCompile "com.asakusafw:asakusa-thundergate-test-moderator:${base.featureVersion}"
+                asakusaDmdlCompiler "com.asakusafw:asakusa-thundergate-dmdl:${base.featureVersion}"
                 asakusaThunderGateFiles "com.asakusafw:asakusa-thundergate:${base.featureVersion}:dist@jar"
             }
         }
