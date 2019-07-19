@@ -71,6 +71,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.asakusafw</groupId>
+      <artifactId>asakusa-runtime-tsv</artifactId>
+      <version>${asakusafw.version}</version>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>asakusa-test-tools</artifactId>
       <version>${project.version}</version>

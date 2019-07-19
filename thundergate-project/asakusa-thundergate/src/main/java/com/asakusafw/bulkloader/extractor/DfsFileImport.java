@@ -48,7 +48,7 @@ import com.asakusafw.bulkloader.transfer.FileList;
 import com.asakusafw.bulkloader.transfer.FileProtocol;
 import com.asakusafw.runtime.io.ModelInput;
 import com.asakusafw.runtime.io.ModelOutput;
-import com.asakusafw.runtime.io.TsvIoFactory;
+import com.asakusafw.runtime.io.tsv.TsvIoFactory;
 import com.asakusafw.runtime.stage.temporary.TemporaryStorage;
 import com.asakusafw.thundergate.runtime.cache.CacheInfo;
 import com.asakusafw.thundergate.runtime.cache.CacheStorage;

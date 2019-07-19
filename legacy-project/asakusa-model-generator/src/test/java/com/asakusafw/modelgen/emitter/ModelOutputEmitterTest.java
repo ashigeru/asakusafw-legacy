@@ -34,8 +34,8 @@ import com.asakusafw.runtime.io.ModelInput;
 import com.asakusafw.runtime.io.ModelOutput;
 import com.asakusafw.runtime.io.RecordEmitter;
 import com.asakusafw.runtime.io.RecordParser;
-import com.asakusafw.runtime.io.TsvEmitter;
-import com.asakusafw.runtime.io.TsvParser;
+import com.asakusafw.runtime.io.tsv.TsvEmitter;
+import com.asakusafw.runtime.io.tsv.TsvParser;
 import com.asakusafw.runtime.value.Date;
 import com.asakusafw.runtime.value.DateUtil;
 

@@ -26,9 +26,4 @@ class SystemException extends Exception {
     SystemException(Throwable cause, String message) {
         super(message, cause);
     }
-
-    @Override
-    public Throwable getCause() {
-        return super.getCause();
-    }
 }

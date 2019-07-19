@@ -81,6 +81,12 @@
     </dependency>
     <dependency>
       <groupId>com.asakusafw</groupId>
+      <artifactId>asakusa-runtime-tsv</artifactId>
+      <version>${asakusafw.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.asakusafw</groupId>
       <artifactId>jsr199-testing</artifactId>
       <version>${asakusafw.version}</version>
       <scope>test</scope>

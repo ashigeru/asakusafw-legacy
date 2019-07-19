@@ -31,7 +31,7 @@ import com.asakusafw.modelgen.model.StringType;
 import com.asakusafw.modelgen.model.TableModelDescription;
 import com.asakusafw.modelgen.util.TableModelBuilder;
 import com.asakusafw.runtime.io.ModelInput;
-import com.asakusafw.runtime.io.TsvParser;
+import com.asakusafw.runtime.io.tsv.TsvParser;
 import com.asakusafw.runtime.value.Date;
 import com.asakusafw.runtime.value.DateUtil;
 

@@ -54,7 +54,7 @@
     <plugin.jflex.version>1.4.3</plugin.jflex.version>
 
     <!-- artifact id/versions -->
-    <asakusafw.version>0.9.0-SNAPSHOT</asakusafw.version>
+    <asakusafw.version>0.10.4-SNAPSHOT</asakusafw.version>
     <asakusafw-mapreduce.version>${asakusafw.version}</asakusafw-mapreduce.version>
     <asakusafw-sdk.version>0.9.0-SNAPSHOT</asakusafw-sdk.version>
     <hadoop.version>2.7.2</hadoop.version>

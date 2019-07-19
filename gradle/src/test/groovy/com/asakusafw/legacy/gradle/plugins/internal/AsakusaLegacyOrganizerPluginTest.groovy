@@ -37,6 +37,7 @@ class AsakusaLegacyOrganizerPluginTest extends OrganizerTestRoot {
      */
     @Rule
     public final TestRule initializer = new TestRule() {
+        @Override
         Statement apply(Statement stmt, Description desc) {
             project = ProjectBuilder.builder().withName(desc.methodName).build()
             project.apply plugin: AsakusaLegacyOrganizerPlugin

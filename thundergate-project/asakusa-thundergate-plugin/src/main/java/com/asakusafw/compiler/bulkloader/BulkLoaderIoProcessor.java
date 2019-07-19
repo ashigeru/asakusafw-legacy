@@ -607,8 +607,6 @@ public class BulkLoaderIoProcessor extends ExternalIoDescriptionProcessor {
      */
     public static class CommandProvider extends ExternalIoCommandProvider {
 
-        private static final long serialVersionUID = 5091727772482760422L;
-
         private final String batchId;
 
         private final String flowId;
