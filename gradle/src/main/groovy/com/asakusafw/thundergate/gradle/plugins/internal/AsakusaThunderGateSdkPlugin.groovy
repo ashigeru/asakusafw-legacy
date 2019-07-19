@@ -89,6 +89,11 @@ class AsakusaThunderGateSdkPlugin implements Plugin<Project> {
                 asakusaDmdlCompiler "com.asakusafw:asakusa-thundergate-dmdl:${base.featureVersion}"
                 asakusaThunderGateFiles "com.asakusafw:asakusa-thundergate:${base.featureVersion}:dist@jar"
             }
+            PluginUtils.afterPluginEnabled(project, "asakusafw-mapreduce") {
+                project.dependencies {
+                    asakusaMapreduceCommon "com.asakusafw:asakusa-thundergate-plugin:${base.featureVersion}"
+                }
+            }
         }
     }
 
