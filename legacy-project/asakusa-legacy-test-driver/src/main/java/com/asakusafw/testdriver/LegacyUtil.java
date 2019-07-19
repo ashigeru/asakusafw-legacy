@@ -154,5 +154,4 @@ final class LegacyUtil {
         }
         return buf.toString();
     }
-
 }

@@ -36,7 +36,7 @@ The attributed declaration must be:
 <li> with value=[string-literal] </li>
 </ul>
  */
-public class OriginalNameDriver extends AttributeDriver {
+public class OriginalNameDriver implements AttributeDriver {
 
     /**
      * The attribute name.
@@ -54,9 +54,9 @@ public class OriginalNameDriver extends AttributeDriver {
     }
 
     @Override
-    public void process(DmdlSemantics environment, Declaration declaration, AstAttribute attribute) {
+    public void process(Context context, Declaration declaration, AstAttribute attribute) {
         assert attribute.name.toString().equals(TARGET_NAME);
-        String value = getString(environment, attribute);
+        String value = getString(context.getEnvironment(), attribute);
         if (value != null) {
             declaration.putTrait(
                     OriginalNameTrait.class,
