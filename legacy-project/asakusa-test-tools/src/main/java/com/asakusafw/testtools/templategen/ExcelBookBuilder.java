@@ -36,9 +36,11 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.CellRangeAddressList;
 
@@ -130,29 +132,29 @@ public class ExcelBookBuilder {
 
         commonStyle = workbook.createCellStyle();
         commonStyle.setFont(font);
-        commonStyle.setBorderTop(CellStyle.BORDER_THIN);
-        commonStyle.setBorderBottom(CellStyle.BORDER_THIN);
-        commonStyle.setBorderLeft(CellStyle.BORDER_THIN);
-        commonStyle.setBorderRight(CellStyle.BORDER_THIN);
+        commonStyle.setBorderTop(BorderStyle.THIN);
+        commonStyle.setBorderBottom(BorderStyle.THIN);
+        commonStyle.setBorderLeft(BorderStyle.THIN);
+        commonStyle.setBorderRight(BorderStyle.THIN);
 
         titleStyle = workbook.createCellStyle();
         titleStyle.cloneStyleFrom(commonStyle);
-        titleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        titleStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         titleStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
-        titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
 
         centerAlignStyle = workbook.createCellStyle();
         centerAlignStyle.cloneStyleFrom(commonStyle);
-        centerAlignStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        centerAlignStyle.setAlignment(HorizontalAlignment.CENTER);
 
         fixedValueStyle = workbook.createCellStyle();
         fixedValueStyle.cloneStyleFrom(commonStyle);
-        fixedValueStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        fixedValueStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         fixedValueStyle.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
 
         centerAlignFixedValueStyle = workbook.createCellStyle();
         centerAlignFixedValueStyle.cloneStyleFrom(fixedValueStyle);
-        centerAlignFixedValueStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        centerAlignFixedValueStyle.setAlignment(HorizontalAlignment.CENTER);
 
         CreationHelper helper = workbook.getCreationHelper();
         DataFormat df = helper.createDataFormat();

@@ -467,7 +467,7 @@ public class ExcelUtils {
                 throw new RuntimeException(e);
             }
             for (int col = 0; col < columnInfos.size(); col++) {
-                HSSFCell cell = row.getCell(col, Row.CREATE_NULL_AS_BLANK);
+                HSSFCell cell = row.getCell(col, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                 MySqlDataType type = columnInfos.get(col).getDataType();
                 ValueOption<?> vo;
                 switch (type) {
