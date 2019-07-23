@@ -33,7 +33,6 @@
   <modules>
     <module>thundergate-project</module>
     <module>legacy-project</module>
-    <module>sdk-project</module>
   </modules>
 
   <properties>
